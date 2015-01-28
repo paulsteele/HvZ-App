@@ -4,7 +4,7 @@
 ######Rob Mantzoros, Kyle Rodd, Paul Steele, Wels Lin, Mamasi Goel
 
 #####Problem Statement
-HvZ is a nationwide campus organization that has very little infrastructure.  There is not currently an application that helps run and organize a game.  We want to create an app that will structure the organization of the game, while including features that can enhance the overall experience.
+HvZ is a nationwide campus organization that runs a week long mock post apocalyptic humans versus zombie survival game. This game is similar to a large scale version of tag with added elements like Nerf guns. The goal of the humans is to survive the week without getting tagged by the zombie team, using the Nerf guns to hold off the zombie waves, while the goal of the zombies is to tag and infect all humans. Currently there is very little infrastructure. We want to create an app that will start, operate, and continuously run a game during the week. Existing apps have limited use outside of being a bar code scanner throughout the week. Ours will have much more utility. 
 
 #####Project Objectives
 
