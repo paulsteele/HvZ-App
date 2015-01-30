@@ -18,7 +18,7 @@ HvZ is a nationwide campus organization that runs a week long mock post apocalyp
 #####Stakeholders
 Users: HvZ players, schools, camps, and other organizations that may organize an HvZ game
 
-Developers: Rob Mantzoros, Kyle Rodd, Paul Steele, Welss Lin, Manasi Goel
+Developers: Rob Mantzoros, Kyle Rodd, Paul Steele, Wells Lin, Manasi Goel
 
 Project Manager: Paul Steele
 
