@@ -1,7 +1,7 @@
 #Project Backlog
 #####Group 18
 #####HvZ Master App
-######Rob Mantzoros, Kyle Rodd, Paul Steele, Wels Lin, Manasi Goel
+######Rob Mantzoros, Kyle Rodd, Paul Steele, Wels Lin, Mamasi Goel
 
 #####Problem Statement
 HvZ is a nationwide campus organization that runs a week long mock post apocalyptic humans versus zombie survival game and currently it has very little infrastructure. There is not currently an application that helps run and organize a game. We want to create an app that will structure the organization of the game, while including features that can enhance the overall experience.
@@ -27,6 +27,20 @@ HVZ is similar to a large scale version of tag with added elements like Nerf gun
  * As a player, I'd like to be able to group chat between a limited number of players. (if time allows)
  * As a player, I'd like to view in-game statistics.
  * As an admin, I'd like to directly change database information through the server console.
+ * As an admin, change game settings such as cool down timers, through the app.
+ * As an admin, have a button to randomly set up the orignal zombies.
+ * As a admin, create mission objectives that all players can see.
+ * As a player, see mission objectives through the app.
+ * As a user, look on the map and see gps location of other players.
+ * As a user, see a leaderboard of current players
+ * As a user, be able to vote in a poll for bounties
+ * As an admin, be able to set up polls for bounties
+ * As an admin, be able to view poll results and set up bounty for a certain player.
+ * As a user, be able to drop out of the game through the app, disabling app features through the duration of the game.
+ * As a user, see a score screen when the game session is over.
+ * As a admin, be able to generate revive codes for zombies that let them convert back to humans.
+ * As a zombie, be able to enter revive codes that convert them back into human.
+ * As an admin, be able to make users untaggable for a set amount of time.
 
 #####Non-Functional Requirements
 
@@ -37,11 +51,13 @@ HVZ is similar to a large scale version of tag with added elements like Nerf gun
  * Admins will have unlocked features in app.
  * The server will handle all requests and do the bulk of the work, while storing information into the database.
  * A minimal amount of data should be sent through the app to avoid data overages for the user.
+ * Have a server that is able to handle 500 players at once.
 
 #####Design
 
 * The main screen should be intuitive and have a low number of button presses to get to the desired action. 
 * The main screen should have a grid layout with sub menus appearing when certain boxes are pressed.
+* App interface should change themes depending on player status (if time allows).
 
 #####Security
 
