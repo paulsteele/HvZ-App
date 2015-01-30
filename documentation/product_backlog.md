@@ -1,48 +1,55 @@
 #Project Backlog
 #####Group 18
 #####HvZ Master App
-######Rob Mantzoros, Kyle Rodd, Paul Steele, Wels Lin, Manasi Goel
+######Rob Mantzoros, Kyle Rodd, Paul Steele, Wells Lin, Manasi Goel
 
 #####Problem Statement
 HvZ is a nationwide campus organization that runs a week long mock post apocalyptic humans versus zombie survival game and currently it has very little infrastructure. There is not currently an application that helps run and organize a game. We want to create an app that will structure the organization of the game, while including features that can enhance the overall experience.
 
 #####Background Information
-HVZ is similar to a large scale version of tag with added elements like Nerf guns. The goal of the humans is to survive the week without getting tagged by the zombie team, using the Nerf guns to hold off the zombie waves, while the goal of the zombies is to tag and infect all humans. Currently there is little infrastructure for handling the large amount of data that is needed to run a game of HvZ. Typical players of the game (the potential users of the app) are college aged adults, and standard sizes of games have anywhere from 50 - 200+ people playing at once. Each player has a plethora of information to handle such as their unique identifier code, who they've tagged during the day, what the boundaries of the game are, whose been tagged recently, what their current mission objective is, and a plethora of other details. At night they go home and have to enter their log of tags into an online form. This is slow, not in real time, and very prone to errors. There are existing apps that try to help the process, but all in all they have limited use outside of being a bar code scanner throughout the week. Ours will have much more utility. Those apps focus on the single act of transferring tags between players, while ours will attempt to remedy a large number of the problems listed above.
+HVZ is similar to a large scale version of tag with added elements like Nerf guns. The goal of the humans is to survive the week without getting tagged by the zombie team, using the Nerf guns to hold off the zombie waves, while the goal of the zombies is to tag and infect all humans. At the beginning of the game everyone starts on the human team besides 1-4 original zombies who have to infect the rest of the players. Currently there is little infrastructure for handling the large amount of data that is needed to run a game of HvZ. Typical players of the game (the potential users of the app) are college aged adults, and standard sizes of games have anywhere from 50 - 200+ people playing at once. Each player has a plethora of information to handle such as their unique identifier code, who they've tagged during the day, what the boundaries of the game are, whose been tagged recently, what their current mission objective is, and a plethora of other details. At night they go home and have to enter their log of tags into an online form. This is slow, not in real time, and very prone to errors. There are existing apps that try to help the process, but all in all they have limited use outside of being a bar code scanner throughout the week. Ours will have much more utility. Those apps focus on the single act of transferring tags between players, while ours will attempt to remedy a large number of the problems listed above.
 #####Requirements
 #####Functional Requirements
 
- * As an admin, I'd like to be able to create and start a game session.
- * As an admin, I'd like to be able to place users into 3 different types of user (human, zombie, non player character)
- * As a player, I'd like to be able to register for a game session.
- * As an admin, I'd like to be able to create boundaries for the game session in an in-app map interface.
- * As a player, I'd like to be able to view the set up map boundary.
- * As a user, I'd like to see a list of who is on the human, or zombie team.
- * As an admin, I'd like to push notifications to the players.
- * As a player, I'd like to be able to see notifications from the admins.
- * As a player, I'd like to be able to send complaints to the admins.
- * As an admin, I'd like to be able to receive complaints from the players.
- * As a human, I'd like to be able to register a tag through the app.
- * As a zombie, I'd like to be able to be tagged and have my own tagging functionality be disabled for a variable cool down timer.
- * As a zombie, I'd like to be able to register a tag through the app.
- * As a human, I'd like to be able to be tagged and the converted to the zombie team.
- * As a player, I'd like to be able to group chat between a limited number of players. (if time allows)
- * As a player, I'd like to view in-game statistics.
- * As an admin, I'd like to directly change database information through the server console.
- * As an admin, I'd like to change game settings such as cool down timers, through the app.
- * As an admin, I'd like to at the start of the game be able to randomly select the original zombies.
- * As a admin, I'd like to create mission objectives that all players can see.
- * As a player, I'd like to see mission objectives through the app.
- * As a user, I'd like to look on the map and see gps location of other players. (if time allows)
- * As a user, I'd like to see a leaderboard of current players
- * As a user, I'd like to be able to vote in a poll for bounties
- * As an admin, be able to set up polls for bounties
- * As an admin, be able to view poll results and set up bounty for a certain player.
- * As a user, I'd like to be able to receive bonus points for tagging a bountied player.
- * As a user, I'd like to be able to drop out of the game through the app, disabling app features for that user through the duration of the game.
- * As a user, I'd like to be able to see a score screen when the game session is over.
- * As a admin, be able to generate revive codes for zombies that let them convert back to humans.
- * As a zombie, be able to enter revive codes that convert them back into human.
- * As an admin, be able to make users untaggable for a set amount of time.
+* As an admin, I'd like to... 
+ * be able to create and start a game session.
+ * be able to place users into 3 different types of user (human, zombie, and non player character), and define which players are admins.
+ * directly change database information through the server console.
+ * change game parameters, such as cool down timers, through the app.
+ * be able to create boundaries for the game session through an in-app map interface.
+ * at the start of the game be able to randomly select the original zombies.
+ * push text notifications to the players.
+ * be able to receive complaints from the players.
+ * create mission objectives that all players can see.
+ * be able to set up polls for player bounties.
+ * be able to view poll results and set up bounties for certain players.
+ * be able to generate revive codes for zombies that let them convert back to humans.
+ * be able to make users untaggable for a set amount of time.
+
+* As a player, I'd like to ...
+ * be able to register for a game session.
+ * be able to register a tag through the app.
+ * be able to see notifications from the admins.
+ * see mission objectives through the app.
+ * be able to send complaints to the admins.
+ * view in-game statistics
+ * be able to view the set up map boundary.
+ * see a leaderboard of current players
+ * see a list of who is on the human, or zombie team.
+ * be able to drop out of the game through the app, disabling app features for that user through the duration of the game.
+ * be able to see a score screen when the game session is over.
+ * be able to vote in a poll for bounties.
+ * be able to receive bonus points for tagging a bountied player.
+ * look on the map and see gps location of other players. (if time allows)
+ * be able to group chat between a limited number of players. (if time allows)
+
+* As a human, I'd like to ...
+ * be able to be tagged and then converted to the zombie team.
+
+* As a zombie, I'd like to ...
+ * be able to be tagged and have my own tagging functionality be disabled for a variable cool down timer.
+ * be able to enter revive codes that convert me back into the human team.
+
 
 #####Non-Functional Requirements
 
