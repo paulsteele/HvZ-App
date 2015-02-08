@@ -1,4 +1,4 @@
-#Project Backlog
+#Product Backlog
 #####Group 18
 #####HvZ Master App
 ######Rob Mantzoros, Kyle Rodd, Paul Steele, Wells Lin, Manasi Goel
