@@ -49,6 +49,8 @@ HVZ is similar to a large scale version of tag with added elements like Nerf gun
 * As a zombie, I'd like to ...
  * be able to be tagged and have my own tagging functionality be disabled for a variable cool down timer.
  * be able to enter revive codes that convert me back into the human team.
+ * be able to see a timer until I am kicked out of the game for not tagging constantly enough.
+ * be able to have my timer reset once a tag is completed.
 
 
 #####Non-Functional Requirements
