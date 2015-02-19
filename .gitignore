@@ -3,3 +3,4 @@ assignments/*
 *target/*
 *.project
 *.prefs
+*.classpath
