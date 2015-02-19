@@ -2,4 +2,4 @@
 assignments/*
 *target/*
 *.project
-*.pref
+*.prefs
