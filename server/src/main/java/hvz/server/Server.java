@@ -1,13 +1,18 @@
 package hvz.server;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
+
 /**
  * Hello world!
  *
  */
-public class Server 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+@ComponentScan
+@EnableAutoConfiguration
+public class Server {
+
+    public static void main( String[] args ) {
+    	SpringApplication.run(Server.class, args);
     }
 }
