@@ -11,4 +11,6 @@
     <string name="menu_text6">Rewards</string>
     <string name="menu_text7">Reports</string>
     <string name="menu_text8">Revive</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="register">Register</string>
 </resources>
