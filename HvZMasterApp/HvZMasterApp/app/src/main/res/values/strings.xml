@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">HvZMasterApp</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="menu_text1">General</string>
+    <string name="menu_text2">Tagging</string>
+    <string name="menu_text3">Missions</string>
+    <string name="menu_text4">Bounty</string>
+    <string name="menu_text5">Polls</string>
+    <string name="menu_text6">Rewards</string>
+    <string name="menu_text7">Reports</string>
+    <string name="menu_text8">Revive</string>
+</resources>
