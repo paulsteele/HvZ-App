@@ -4,3 +4,11 @@ assignments/*
 *.project
 *.prefs
 *.classpath
+
+# Android Studio files
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
