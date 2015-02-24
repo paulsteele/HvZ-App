@@ -11,5 +11,6 @@
   <url>http://maven.apache.org</url>
 <modules>
 	<module>server</module>
+	<module>HvZMasterApp/HvZMasterApp/app/src/main/</module>
 </modules>
 </project>
