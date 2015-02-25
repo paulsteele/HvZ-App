@@ -8,7 +8,7 @@ public class Server{
     }
     
     //returns 0 if successfully removed a player
-    pubic int removePlayer(User user){
+    public int removePlayer(User user){
         return 0;
     }
     
