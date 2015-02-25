@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>hvz</groupId>
+        <artifactId>hvz</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../../../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>HvZMasterApp</artifactId>
+    <packaging>pom</packaging>
+
+    <properties>
+        <!-- use UTF-8 for everything -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+              <groupId>org.fortasoft</groupId>
+              <artifactId>gradle-maven-plugin</artifactId>
+              <version>1.0.5</version>
+                <configuration>
+                    <gradleVersion>2.3</gradleVersion>
+                    <tasks>
+                    <!-- this would effectively call "gradle doSomething" -->
+                        <task>build</task>
+                    </tasks>
+               </configuration>
+                <executions>
+                  <execution>
+                <!-- You can bind this to any phase you like -->
+                    <phase>install</phase>
+                    <goals>
+                   <!-- goal must be "invoke" -->
+                       <goal>invoke</goal>
+                    </goals>
+                  </execution>
+                </executions>
+            </plugin>
+              <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.6.1</version>
+                <configuration>
+                  <filesets>
+                    <fileset>
+                      <directory>app/build</directory>
+                      <includes>
+                        <include>**/*</include>
+                      </includes>
+                      <followSymlinks>false</followSymlinks>
+                    </fileset>
+                  </filesets>
+                </configuration>
+              </plugin>
+        </plugins>
+
+    </build>
+
+</project>
