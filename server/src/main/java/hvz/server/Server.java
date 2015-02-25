@@ -13,6 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 public class Server {
 
     public static void main( String[] args ) {
+    	ServerConfiguration.setPortNumber(8080);
     	SpringApplication.run(Server.class, args);
     }
 }
