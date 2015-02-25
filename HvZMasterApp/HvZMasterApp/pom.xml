@@ -29,6 +29,9 @@
                     <!-- this would effectively call "gradle doSomething" -->
                         <task>build</task>
                     </tasks>
+                    <args>
+                        <arg>-S</arg>
+                    </args>
                </configuration>
                 <executions>
                   <execution>
