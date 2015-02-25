@@ -49,7 +49,7 @@ public class Server{
     
     //returns 0 if log in was successful
     //Only one of username or Feedcode are needed
-    public int login(String username, string Feedcode, String password){
+    public int login(String username, String Feedcode, String password){
         /*if(username == NULL)
             //use Feedcode
         else
