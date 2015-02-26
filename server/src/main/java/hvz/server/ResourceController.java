@@ -33,4 +33,95 @@ public class ResourceController {
 		}
     	return response.toString();
     }
+    
+    @RequestMapping("/user/get")
+    public String getPlayer (@RequestParam(value="feedcode", required = false) String feedcode){
+		//Set up response object
+		JSONObject response = new JSONObject();
+    	try {
+    		//verify that all parameters are valid
+    		if (feedcode == null){
+    			response.put("success", false);
+    		}
+    		else {
+    			response.put("success", true);
+    		}
+    		
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return response.toString();
+    }
+    
+    @RequestMapping("/user/getall")
+    public String getAll () {
+		//Set up response object
+		JSONObject response = new JSONObject();
+    	try {
+    			response.put("success", true);
+    		
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return response.toString();
+    }
+    
+    @RequestMapping("/tag")
+    public String tag(@RequestParam(value = "tagger", required = false) String tagger,
+    					@RequestParam(value = "tagged", required = false) String tagged){
+		//Set up response object
+		JSONObject response = new JSONObject();
+    	try {
+    		//verify that all parameters are valid
+    		if (tagger == null || tagged == null){
+    			response.put("success", false);
+    		}
+    		else {
+    			response.put("success", true);
+    		}
+    		
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return response.toString();
+    }
+    
+    @RequestMapping("/game/begin")
+    public String beginGame () {
+		//Set up response object
+		JSONObject response = new JSONObject();
+    	try {
+    			response.put("success", true);
+    		
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return response.toString();
+    }
+    
+    @RequestMapping("/user/login")
+    public String login(@RequestParam(value = "identifier", required = false) String identifier,
+    					@RequestParam(value = "password", required = false) String password){
+		//Set up response object
+		JSONObject response = new JSONObject();
+    	try {
+    		//verify that all parameters are valid
+    		if (identifier == null || password == null){
+    			response.put("success", false);
+    		}
+    		else {
+    			response.put("success", true);
+    		}
+    		
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return response.toString();
+    }
+    
 }
