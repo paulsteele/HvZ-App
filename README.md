@@ -4,7 +4,7 @@
 [Project Calendar](https://www.google.com/calendar/embed?src=9nbo43qa79nmsmpnseo66n64oo%40group.calendar.google.com&ctz=America/New_York)
 
 ####Server Mappings
-`/user/register?username="username"&feedcode="feedcode"&password="password"`
+`/user/register?username="username"&password="password[&feedcode="feedcode"&admin=false"]`
 
 `/user/get?feedcode="feedcode"`
 

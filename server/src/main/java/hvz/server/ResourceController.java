@@ -12,18 +12,28 @@ public class ResourceController {
     @RequestMapping("/user/register")
     public String registerPlayer (@RequestParam(value="username", required = false) String username, 
     								@RequestParam(value = "feedcode" , required = false) String feedcode , 
-    								@RequestParam(value = "password", required = false) String password) {
+    								@RequestParam(value = "password", required = false) String password, 
+    								@RequestParam(value = "admin", defaultValue= "false") boolean admin) {
 		//Set up response object
 		JSONObject response = new JSONObject();
     	try {
     		//verify that all parameters are valid
-    		if (username == null || feedcode == null || password == null){
+    		if (username == null || password == null){
     			response.put("success", false);
     		}
     		else {
     			response.put("success", true);
     			response.put("username", username);
-    			response.put("feedcode", feedcode);
+    			String feedcodeVal;
+    			if (feedcode == null){
+    				//need to generate a feedcode
+    				feedcodeVal = Server.generateFeedcode(admin);
+    			}
+    			else {
+    				//player supplied
+    				feedcodeVal = feedcode;
+    			}
+    			response.put("feedcode", feedcodeVal);
     			response.put("password", password);
     		}
     		

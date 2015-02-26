@@ -12,7 +12,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ServerConfiguration implements EmbeddedServletContainerCustomizer {
 	static private int portNumber = 8080; //The port number to listen on
-	
+	static public final int feedcodeLength = 8; //length of feedcode length
+	static public final char adminPrefix = 'A';
+	public static final char playerPrefix = 'P';
 	/**
 	 * Component function to actually handle custimizations.
 	 */
