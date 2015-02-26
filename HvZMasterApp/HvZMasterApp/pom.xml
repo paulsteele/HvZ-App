@@ -5,7 +5,7 @@
         <groupId>hvz</groupId>
         <artifactId>hvz</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../../../pom.xml</relativePath>
+        <relativePath>..${file.separator}..${file.separator}..${file.separator}pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>HvZMasterApp</artifactId>
