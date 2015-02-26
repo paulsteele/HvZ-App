@@ -5,8 +5,13 @@
 
 ####Server Mappings
 `/user/register?username="username"&feedcode="feedcode"&password="password"`
+
 `/user/get?feedcode="feedcode"`
+
 `/user/getall`
+
 `/tag?tagger="tagger"&tagged="tagged"`
+
 `/game/begin`
+
 `/user/login?identifier="identifier"&password="password"`
