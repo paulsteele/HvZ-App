@@ -1,4 +1,6 @@
-//package edu.purdue.cs.hvzmasterapp/app
+package edu.purdue.cs.hvzmasterapp;
+
+import java.util.ArrayList;
 
 public class Server{
 
@@ -14,7 +16,7 @@ public class Server{
     
     //returns a user using its unique ID
     public User getPlayer(String uniqueID){
-    
+        return null;
     }
     
     //generates and returns a new Feed Code
@@ -24,7 +26,7 @@ public class Server{
     
     //returns a new list of users
     public ArrayList<User> getUserList(){
-    
+        return null;
     }
     
     //returns 0 if tagging was successful

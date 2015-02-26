@@ -11,6 +11,12 @@
     <string name="menu_text6">Rewards</string>
     <string name="menu_text7">Reports</string>
     <string name="menu_text8">Revive</string>
-    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_register">Register</string>
     <string name="register">Register</string>
+    <string name="action_main">Main</string>
+    <string name="action_register">Register</string>
+    <string name="getcode">Get Feed Code</string>
+    <string name="pwprompt">Password:</string>
+    <string name="usrprompt">Username:</string>
+    <string name="codeprompt">Feed code:</string>
 </resources>

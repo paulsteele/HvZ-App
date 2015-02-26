@@ -1,4 +1,4 @@
-//package edu.purdue.cs.hvzmasterapp/app
+package edu.purdue.cs.hvzmasterapp;
 
 public class User{
 

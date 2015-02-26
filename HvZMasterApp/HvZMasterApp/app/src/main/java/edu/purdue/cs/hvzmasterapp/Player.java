@@ -1,4 +1,6 @@
-public class Player extends User{
+package edu.purdue.cs.hvzmasterapp;
+
+public class Player extends User {
 
         public boolean isZombie;
 

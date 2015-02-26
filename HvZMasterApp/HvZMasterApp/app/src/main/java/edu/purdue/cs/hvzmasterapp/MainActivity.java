@@ -1,5 +1,6 @@
 package edu.purdue.cs.hvzmasterapp;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,8 +31,13 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_main) {
+            return true;
+        }
+        else if (id == R.id.action_register) {
+            Intent intent = new Intent(this, RegisterActivity.class);
+            startActivity(intent);
+            //setContentView(R.layout.activity_register);
             return true;
         }
 
