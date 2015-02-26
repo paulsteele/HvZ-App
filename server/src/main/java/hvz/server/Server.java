@@ -19,10 +19,18 @@ public class Server {
     }
     
     public static String generateFeedcode(boolean admin){
+    	//generate a unique string code
     	String feedcode = RandomStringUtils.randomAlphanumeric(ServerConfiguration.feedcodeLength -1);
-    	char prefix = ServerConfiguration.playerPrefix;
+    	//add prefix based on player or admin
+    	char prefix;
     	if (admin)
     		prefix = ServerConfiguration.adminPrefix;
-    	return prefix + feedcode.toUpperCase();
+    	else
+    		 prefix = ServerConfiguration.playerPrefix;
+    	
+    	feedcode = prefix + feedcode.toUpperCase();
+    	//verify that feedcode isn't taken
+    	
+    	return feedcode;
     }
 }
