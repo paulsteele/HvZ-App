@@ -5,7 +5,7 @@
   <parent>
     <groupId>hvz</groupId>
     <artifactId>hvz</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
   </parent>
   <artifactId>server</artifactId>
   <name>server</name>
@@ -49,7 +49,7 @@
         <archive>
           <manifest>
             <addClasspath>true</addClasspath>
-            <classpathPrefix>lib${file.separator}</classpathPrefix>
+            <classpathPrefix>lib/</classpathPrefix>
             <mainClass>hvz.server.Server</mainClass>
           </manifest>
         </archive>
@@ -67,7 +67,7 @@
               <goal>copy-dependencies</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}${file.separator}lib</outputDirectory>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
               <overWriteReleases>false</overWriteReleases>
               <overWriteSnapshots>false</overWriteSnapshots>
               <overWriteIfNewer>true</overWriteIfNewer>
