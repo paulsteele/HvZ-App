@@ -4,8 +4,8 @@
     <parent>
         <groupId>hvz</groupId>
         <artifactId>hvz</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-        <relativePath>..${file.separator}..${file.separator}pom.xml</relativePath>
+        <version>0.0.3-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>HvZMasterApp</artifactId>
@@ -30,7 +30,6 @@
                         <task>build</task>
                     </tasks>
                     <args>
-                        <arg>-S</arg>
                     </args>
                </configuration>
                 <executions>
@@ -50,15 +49,16 @@
                 <configuration>
                   <filesets>
                     <fileset>
-                      <directory>app${file.separator}build</directory>
+                      <directory>app/build</directory>
                       <includes>
-                        <include>**${file.separator}*</include>
+                        <include>**/*</include>
                       </includes>
                       <followSymlinks>false</followSymlinks>
                     </fileset>
                   </filesets>
                 </configuration>
               </plugin>
+
         </plugins>
 
     </build>

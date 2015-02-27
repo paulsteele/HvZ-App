@@ -4,13 +4,12 @@
 
   <groupId>hvz</groupId>
   <artifactId>hvz</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.3-SNAPSHOT</version>
   <packaging>pom</packaging>
-
   <name>hvz</name>
   <url>http://maven.apache.org</url>
 <modules>
 	<module>server</module>
-	<module>HvZMasterApp${file.separator}HvZMasterApp</module>
+	<module>HvZMasterApp/HvZMasterApp</module>
 </modules>
 </project>
