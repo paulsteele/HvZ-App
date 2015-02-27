@@ -5,7 +5,7 @@
         <groupId>hvz</groupId>
         <artifactId>hvz</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../../../pom.xml</relativePath>
+        <relativePath>..${file.separator}..${file.separator}pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>HvZMasterApp</artifactId>
@@ -50,9 +50,9 @@
                 <configuration>
                   <filesets>
                     <fileset>
-                      <directory>app/build</directory>
+                      <directory>app${file.separator}build</directory>
                       <includes>
-                        <include>**/*</include>
+                        <include>**${file.separator}*</include>
                       </includes>
                       <followSymlinks>false</followSymlinks>
                     </fileset>
