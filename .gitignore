@@ -3,6 +3,7 @@ assignments/*
 *target/*
 *.project
 *.prefs
+*.class
 *.classpath
 
 # Android Studio files
