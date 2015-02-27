@@ -1,7 +1,11 @@
 import java.sql.*;
 
 public class java_Database_Interface{
-	public static  Connection connect(){
+	public static void main (String [] args) throws SQLException{//for testing
+		Connection c = connect();
+		addPlayer(12, "kyle", 12, 3, c);
+	}
+	public static Connection connect(){
 		try{
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:database.db");
 			return conn;
@@ -11,13 +15,17 @@ public class java_Database_Interface{
 			return null;
 		}
 	}
-	public static void addPlayer(int id, Connection c){}
-	public static void removePlayer(int id, Connection c){}
-	public static void makeZombie(int id, Connection c){}
-	public static void makeHuman(int id, Connection c){}
-	//Statement s = c.createStatement();
-	
-	public static void main (String []args){//for testing
-		Connection c = connect();
+	public static void addPlayer(int id, String name, int isZombie, int feed,  Connection c) throws SQLException{
+			Statement s = c.createStatement();
+			String command = "insert into user values(" + id + ", " + "'" +name + "'" + "," + feed + "," + isZombie + ")";
+			System.out.println(command);
+			ResultSet set = s.executeQuery(command);
 	}
+	public static void removePlayer(int id, Connection c)throws SQLException{}
+	public static void makeZombie(int id, Connection c)throws SQLException{}
+	public static void makeHuman(int id, Connection c)throws SQLException{}
+	public static void tag(int tagger, int tagged, Connection c)throws SQLException{}
+	public static void addPassword(int id, String pswd, Connection c)throws SQLException{}
+	
+
 }
