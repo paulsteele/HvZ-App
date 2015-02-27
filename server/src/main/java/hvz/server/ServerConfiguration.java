@@ -6,15 +6,16 @@ import org.springframework.stereotype.Component;
 /**
  * Server Configuration Class
  * Static methods allow runtime configuration of spring boot parameters.
- * These functions must be called before the application is started. 
+ * These functions must be called before the application is started to take effect.
+ * Also static final variables are used for defining constants.
  *
  */
 @Component
 public class ServerConfiguration implements EmbeddedServletContainerCustomizer {
 	static private int portNumber = 8080; //The port number to listen on
 	static public final int feedcodeLength = 8; //length of feedcode length
-	static public final char adminPrefix = 'A';
-	public static final char playerPrefix = 'P';
+	static public final char adminPrefix = 'A'; //prefix to add to admin feedcodes
+	public static final char playerPrefix = 'P'; //prefix to add to player feedcodes
 	/**
 	 * Component function to actually handle custimizations.
 	 */
