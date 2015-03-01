@@ -1,6 +1,9 @@
 package hvz.server;
 
+import javax.swing.Spring;
+
 import org.apache.commons.lang3.RandomStringUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -21,11 +24,10 @@ public class ResourceController {
     	try {
     		//verify that all parameters are valid
     		if (username == null || password == null){
-    			response.put("success", false);
+    			response.put(ServerConfiguration.success, false);
     		}
     		else {
-    			response.put("success", true);
-    			response.put("username", username);
+
     			String feedcodeVal;
     			if (feedcode == null){
     				//need to generate a feedcode
@@ -36,10 +38,29 @@ public class ResourceController {
     				//player supplied
     				feedcodeVal = feedcode;
     			}
-    			response.put("feedcode", feedcodeVal);
-    			response.put("password", password);
-    		}
-    		
+
+    			
+        		//Create a user from info
+        		User user;
+        		if (admin){
+        			user = new Admin(username, feedcodeVal);
+        		}
+        		else{
+        			user = new Player(username, feedcodeVal);
+        		}
+        		if (Server.checkRegistered(user.feedcode) == false){
+        			Server.registerUser(user, password);
+        			response.put(ServerConfiguration.success, true);
+        			response.put("username", username);
+        			response.put("feedcode", feedcodeVal);
+        			response.put("password", password);
+        		}
+        		else {
+        			//already registered
+        			response.put(ServerConfiguration.success, false);
+        		}
+        		
+    		}	
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -54,10 +75,10 @@ public class ResourceController {
     	try {
     		//verify that all parameters are valid
     		if (feedcode == null){
-    			response.put("success", false);
+    			response.put(ServerConfiguration.success, false);
     		}
     		else {
-    			response.put("success", true);
+    			response.put(ServerConfiguration.success, true);
     		}
     		
 		} catch (JSONException e) {
@@ -71,9 +92,11 @@ public class ResourceController {
     public String getAll () {
 		//Set up response object
 		JSONObject response = new JSONObject();
+		JSONArray users = new JSONArray();
     	try {
-    			response.put("success", true);
-    		
+    			users.put(Server.getAllUsers());
+    			response.put(ServerConfiguration.success, true);
+    			response.put("users", users);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -89,10 +112,10 @@ public class ResourceController {
     	try {
     		//verify that all parameters are valid
     		if (tagger == null || tagged == null){
-    			response.put("success", false);
+    			response.put(ServerConfiguration.success, false);
     		}
     		else {
-    			response.put("success", true);
+    			response.put(ServerConfiguration.success, true);
     		}
     		
 		} catch (JSONException e) {
@@ -107,7 +130,7 @@ public class ResourceController {
 		//Set up response object
 		JSONObject response = new JSONObject();
     	try {
-    			response.put("success", true);
+    			response.put(ServerConfiguration.success, true);
     		
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -124,10 +147,10 @@ public class ResourceController {
     	try {
     		//verify that all parameters are valid
     		if (identifier == null || password == null){
-    			response.put("success", false);
+    			response.put(ServerConfiguration.success, false);
     		}
     		else {
-    			response.put("success", true);
+    			response.put(ServerConfiguration.success, true);
     		}
     		
 		} catch (JSONException e) {
@@ -149,15 +172,18 @@ public class ResourceController {
     		 prefix = ServerConfiguration.playerPrefix;
     	
     	feedcode = prefix + feedcode.toUpperCase();
-    	//verify that feedcode isn't taken
-    	
-    	
     	
     	//Set up response object
     	JSONObject response = new JSONObject();
+    	//verify that feedcode isn't taken
     	try {
-			response.put("success", true);
-			response.put("feedcode", feedcode);
+	    	if (Server.checkRegistered(feedcode) == false){
+				response.put(ServerConfiguration.success, true);
+				response.put("feedcode", feedcode);
+	    	}
+	    	else {
+				response.put(ServerConfiguration.success, false);
+	    	}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

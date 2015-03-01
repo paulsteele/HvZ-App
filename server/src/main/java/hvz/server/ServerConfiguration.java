@@ -16,6 +16,7 @@ public class ServerConfiguration implements EmbeddedServletContainerCustomizer {
 	static public final int feedcodeLength = 8; //length of feedcode length
 	static public final char adminPrefix = 'A'; //prefix to add to admin feedcodes
 	public static final char playerPrefix = 'P'; //prefix to add to player feedcodes
+	public static final String success = "success"; //success message
 	/**
 	 * Component function to actually handle custimizations.
 	 */
