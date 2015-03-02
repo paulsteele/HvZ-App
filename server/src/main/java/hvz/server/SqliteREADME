@@ -1,0 +1,2 @@
+on open:
+java -classpath ".;sqlite-jdbc-3.8.7.jar" java_Database_Interface
