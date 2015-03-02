@@ -7,13 +7,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
 public class MainActivity extends ActionBarActivity {
+    public Server server;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        server = new Server();
     }
 
 
@@ -37,10 +41,15 @@ public class MainActivity extends ActionBarActivity {
         else if (id == R.id.action_register) {
             Intent intent = new Intent(this, RegisterActivity.class);
             startActivity(intent);
-            //setContentView(R.layout.activity_register);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /* View list of players */
+    public void viewPlayerList(View view) {
+        Intent intent = new Intent(this, PlayerListActivity.class);
+        startActivity(intent);
     }
 }

@@ -19,4 +19,8 @@
     <string name="pwprompt">Password:</string>
     <string name="usrprompt">Username:</string>
     <string name="codeprompt">Feed code:</string>
+    <string name="title_activity_plist">Player List</string>
+    <string name="Zombies">Zombies</string>
+    <string name="zombies">Zombies</string>
+    <string name="humans">Humans</string>
 </resources>
