@@ -1,11 +1,72 @@
 package hvz.server;
+import java.io.File;
 import java.sql.*;
 import java.util.LinkedList;
 
 public class DBHandler{
 	
 	public static void init(){
+		String fileName = "database";
+		//check to see if folder exists
+		File folder = new File("db/");
+		if (!folder.exists() || !folder.isDirectory()){
+			folder.mkdir();
+		}
 		
+		//See if file already exists or if it needs to be created
+		File f = new File("db/" + fileName + ".db");
+		if (!f.exists()){
+			//Create table from scratch
+			Connection c = connect();
+			createTable(c);
+			disconnect(c);
+			System.out.println("First time database set up complete");
+		}
+	}
+	
+	public static void createTable(Connection c) {
+		String command = "CREATE TABLE users " + 
+				"(username		varchar(25), " + 
+				"feedCode 		varchar(25)," + 
+				"isZombie	 	int)";
+		try {
+			Statement s = c.createStatement();
+			s.executeUpdate(command);
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
+		command = "CREATE TABLE passwords " + 
+				"(feedCode		varchar(25), " + 
+				"password 		varchar(25))";
+		try {
+			Statement s = c.createStatement();
+			s.executeUpdate(command);
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
+		command = "CREATE TABLE tags" + 
+				"(tagger		varchar(25), " + 
+				"tagged 		varchar(25))";
+		try {
+			Statement s = c.createStatement();
+			s.executeUpdate(command);
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
+		command = "CREATE TABLE admins " + 
+				"(username		varchar(25), " + 
+				"feedCode 		varchar(25))";
+		try {
+			Statement s = c.createStatement();
+			s.executeUpdate(command);
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
+
 	}
 	
 	public static void main (String [] args) throws SQLException{//for testing
@@ -23,7 +84,7 @@ public class DBHandler{
 		try{
 		Class.forName("org.sqlite.JDBC");
 			System.out.println("Connecting to Database....");
-			Connection conn = DriverManager.getConnection("jdbc:sqlite:database.db");
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:db/database.db");
 			System.out.println("Connection Successful");
 			return conn;
 		}
@@ -32,8 +93,13 @@ public class DBHandler{
 			return null;
 		}
 	}
-	public static void disconnect(Connection c) throws SQLException{
-		c.close();
+	public static void disconnect(Connection c){
+		try{
+			c.close();
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
 	}
 	public static void addAdmin(String name,  String feed,  Connection c) throws SQLException{
 		Statement s = c.createStatement();

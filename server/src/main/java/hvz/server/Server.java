@@ -17,6 +17,7 @@ public class Server {
 	
     public static void main( String[] args ) {
     	ServerConfiguration.setPortNumber(8080);
+    	DBHandler.init();
     	SpringApplication.run(Server.class, args);
     }
     
