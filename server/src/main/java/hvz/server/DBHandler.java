@@ -2,11 +2,14 @@ package hvz.server;
 import java.io.File;
 import java.sql.*;
 import java.util.LinkedList;
+import java.util.Properties;
 
 public class DBHandler{
 	
 	public static void init(){
 		String fileName = "database";
+		Properties props = System.getProperties();
+		props.setProperty("sqlite.purejava", "true");
 		//check to see if folder exists
 		File folder = new File("db/");
 		if (!folder.exists() || !folder.isDirectory()){
