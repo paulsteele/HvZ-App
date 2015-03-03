@@ -3,6 +3,11 @@ import java.sql.*;
 import java.util.LinkedList;
 
 public class DBHandler{
+	
+	public static void init(){
+		
+	}
+	
 	public static void main (String [] args) throws SQLException{//for testing
 		Connection c = connect();
 		addPlayer("kyle", 1, "0owqiejflsdkjf", c);

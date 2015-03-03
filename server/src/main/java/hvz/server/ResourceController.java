@@ -130,7 +130,6 @@ public class ResourceController {
 		JSONObject response = new JSONObject();
     	try {
     			response.put(ServerConfiguration.success, true);
-    		
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

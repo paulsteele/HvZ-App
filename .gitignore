@@ -5,6 +5,7 @@ assignments/*
 *.prefs
 *.class
 *.classpath
+*.db
 
 # Android Studio files
 .gradle
