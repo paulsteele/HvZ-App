@@ -3,6 +3,12 @@ package edu.purdue.cs.hvzmasterapp;
 import java.util.ArrayList;
 
 public class Server{
+    private static final Server INSTANCE = new Server();
+
+    /* Only use one server object for entire app */
+    public static Server getInstance() {
+        return INSTANCE;
+    }
 
     //returns 0 if successfully added player
     public int addPlayer(User user){
@@ -57,6 +63,13 @@ public class Server{
         else
             //use username
         */
+        return 0;
+    }
+
+    /* Function to add user to database */
+    public int register(String username, String feedcode, String password, boolean admin) {
+        /* Verify username/feedcode are not taken */
+        /* return non-zero if error occurs */
         return 0;
     }
 
