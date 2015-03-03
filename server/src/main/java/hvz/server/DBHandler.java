@@ -84,7 +84,7 @@ public class DBHandler{
 	}
 	//public static LinkedList <Player> getAllPlayers()throws SQLException{}
 	//public static LinkedList <Admin> getAllAdmin(int feedCode)throws SQLException{}
-	public static String getPassword(int feedCode, Connection c)throws SQLException{
+	public static String getPassword(String feedCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from users where feedcode = " + feedCode);
 		String pswd = rs.getString("password");
