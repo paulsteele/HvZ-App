@@ -38,7 +38,7 @@ public class PlayerListActivity extends ActionBarActivity {
             LinearLayout ll = (LinearLayout) findViewById(R.id.human_list);
             ll.removeAllViewsInLayout();
             int id = 10000;
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 100; i++) {
                 final TextView view = new TextView(this);
                 view.setTextColor(getResources().getColor(R.color.bright_foreground_material_light));
                 view.setLayoutParams(params);
