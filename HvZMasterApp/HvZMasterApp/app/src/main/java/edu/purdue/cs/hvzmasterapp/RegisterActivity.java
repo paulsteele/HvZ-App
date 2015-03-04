@@ -67,7 +67,7 @@ public class RegisterActivity extends ActionBarActivity {
         String feedcode = ((EditText) findViewById(R.id.feedcodeinput)).getText().toString();
         boolean admin = ((CheckBox) findViewById(R.id.admin_check)).isChecked();
 
-        System.err.println("user: " + user + "\nadmin: " + admin + "\needcode: " + feedcode + "\npass: " + pass + "");
+        System.err.println("user: " + user + "\nadmin: " + admin + "\nfeedcode: " + feedcode + "\npass: " + pass + "");
 
         TextView msg = (TextView) findViewById(R.id.register_msg);
         if (user.equals("") || pass.equals("") || feedcode.equals("")) {
