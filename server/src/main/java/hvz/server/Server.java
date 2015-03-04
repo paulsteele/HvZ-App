@@ -81,24 +81,20 @@ public class Server {
     
     public static User getUser(String feedcode){
     	Connection c = DBHandler.connect();
+    	User user = null;
     	try {
         	if (DBHandler.getPlayer(feedcode, c) != null){
-        		DBHandler.disconnect(c);
-        		return DBHandler.getPlayer(feedcode, c);
+        		user = DBHandler.getPlayer(feedcode, c);
         	}
     		else if (DBHandler.getAdmin(feedcode, c) != null){
-    			DBHandler.disconnect(c);
-    			DBHandler.getAdmin(feedcode, c);
-    		}
-    		else {
-    			DBHandler.disconnect(c);
-    			return null;
+    			user = DBHandler.getAdmin(feedcode, c);
     		}
     	}
     	catch (SQLException e) {
     		e.printStackTrace();
     	}
-    	return null;
+    	DBHandler.disconnect(c);
+    	return user;
 
     	
     }
