@@ -14,7 +14,6 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan
 @EnableAutoConfiguration
 public class Server {
-	
     public static void main( String[] args ) {
     	ServerConfiguration.setPortNumber(8080);
     	DBHandler.init();
@@ -24,6 +23,7 @@ public class Server {
     public static boolean checkRegistered(String feedcode){
     	boolean found = false;
     	Connection c = DBHandler.connect();
+    	//if either a user is found in the admin database or the player database return false
     	try {
 			if (DBHandler.getPlayer(feedcode, c) != null)
 				found = true;
@@ -40,8 +40,8 @@ public class Server {
     public static boolean registerUser(User user, String password) {
     	Connection c = DBHandler.connect();
     	try {
+    		//Add admin or player
 	    	if (user.isAdmin){
-	    		
 	    		DBHandler.addAdmin(user.username, user.feedcode, c);
 	    	}
 	    	else{
@@ -51,13 +51,13 @@ public class Server {
 	    			zombie = 1;
 	    		DBHandler.addPlayer(p.username, zombie , p.feedcode, c);
 	    	}
+	    	//Add password for user
 	    	DBHandler.setPassword(user.feedcode, password, c);
 	    	DBHandler.disconnect(c);
     	}
     	catch (SQLException e){
     		return false;
     	}
-    	System.out.println("registering " + user.username + " with password " +  password);
     	return true;
     }
     
@@ -88,6 +88,10 @@ public class Server {
     
     public static User[] getAllUsers(){
     	return null;
+    }
+    
+    public static void begin(){
+    	System.out.println("GAME BEGUN");
     }
 }
 

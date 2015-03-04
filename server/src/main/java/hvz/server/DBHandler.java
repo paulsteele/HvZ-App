@@ -25,6 +25,9 @@ public class DBHandler{
 			disconnect(c);
 			System.out.println("First time database set up complete");
 		}
+		else {
+			System.out.println("database loaded");
+		}
 	}
 	
 	public static void createTable(Connection c) {

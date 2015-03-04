@@ -26,7 +26,7 @@ public class ResourceController {
     			response.put(ServerConfiguration.success, false);
     		}
     		else {
-
+    			//generate feedcode if one not provided
     			String feedcodeVal;
     			if (feedcode == null){
     				//need to generate a feedcode
@@ -47,6 +47,7 @@ public class ResourceController {
         		else{
         			user = new Player(username, feedcodeVal);
         		}
+        		//if no feedcode registered, then register the user
         		if (Server.checkRegistered(user.feedcode) == false){
         			Server.registerUser(user, password);
         			response.put(ServerConfiguration.success, true);
@@ -78,9 +79,15 @@ public class ResourceController {
     		}
     		else {
     			User user = Server.getUser(feedcode);
-    			response.put(ServerConfiguration.success, true);
-    			response.put("username", user.username);
-    			response.put("feedcode", user.feedcode);
+    			if (user != null) { //means user is found
+        			response.put(ServerConfiguration.success, true);
+        			response.put("username", user.username);
+        			response.put("feedcode", user.feedcode);
+    			}
+    			else {//means user is not found
+    				response.put(ServerConfiguration.success, false);
+    			}
+
     		}
     		
 		} catch (JSONException e) {
@@ -132,7 +139,9 @@ public class ResourceController {
 		//Set up response object
 		JSONObject response = new JSONObject();
     	try {
-    			response.put(ServerConfiguration.success, true);
+    		//start the game
+    		Server.begin();
+    		response.put(ServerConfiguration.success, true);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -182,8 +191,8 @@ public class ResourceController {
 				response.put(ServerConfiguration.success, true);
 				response.put("feedcode", feedcode);
 	    	}
-	    	else {
-				response.put(ServerConfiguration.success, false);
+	    	else { //if it is taken, regenrate one
+				return generateFeedcode(admin);
 	    	}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
