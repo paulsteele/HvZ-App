@@ -10,8 +10,8 @@ public class DBHandler{
 		addPlayer("logan", 1, "0owqiejflsdkjf", c);
 		addPlayer("paul", 1, "0owqiejflsdkjf", c);
 		addPlayer("sam", 1, "0owqiejflsdkjf", c);
-		Player p = getPlayer("12345", c);
-		System.out.println("the player with id 12345 is: " + p.username);
+		Player s = getPlayer("12345", c);
+		System.out.println("the player with id 12345 is: " + s.username);
 	}
 	public static Connection connect(){
 		try{
@@ -82,12 +82,38 @@ public class DBHandler{
 		Player player = new Player(name, feed);
 		return player;
 	}
-	//public static LinkedList <Player> getAllPlayers()throws SQLException{}
-	//public static LinkedList <Admin> getAllAdmin(int feedCode)throws SQLException{}
 	public static String getPassword(int feedCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from users where feedcode = " + feedCode);
 		String pswd = rs.getString("password");
 		return pswd;
+	}
+	public static LinkedList <User> getAllUsers(Connection c)throws SQLException{
+		LinkedList<User> users = new LinkedList<User>();
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from  users");
+		while(rs.next()){
+			String username = rs.getString("username");
+			String feedcode = rs.getString("feedCode");
+			User user = new User(username, feedcode, false);
+			users.add(user);
+		}
+		rs.close();
+		s.close();
+		return users;
+	}
+	public static LinkedList <Admin> getAllAdmin(Connection c)throws SQLException{
+		LinkedList<Admin> admins = new LinkedList<Admin>();
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from  users");
+		while(rs.next()){
+			String username = rs.getString("username");
+			String feedcode = rs.getString("feedCode");
+			Admin admin = new Admin(username, feedcode);
+			admins.add(admin);
+		}
+		rs.close();
+		s.close();
+		return admins;
 	}
 }
