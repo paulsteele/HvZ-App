@@ -179,7 +179,7 @@ public class DBHandler{
 		String pswd = rs.getString("password");
 		return pswd;
 	}
-	public static LinkedList <User> getAllUsers(Connection c)throws SQLException{
+	public static  User [] getAllUsers(Connection c)throws SQLException{
 		LinkedList<User> users = new LinkedList<User>();
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from  users");
@@ -191,9 +191,10 @@ public class DBHandler{
 		}
 		rs.close();
 		s.close();
-		return users;
+		User [] array = users.toArray(new User[users.size()]);
+		return array;
 	}
-	public static LinkedList <Admin> getAllAdmin(Connection c)throws SQLException{
+	public static  Admin [] getAllAdmin(Connection c)throws SQLException{
 		LinkedList<Admin> admins = new LinkedList<Admin>();
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from  users");
@@ -205,6 +206,7 @@ public class DBHandler{
 		}
 		rs.close();
 		s.close();
-		return admins;
+		Admin [] array = admins.toArray(new Admin[admins.size()]);
+		return array;
 	}
 }
