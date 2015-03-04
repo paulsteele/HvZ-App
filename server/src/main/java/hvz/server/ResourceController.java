@@ -88,7 +88,7 @@ public class ResourceController {
         				response.put("isZombie", ((Player) user).isZombie);
         			}
         			else {
-        				response.put("isZombie", 0);
+        				response.put("isZombie", false);
         			}
     			}
     			else {//means user is not found
@@ -157,17 +157,32 @@ public class ResourceController {
     }
     
     @RequestMapping("/user/login")
-    public String login(@RequestParam(value = "identifier", required = false) String identifier,
+    public String login(@RequestParam(value = "feedcode", required = false) String feedcode,
     					@RequestParam(value = "password", required = false) String password){
 		//Set up response object
 		JSONObject response = new JSONObject();
     	try {
     		//verify that all parameters are valid
-    		if (identifier == null || password == null){
+    		if (feedcode == null || password == null){
     			response.put(ServerConfiguration.success, false);
     		}
     		else {
-    			response.put(ServerConfiguration.success, true);
+    			//if valid
+    			User user = Server.getUser(feedcode);
+    			if (user != null){
+        			user = Server.loginUser(user, password);
+        			if (user != null){
+            			return getPlayer(feedcode);
+        			}
+        			else {
+        				response.put(ServerConfiguration.success, false);
+        			}
+
+    			}
+    			else {
+    				response.put(ServerConfiguration.success, false);
+    			}
+
     		}
     		
 		} catch (JSONException e) {

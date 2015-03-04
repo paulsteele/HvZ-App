@@ -61,20 +61,37 @@ public class Server {
     	return true;
     }
     
-    public static void loginUser(User user, String password){
-    	
+    public static User loginUser(User user, String password){
+    	try{
+    		Connection c = DBHandler.connect();
+    		if (DBHandler.getPassword(user.feedcode, c).equals(password)){
+    			DBHandler.disconnect(c);
+    			return user; //successful
+    		}
+    		else {
+    			DBHandler.disconnect(c);
+    			return null;
+    		}
+    	}
+    	catch (SQLException e){
+    		
+    	}
+    	return null;
     }
     
     public static User getUser(String feedcode){
     	Connection c = DBHandler.connect();
     	try {
         	if (DBHandler.getPlayer(feedcode, c) != null){
+        		DBHandler.disconnect(c);
         		return DBHandler.getPlayer(feedcode, c);
         	}
     		else if (DBHandler.getAdmin(feedcode, c) != null){
+    			DBHandler.disconnect(c);
     			DBHandler.getAdmin(feedcode, c);
     		}
     		else {
+    			DBHandler.disconnect(c);
     			return null;
     		}
     	}
