@@ -14,22 +14,22 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan
 @EnableAutoConfiguration
 public class Server {
+	private static Connection c;
     public static void main( String[] args ) {
     	ServerConfiguration.setPortNumber(8080);
     	DBHandler.init();
+    	c = DBHandler.connect();
     	SpringApplication.run(Server.class, args);
     }
     
     public static boolean checkRegistered(String feedcode){
     	boolean found = false;
-    	Connection c = DBHandler.connect();
     	//if either a user is found in the admin database or the player database return false
     	try {
 			if (DBHandler.getPlayer(feedcode, c) != null)
 				found = true;
 			else if (DBHandler.getAdmin(feedcode, c) != null)
 				found = true;
-	    	DBHandler.disconnect(c);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -38,7 +38,6 @@ public class Server {
     }
     
     public static boolean registerUser(User user, String password) {
-    	Connection c = DBHandler.connect();
     	try {
     		//Add admin or player
 	    	if (user.isAdmin){
@@ -53,7 +52,6 @@ public class Server {
 	    	}
 	    	//Add password for user
 	    	DBHandler.setPassword(user.feedcode, password, c);
-	    	DBHandler.disconnect(c);
     	}
     	catch (SQLException e){
     		return false;
@@ -63,13 +61,10 @@ public class Server {
     
     public static User loginUser(User user, String password){
     	try{
-    		Connection c = DBHandler.connect();
     		if (DBHandler.getPassword(user.feedcode, c).equals(password)){
-    			DBHandler.disconnect(c);
     			return user; //successful
     		}
     		else {
-    			DBHandler.disconnect(c);
     			return null;
     		}
     	}
@@ -80,7 +75,6 @@ public class Server {
     }
     
     public static User getUser(String feedcode){
-    	Connection c = DBHandler.connect();
     	User user = null;
     	try {
         	if (DBHandler.getPlayer(feedcode, c) != null){
@@ -93,7 +87,6 @@ public class Server {
     	catch (SQLException e) {
     		e.printStackTrace();
     	}
-    	DBHandler.disconnect(c);
     	return user;
 
     	
