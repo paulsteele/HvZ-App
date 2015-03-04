@@ -109,8 +109,28 @@ public class ResourceController {
 		//Set up response object
 		JSONObject response = new JSONObject();
 		JSONArray users = new JSONArray();
+
+		
+		
     	try {
-    			users.put(Server.getAllUsers());
+    			User[] userObject = Server.getAllUsers();
+    			JSONObject[] jsonUsers = new JSONObject[userObject.length];
+    			for (int i = 0; i < userObject.length; i++){
+    				jsonUsers[i] = new JSONObject();
+        			jsonUsers[i].put(ServerConfiguration.success, true);
+        			jsonUsers[i].put("username", userObject[i].username);
+        			jsonUsers[i].put("feedcode", userObject[i].feedcode);
+        			jsonUsers[i].put("isAdmin", userObject[i].isAdmin);
+        			/*if (!userObject[i].isAdmin){
+        				Player pl = (Player) userObject[i];
+        				jsonUsers[i].put("isZombie", pl.isZombie);
+        			}
+        			else {
+        				jsonUsers[i].put("isZombie", false);
+        			}*/
+        			
+    			}
+    			users.put(jsonUsers);
     			response.put(ServerConfiguration.success, true);
     			response.put("users", users);
 		} catch (JSONException e) {

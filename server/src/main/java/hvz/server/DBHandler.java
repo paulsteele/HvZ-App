@@ -197,7 +197,7 @@ public class DBHandler{
 	public static  Admin [] getAllAdmin(Connection c)throws SQLException{
 		LinkedList<Admin> admins = new LinkedList<Admin>();
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from  users");
+		ResultSet rs = s.executeQuery("select * from  admins");
 		while(rs.next()){
 			String username = rs.getString("username");
 			String feedcode = rs.getString("feedCode");
