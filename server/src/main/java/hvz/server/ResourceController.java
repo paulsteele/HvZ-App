@@ -83,6 +83,13 @@ public class ResourceController {
         			response.put(ServerConfiguration.success, true);
         			response.put("username", user.username);
         			response.put("feedcode", user.feedcode);
+        			response.put("isAdmin", user.isAdmin);
+        			if (!user.isAdmin){
+        				response.put("isZombie", ((Player) user).isZombie);
+        			}
+        			else {
+        				response.put("isZombie", 0);
+        			}
     			}
     			else {//means user is not found
     				response.put(ServerConfiguration.success, false);
