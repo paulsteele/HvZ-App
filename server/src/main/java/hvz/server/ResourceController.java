@@ -77,7 +77,10 @@ public class ResourceController {
     			response.put(ServerConfiguration.success, false);
     		}
     		else {
+    			User user = Server.getUser(feedcode);
     			response.put(ServerConfiguration.success, true);
+    			response.put("username", user.username);
+    			response.put("feedcode", user.feedcode);
     		}
     		
 		} catch (JSONException e) {

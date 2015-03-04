@@ -66,7 +66,24 @@ public class Server {
     }
     
     public static User getUser(String feedcode){
+    	Connection c = DBHandler.connect();
+    	try {
+        	if (DBHandler.getPlayer(feedcode, c) != null){
+        		return DBHandler.getPlayer(feedcode, c);
+        	}
+    		else if (DBHandler.getAdmin(feedcode, c) != null){
+    			DBHandler.getAdmin(feedcode, c);
+    		}
+    		else {
+    			return null;
+    		}
+    	}
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
     	return null;
+
+    	
     }
     
     public static User[] getAllUsers(){
