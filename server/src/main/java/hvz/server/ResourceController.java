@@ -63,6 +63,7 @@ public class ResourceController {
     		}	
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
+	
 			e.printStackTrace();
 		}
     	return response.toString();
@@ -156,6 +157,7 @@ public class ResourceController {
     		
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
+			System.out.println("JSONException while verifying parameters for tagging");
 			e.printStackTrace();
 		}
     	return response.toString();
@@ -171,6 +173,7 @@ public class ResourceController {
     		response.put(ServerConfiguration.success, true);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
+			System.out.println("JSONException while trying to begin game");
 			e.printStackTrace();
 		}
     	return response.toString();
@@ -207,6 +210,7 @@ public class ResourceController {
     		
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
+			System.out.println("JSONException while attempting to login");
 			e.printStackTrace();
 		}
     	return response.toString();
@@ -238,6 +242,7 @@ public class ResourceController {
 	    	}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
+			System.out.println("JSONException while verifying generated feed code");
 			e.printStackTrace();
 		}
     	
