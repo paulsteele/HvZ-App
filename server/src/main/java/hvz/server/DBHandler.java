@@ -6,7 +6,7 @@ import java.util.Properties;
 
 public class DBHandler{
 	
-	public static void init(){
+	public static Connection init(){
 		String fileName = "database";
 		Properties props = System.getProperties();
 		props.setProperty("sqlite.purejava", "true");
@@ -22,11 +22,13 @@ public class DBHandler{
 			//Create table from scratch
 			Connection c = connect();
 			createTable(c);
-			disconnect(c);
 			System.out.println("First time database set up complete");
+			return c;
 		}
 		else {
+			Connection c = connect();
 			System.out.println("database loaded");
+			return c;
 		}
 	}
 	
@@ -173,7 +175,7 @@ public class DBHandler{
 
 	public static String getPassword(String feedCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from users where feedcode = '" + feedCode + "'");
+		ResultSet rs = s.executeQuery("select * from passwords where feedcode = '" + feedCode + "'");
 		String pswd = rs.getString("password");
 		return pswd;
 	}

@@ -17,8 +17,7 @@ public class Server {
 	private static Connection c;
     public static void main( String[] args ) {
     	ServerConfiguration.setPortNumber(8080);
-    	DBHandler.init();
-    	c = DBHandler.connect();
+    	c = DBHandler.init();
     	SpringApplication.run(Server.class, args);
     }
     
@@ -61,7 +60,7 @@ public class Server {
     
     public static User loginUser(User user, String password){
     	try{
-    		if (DBHandler.getPassword(user.feedcode, c).equals(password)){
+    		if (DBHandler.getPassword(user.feedcode, c).equals(password) == true){
     			return user; //successful
     		}
     		else {
