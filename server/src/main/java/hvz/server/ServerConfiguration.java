@@ -18,7 +18,7 @@ public class ServerConfiguration implements EmbeddedServletContainerCustomizer {
 	public static final char playerPrefix = 'P'; //prefix to add to player feedcodes
 	public static final String success = "success"; //success message
 	/**
-	 * Component function to actually handle custimizations.
+	 * Component function to actually handle customizations.
 	 */
     @Override
     public void customize(ConfigurableEmbeddedServletContainer container) {

@@ -1,9 +1,28 @@
 package edu.purdue.cs.hvzmasterapp;
 
+import android.net.http.AndroidHttpClient;
+
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class Server{
     private static final Server INSTANCE = new Server();
+    private static String serviceURL = "http://128.211.191.47:8080";
+    private static final HttpClient client = new DefaultHttpClient();
+
+    private Server() { }
 
     /* Only use one server object for entire app */
     public static Server getInstance() {
@@ -67,11 +86,52 @@ public class Server{
     }
 
     /* Function to add user to database */
+    /* Verify username/feedcode are not taken */
+    /* return non-zero if error occurs */
     public int register(String username, String feedcode, String password, boolean admin) {
-        /* Verify username/feedcode are not taken */
-        /* return non-zero if error occurs */
+        JSONObject regObj = new JSONObject();
+        try {
+            regObj.put("username", username);
+            regObj.put("feedcode", feedcode);
+            regObj.put("password", password);
+            regObj.put("admin", admin);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        StringBuilder url = new StringBuilder(serviceURL);
+        url.append("/user/register");
+        HttpPost post = new HttpPost(url.toString());
+        StringEntity regString = null;
+        try {
+            regString = new StringEntity(regObj.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        if (regString == null) {
+            return -1;
+        }
+
+        post.setEntity(regString);
+        post.setHeader("Accept", "application/json");
+        post.setHeader("Content-type", "application/json");
+
+        //ResponseHandler handler = new BasicResponseHandler();
+
+        HttpResponse response = null;
+        try {
+            response = client.execute(post);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (response == null) {
+            System.err.println("Reponse error");
+            return -1;
+        }
+        System.out.println(response.getEntity().toString());
+
         return 0;
     }
-
 
 }

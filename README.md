@@ -38,4 +38,4 @@ Starts the game session.
 
 Logs an existing player into the game.
 
-`/user/login?identifier="identifier"&password="password"`
+`/user/login?feedcode="feedcode"&password="password"`

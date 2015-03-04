@@ -1,6 +1,5 @@
 package hvz.server;
 
-import javax.swing.Spring;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.json.JSONArray;
@@ -27,7 +26,7 @@ public class ResourceController {
     			response.put(ServerConfiguration.success, false);
     		}
     		else {
-
+    			//generate feedcode if one not provided
     			String feedcodeVal;
     			if (feedcode == null){
     				//need to generate a feedcode
@@ -48,6 +47,7 @@ public class ResourceController {
         		else{
         			user = new Player(username, feedcodeVal);
         		}
+        		//if no feedcode registered, then register the user
         		if (Server.checkRegistered(user.feedcode) == false){
         			Server.registerUser(user, password);
         			response.put(ServerConfiguration.success, true);
@@ -78,7 +78,23 @@ public class ResourceController {
     			response.put(ServerConfiguration.success, false);
     		}
     		else {
-    			response.put(ServerConfiguration.success, true);
+    			User user = Server.getUser(feedcode);
+    			if (user != null) { //means user is found
+        			response.put(ServerConfiguration.success, true);
+        			response.put("username", user.username);
+        			response.put("feedcode", user.feedcode);
+        			response.put("isAdmin", user.isAdmin);
+        			if (!user.isAdmin){
+        				response.put("isZombie", ((Player) user).isZombie);
+        			}
+        			else {
+        				response.put("isZombie", false);
+        			}
+    			}
+    			else {//means user is not found
+    				response.put(ServerConfiguration.success, false);
+    			}
+
     		}
     		
 		} catch (JSONException e) {
@@ -130,8 +146,9 @@ public class ResourceController {
 		//Set up response object
 		JSONObject response = new JSONObject();
     	try {
-    			response.put(ServerConfiguration.success, true);
-    		
+    		//start the game
+    		Server.begin();
+    		response.put(ServerConfiguration.success, true);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -140,17 +157,32 @@ public class ResourceController {
     }
     
     @RequestMapping("/user/login")
-    public String login(@RequestParam(value = "identifier", required = false) String identifier,
+    public String login(@RequestParam(value = "feedcode", required = false) String feedcode,
     					@RequestParam(value = "password", required = false) String password){
 		//Set up response object
 		JSONObject response = new JSONObject();
     	try {
     		//verify that all parameters are valid
-    		if (identifier == null || password == null){
+    		if (feedcode == null || password == null){
     			response.put(ServerConfiguration.success, false);
     		}
     		else {
-    			response.put(ServerConfiguration.success, true);
+    			//if valid
+    			User user = Server.getUser(feedcode);
+    			if (user != null){
+        			user = Server.loginUser(user, password);
+        			if (user != null){
+            			return getPlayer(feedcode);
+        			}
+        			else {
+        				response.put(ServerConfiguration.success, false);
+        			}
+
+    			}
+    			else {
+    				response.put(ServerConfiguration.success, false);
+    			}
+
     		}
     		
 		} catch (JSONException e) {
@@ -181,8 +213,8 @@ public class ResourceController {
 				response.put(ServerConfiguration.success, true);
 				response.put("feedcode", feedcode);
 	    	}
-	    	else {
-				response.put(ServerConfiguration.success, false);
+	    	else { //if it is taken, regenrate one
+				return generateFeedcode(admin);
 	    	}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
