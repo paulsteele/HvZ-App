@@ -57,7 +57,7 @@ public class DBHandler{
 		}
 		try{
 			Statement s = c.createStatement();
-			String command = "insert into gameStats values('initialEndDate', 1)";
+			command = "insert into gameStats values('initialEndDate', 1)";
 			s.execute(command);
 		}
 		catch(SQLException e){
