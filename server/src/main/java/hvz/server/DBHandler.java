@@ -55,6 +55,14 @@ public class DBHandler{
 		catch (SQLException e){
 			e.printStackTrace();
 		}
+		try{
+			Statement s = c.createStatement();
+			String command = "insert into gameStats values('initialEndDate', 1)";
+			s.execute(command);
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
 		
 		command = "CREATE TABLE passwords " + 
 				"(feedCode		varchar(25), " + 
@@ -231,7 +239,7 @@ public class DBHandler{
 	}
 	public static void start (Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into gameStats values('Wheneveritwantsto', 1)";
-		s.execute(command);
+		String command = "update gameStats set hasBegun = 1 where endTime = 'initialEndDate'";
+		s.executeUpdate(command);
 	}
 }
