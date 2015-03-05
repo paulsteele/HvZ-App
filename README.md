@@ -36,6 +36,10 @@ Starts the game session.
 
 `/game/begin`
 
+Checks to see if game session is running.
+
+`/game/isstarted`
+
 Logs an existing player into the game.
 
 `/user/login?feedcode="feedcode"&password="password"`

@@ -114,9 +114,21 @@ public class Server {
     
     public static void begin(){
     	System.out.println("GAME BEGUN");
+    	try {
+			DBHandler.start(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     public static boolean checkBegun(){
+    	try {
+			return DBHandler.isStarted(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	return false;
     }
 }

@@ -178,7 +178,7 @@ public class ResourceController {
 		}
     	return response.toString();
     }
-    @RequestMapping("/game/isStarted")
+    @RequestMapping("/game/isstarted")
     	public String isStarted() {
 		//Set up response object
 		JSONObject response = new JSONObject();
