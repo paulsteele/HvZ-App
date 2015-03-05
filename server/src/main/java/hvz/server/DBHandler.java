@@ -224,14 +224,14 @@ public class DBHandler{
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from gameStats");
 		if (!rs.isBeforeFirst())
-			return null;
+			return false;
 		int bool = rs.getInt("hasBegun");
 		if(bool == 0) return false;
 		else return false;
 	}
 	public static void start (Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		String command = "update gameStats set hasBegun = 1";
+		String command = "update gameStats set hasBegun = 1 where hasBegun = 0";
 		s.execute(command);
 	}
 }
