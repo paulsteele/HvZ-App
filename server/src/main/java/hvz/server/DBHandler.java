@@ -31,7 +31,7 @@ public class DBHandler{
 			return c;
 		}
 	}
-	
+	//game stats end time if game started or not 
 	public static void createTable(Connection c) {
 		String command = "CREATE TABLE users " + 
 				"(username		varchar(25), " + 
@@ -44,6 +44,18 @@ public class DBHandler{
 		catch (SQLException e){
 			e.printStackTrace();
 		}
+		
+		command = "CREATE TABLE gameStats" + 
+				"(endTime 	varchar(25), " +
+				"hasBegun	int)";		//1 for true, 0 for false
+		try {
+			Statement s = c.createStatement();
+			s.executeUpdate(command);
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
+		
 		command = "CREATE TABLE passwords " + 
 				"(feedCode		varchar(25), " + 
 				"password 		varchar(25))";
@@ -172,7 +184,6 @@ public class DBHandler{
 		Player player = new Player(name, feed);
 		return player;
 	}
-
 	public static String getPassword(String feedCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from passwords where feedcode = '" + feedCode + "'");
@@ -208,5 +219,17 @@ public class DBHandler{
 		s.close();
 		Admin [] array = admins.toArray(new Admin[admins.size()]);
 		return array;
+	}
+	public static boolean isStarted(Connection c)throws SQLException{
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from gameStats");
+		int bool = rs.getInt("hasBegun");
+		if(bool == 0) return false;
+		else return false;
+	}
+	public static void start (Connection c)throws SQLException{
+		Statement s = c.createStatement();
+		String command = "update gameStats set hasBegun = 1";
+		s.execute(command);
 	}
 }
