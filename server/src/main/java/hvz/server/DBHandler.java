@@ -223,6 +223,8 @@ public class DBHandler{
 	public static boolean isStarted(Connection c)throws SQLException{
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from gameStats");
+		if (!rs.isBeforeFirst())
+			return null;
 		int bool = rs.getInt("hasBegun");
 		if(bool == 0) return false;
 		else return false;
