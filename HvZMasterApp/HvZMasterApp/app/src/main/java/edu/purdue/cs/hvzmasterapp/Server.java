@@ -88,7 +88,45 @@ public class Server{
     }
     
     //returns a new list of users
-    public ArrayList<User> getUserList(){
+    public ArrayList<User> getUserList() {
+        StringBuilder sb = new StringBuilder(serviceURL);
+        sb.append("/user/getall");
+
+        GetTask task = new GetTask(sb.toString(), client);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            System.err.println("response error");
+            return null;
+        }
+
+        ArrayList<User> list = new ArrayList<User>();
+        try {
+            JSONArray users = response.getJSONArray("users");
+
+            for (int i = 0; i < users.length(); i++) {
+                JSONObject user = users.getJSONObject(i);
+                String usr = user.getString("username");
+                String code = user.getString("feedcode");
+                boolean isZombie = user.getBoolean("isZombie");
+                boolean admin = user.getBoolean("isAdmin");
+                User u = new User(usr, code, isZombie, admin);
+                list.add(u);
+            }
+
+            return list;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
     
@@ -103,8 +141,8 @@ public class Server{
     }
     
     //returns 0 if game is successfully started
-    public void startGame(){
-    
+    public void startGame() {
+
     }
     
     //returns time remaining in the game
@@ -121,6 +159,41 @@ public class Server{
             //use username
         */
         return 0;
+    }
+
+
+    public int login(String feedcode, String password){
+        StringBuilder url = new StringBuilder(serviceURL);
+        url.append("/user/register");
+        url.append("&feedcode="+feedcode);
+        url.append("&password="+password);
+
+        System.err.println(url.toString());
+
+        PostTask task = new PostTask(url.toString(), client);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            return -1;
+        }
+
+        try {
+            if (response.getBoolean("success")) {
+                return 0;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
     }
 
     /* Function to add user to database */

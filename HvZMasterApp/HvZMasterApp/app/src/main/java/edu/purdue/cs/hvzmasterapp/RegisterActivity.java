@@ -80,13 +80,10 @@ public class RegisterActivity extends ActionBarActivity {
             int error = server.register(user, feedcode, pass, admin);
             if (error == 0) {
                 msg.setText("Success!");
+
                 msg.setTextColor(Color.GREEN);
                 msg.setVisibility(View.VISIBLE);
-                /* Start login activity after */
-                /*
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-                 */
+
                 finish();
             }
             else {
