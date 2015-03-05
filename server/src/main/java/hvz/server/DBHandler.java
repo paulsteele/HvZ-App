@@ -57,7 +57,7 @@ public class DBHandler{
 		}
 		try{
 			Statement s = c.createStatement();
-			command = "insert into gameStats values('initialEndDate', 1)";
+			command = "insert into gameStats values('initialEndDate', 0)";
 			s.execute(command);
 		}
 		catch(SQLException e){
@@ -230,7 +230,7 @@ public class DBHandler{
 	}
 	public static boolean isStarted(Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select from gameStats where hasB");
+		ResultSet rs = s.executeQuery("select from gameStats where endTime = 'initialEndDate'");
 		if (!rs.isBeforeFirst())
 			return false;
 		int bool = rs.getInt("hasBegun");
