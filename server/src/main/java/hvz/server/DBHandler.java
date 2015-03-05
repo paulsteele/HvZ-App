@@ -231,7 +231,7 @@ public class DBHandler{
 	}
 	public static void start (Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into gameStats values('Whenever it wants to', 1)";
+		String command = "insert into gameStats values('Wheneveritwantsto', 1)";
 		s.execute(command);
 	}
 }
