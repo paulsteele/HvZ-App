@@ -31,7 +31,7 @@ public class DBHandler{
 			return c;
 		}
 	}
-	
+	//game stats end time if game started or not 
 	public static void createTable(Connection c) {
 		String command = "CREATE TABLE users " + 
 				"(username		varchar(25), " + 
@@ -44,6 +44,26 @@ public class DBHandler{
 		catch (SQLException e){
 			e.printStackTrace();
 		}
+		
+		command = "CREATE TABLE gameStats" + 
+				"(endTime 	varchar(25), " +
+				"hasBegun	int)";		//1 for true, 0 for false
+		try {
+			Statement s = c.createStatement();
+			s.executeUpdate(command);
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
+		try{
+			Statement s = c.createStatement();
+			command = "insert into gameStats values('initialEndDate', 0)";
+			s.execute(command);
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		
 		command = "CREATE TABLE passwords " + 
 				"(feedCode		varchar(25), " + 
 				"password 		varchar(25))";
@@ -172,26 +192,25 @@ public class DBHandler{
 		Player player = new Player(name, feed);
 		return player;
 	}
-
 	public static String getPassword(String feedCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from passwords where feedcode = '" + feedCode + "'");
 		String pswd = rs.getString("password");
 		return pswd;
 	}
-	public static  User [] getAllUsers(Connection c)throws SQLException{
-		LinkedList<User> users = new LinkedList<User>();
+	public static  Player [] getAllUsers(Connection c)throws SQLException{
+		LinkedList<Player> users = new LinkedList<Player>();
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from  users");
 		while(rs.next()){
 			String username = rs.getString("username");
 			String feedcode = rs.getString("feedCode");
-			User user = new User(username, feedcode, false);
+			Player user = new Player(username, feedcode);
 			users.add(user);
 		}
 		rs.close();
 		s.close();
-		User [] array = users.toArray(new User[users.size()]);
+		Player [] array = users.toArray(new Player[users.size()]);
 		return array;
 	}
 	public static  Admin [] getAllAdmin(Connection c)throws SQLException{
@@ -208,5 +227,19 @@ public class DBHandler{
 		s.close();
 		Admin [] array = admins.toArray(new Admin[admins.size()]);
 		return array;
+	}
+	public static boolean isStarted(Connection c)throws SQLException{
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from gameStats where endTime = 'initialEndDate'");
+		if (!rs.isBeforeFirst())
+			return false;
+		int bool = rs.getInt("hasBegun");
+		if(bool == 0) return false;
+		else return true;
+	}
+	public static void start (Connection c)throws SQLException{
+		Statement s = c.createStatement();
+		String command = "update gameStats set hasBegun = 1 where endTime = 'initialEndDate'";
+		s.executeUpdate(command);
 	}
 }

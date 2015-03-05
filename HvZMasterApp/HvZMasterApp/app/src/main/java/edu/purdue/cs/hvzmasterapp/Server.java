@@ -53,7 +53,35 @@ public class Server{
     
     //returns a user using its unique ID
     public User getPlayer(String uniqueID){
-        return null;
+		StringBuilder url = new StringBuilder(serviceURL);
+		url.append("/user/get");
+		url.append("?feedcode="+feedcode);
+		
+		System.err.println(url.toString());
+		PostTask post = new PostTask(url.toString(), client);
+		JSONObject response = null;
+		String username, feedcode, isAdmin;
+		boolean isAdmin;
+		try {
+			response = post.execute().get();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();			}
+
+		if (response == null) {
+			return -1;
+		}
+		try {
+			username = response.getString("username");
+			feedcode = response.getString("feedcode");
+			isAdmin = response.getBoolean("isAdmin");
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		return new user(username, feedcode, isAdmin);
     }
     
     //generates and returns a new Feed Code
