@@ -230,7 +230,7 @@ public class DBHandler{
 	}
 	public static boolean isStarted(Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select from gameStats where endTime = 'initialEndDate'");
+		ResultSet rs = s.executeQuery("select * from gameStats where endTime = 'initialEndDate'");
 		if (!rs.isBeforeFirst())
 			return false;
 		int bool = rs.getInt("hasBegun");
