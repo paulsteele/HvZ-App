@@ -46,6 +46,12 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        isLoggedIn = true;
+    }
+
     /* View list of players */
     public void viewPlayerList(View view) {
         Intent intent = new Intent(this, PlayerListActivity.class);

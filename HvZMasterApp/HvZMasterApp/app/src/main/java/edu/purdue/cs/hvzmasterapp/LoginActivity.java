@@ -23,7 +23,12 @@ public class LoginActivity extends ActionBarActivity {
     public void login(View view){
         String feedcode = ((EditText)findViewById(R.id.feedcode)).getText().toString();
         String password = ((EditText)findViewById(R.id.password)).getText().toString();
-        //server.login(feedcode, password);
+        int status = server.login(feedcode, password);
+        if (status == 0) {
+            setResult(1);
+        }
+
+        finish();
     }
 
     public void register(View view){

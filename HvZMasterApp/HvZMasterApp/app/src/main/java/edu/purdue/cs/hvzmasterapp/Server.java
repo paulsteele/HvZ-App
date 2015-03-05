@@ -52,16 +52,16 @@ public class Server{
     }
     
     //returns a user using its unique ID
-    public User getPlayer(String uniqueID){
-		StringBuilder url = new StringBuilder(serviceURL);
+    public User getPlayer(String code){
+		/*StringBuilder url = new StringBuilder(serviceURL);
 		url.append("/user/get");
-		url.append("?feedcode="+feedcode);
+		url.append("?feedcode="+code);
 		
 		System.err.println(url.toString());
 		PostTask post = new PostTask(url.toString(), client);
 		JSONObject response = null;
-		String username, feedcode, isAdmin;
-		boolean isAdmin;
+		String username, feedcode;
+		boolean isZombie, isAdmin;
 		try {
 			response = post.execute().get();
 		} catch (InterruptedException e) {
@@ -70,18 +70,18 @@ public class Server{
 			e.printStackTrace();			}
 
 		if (response == null) {
-			return -1;
+			return null;
 		}
 		try {
 			username = response.getString("username");
 			feedcode = response.getString("feedcode");
 			isAdmin = response.getBoolean("isAdmin");
-			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		
-		return new user(username, feedcode, isAdmin);
+		return new User(username, feedcode, isAdmin);*/
+        return null;
     }
     
     //generates and returns a new Feed Code
