@@ -7,6 +7,7 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -153,6 +154,68 @@ class PostTask extends AsyncTask<Void, Void, JSONObject> {
         HttpResponse response = null;
         try {
             response = client.execute(post);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (response == null) {
+            System.err.println("Response error");
+            return null;
+        }
+
+        String responseString = null;
+        try {
+            responseString = inputStreamToString(response.getEntity().getContent()).toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject responseObj = null;
+        try {
+            responseObj = new JSONObject(responseString.toString());
+            return responseObj;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private StringBuilder inputStreamToString(InputStream is) {
+        String line = "";
+        StringBuilder total = new StringBuilder();
+
+        // Wrap a BufferedReader around the InputStream
+        BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+
+        // Read response until the end
+        try {
+            while ((line = rd.readLine()) != null) {
+                total.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Return full string
+        return total;
+    }
+}
+
+class GetTask extends AsyncTask<Void, Void, JSONObject> {
+    String url;
+    HttpClient client;
+
+    GetTask(String url, HttpClient client) {
+        this.url = url;
+        this.client = client;
+    }
+
+    @Override
+    protected JSONObject doInBackground(Void... v) {
+        HttpGet get = new HttpGet(url.toString());
+
+        HttpResponse response = null;
+        try {
+            response = client.execute(get);
         } catch (IOException e) {
             e.printStackTrace();
         }
