@@ -122,13 +122,13 @@ public class ResourceController {
         			jsonUsers[i].put("username", userObject[i].username);
         			jsonUsers[i].put("feedcode", userObject[i].feedcode);
         			jsonUsers[i].put("isAdmin", userObject[i].isAdmin);
-        			/*if (!userObject[i].isAdmin){
+        			if (!userObject[i].isAdmin){
         				Player pl = (Player) userObject[i];
         				jsonUsers[i].put("isZombie", pl.isZombie);
         			}
         			else {
         				jsonUsers[i].put("isZombie", false);
-        			}*/
+        			}
         			
     			}
     			users.put(jsonUsers);
