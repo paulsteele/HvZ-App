@@ -63,6 +63,7 @@ public class ResourceController {
     		}	
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
+	
 			e.printStackTrace();
 		}
     	return response.toString();
@@ -109,8 +110,30 @@ public class ResourceController {
 		//Set up response object
 		JSONObject response = new JSONObject();
 		JSONArray users = new JSONArray();
+
+		
+		
     	try {
-    			users.put(Server.getAllUsers());
+    			User[] userObject = Server.getAllUsers();
+    			JSONObject[] jsonUsers = new JSONObject[userObject.length];
+    			for (int i = 0; i < userObject.length; i++){
+    				jsonUsers[i] = new JSONObject();
+        			jsonUsers[i].put(ServerConfiguration.success, true);
+        			jsonUsers[i].put("username", userObject[i].username);
+        			jsonUsers[i].put("feedcode", userObject[i].feedcode);
+        			jsonUsers[i].put("isAdmin", userObject[i].isAdmin);
+        			if (!userObject[i].isAdmin){
+        				Player pl = (Player) userObject[i];
+        				jsonUsers[i].put("isZombie", pl.isZombie);
+        			}
+        			else {
+        				jsonUsers[i].put("isZombie", false);
+        			}
+        			
+    			}
+    			for (int i = 0; i < jsonUsers.length; i++){
+    				users.put(i, jsonUsers[i]);
+    			}
     			response.put(ServerConfiguration.success, true);
     			response.put("users", users);
 		} catch (JSONException e) {
@@ -136,6 +159,7 @@ public class ResourceController {
     		
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
+			System.out.println("JSONException while verifying parameters for tagging");
 			e.printStackTrace();
 		}
     	return response.toString();
@@ -151,10 +175,26 @@ public class ResourceController {
     		response.put(ServerConfiguration.success, true);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
+			System.out.println("JSONException while trying to begin game");
 			e.printStackTrace();
 		}
     	return response.toString();
     }
+    @RequestMapping("/game/isstarted")
+    	public String isStarted() {
+		//Set up response object
+		JSONObject response = new JSONObject();
+    	try{
+        	response.put(ServerConfiguration.success, true);
+        	response.put("started", Server.checkBegun());
+    	}
+    	catch (JSONException e){
+    		e.printStackTrace();
+    		return null;
+    	}
+    	return response.toString();
+
+    	}
     
     @RequestMapping("/user/login")
     public String login(@RequestParam(value = "feedcode", required = false) String feedcode,
@@ -187,6 +227,7 @@ public class ResourceController {
     		
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
+			System.out.println("JSONException while attempting to login");
 			e.printStackTrace();
 		}
     	return response.toString();
@@ -218,6 +259,7 @@ public class ResourceController {
 	    	}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
+			System.out.println("JSONException while verifying generated feed code");
 			e.printStackTrace();
 		}
     	

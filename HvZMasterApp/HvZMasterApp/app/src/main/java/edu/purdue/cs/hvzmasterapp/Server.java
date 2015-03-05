@@ -1,21 +1,33 @@
 package edu.purdue.cs.hvzmasterapp;
 
 import android.net.http.AndroidHttpClient;
+import android.os.AsyncTask;
 
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class Server{
     private static final Server INSTANCE = new Server();
@@ -41,12 +53,66 @@ public class Server{
     
     //returns a user using its unique ID
     public User getPlayer(String uniqueID){
-        return null;
+		StringBuilder url = new StringBuilder(serviceURL);
+		url.append("/user/get");
+		url.append("?feedcode="+feedcode);
+		
+		System.err.println(url.toString());
+		PostTask post = new PostTask(url.toString(), client);
+		JSONObject response = null;
+		String username, feedcode, isAdmin;
+		boolean isAdmin;
+		try {
+			response = post.execute().get();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();			}
+
+		if (response == null) {
+			return -1;
+		}
+		try {
+			username = response.getString("username");
+			feedcode = response.getString("feedcode");
+			isAdmin = response.getBoolean("isAdmin");
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		return new user(username, feedcode, isAdmin);
     }
     
     //generates and returns a new Feed Code
-    public int getNewFeedcode(){
-        return 0;
+    public String getNewFeedcode(boolean admin){
+        StringBuilder sb = new StringBuilder(serviceURL);
+        sb.append("/feedcode/generate");
+        sb.append("?admin="+admin);
+
+        GetTask task = new GetTask(sb.toString(), client);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            return null;
+        }
+
+        try {
+            String feedcode = response.getString("feedcode");
+            return feedcode;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
     
     //returns a new list of users
@@ -89,35 +155,55 @@ public class Server{
     /* Verify username/feedcode are not taken */
     /* return non-zero if error occurs */
     public int register(String username, String feedcode, String password, boolean admin) {
-        JSONObject regObj = new JSONObject();
+        StringBuilder url = new StringBuilder(serviceURL);
+        url.append("/user/register");
+        url.append("?username="+username);
+        url.append("&feedcode="+feedcode);
+        url.append("&password="+password);
+        url.append("&admin="+admin);
+
+        System.err.println(url.toString());
+
+        PostTask post = new PostTask(url.toString(), client);
+
+        JSONObject response = null;
         try {
-            regObj.put("username", username);
-            regObj.put("feedcode", feedcode);
-            regObj.put("password", password);
-            regObj.put("admin", admin);
+             response = post.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            return -1;
+        }
+
+        try {
+            if (response.getBoolean("success")) {
+                return 0;
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        StringBuilder url = new StringBuilder(serviceURL);
-        url.append("/user/register");
+        return -1;
+    }
+
+}
+
+class PostTask extends AsyncTask<Void, Void, JSONObject> {
+    String url;
+    HttpClient client;
+
+    PostTask(String url, HttpClient client) {
+        this.url = url;
+        this.client = client;
+    }
+
+    @Override
+    protected JSONObject doInBackground(Void... v) {
         HttpPost post = new HttpPost(url.toString());
-        StringEntity regString = null;
-        try {
-            regString = new StringEntity(regObj.toString());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        if (regString == null) {
-            return -1;
-        }
-
-        post.setEntity(regString);
-        post.setHeader("Accept", "application/json");
-        post.setHeader("Content-type", "application/json");
-
-        //ResponseHandler handler = new BasicResponseHandler();
 
         HttpResponse response = null;
         try {
@@ -126,12 +212,106 @@ public class Server{
             e.printStackTrace();
         }
         if (response == null) {
-            System.err.println("Reponse error");
-            return -1;
+            System.err.println("Response error");
+            return null;
         }
-        System.out.println(response.getEntity().toString());
 
-        return 0;
+        String responseString = null;
+        try {
+            responseString = inputStreamToString(response.getEntity().getContent()).toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject responseObj = null;
+        try {
+            responseObj = new JSONObject(responseString.toString());
+            return responseObj;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
+    private StringBuilder inputStreamToString(InputStream is) {
+        String line = "";
+        StringBuilder total = new StringBuilder();
+
+        // Wrap a BufferedReader around the InputStream
+        BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+
+        // Read response until the end
+        try {
+            while ((line = rd.readLine()) != null) {
+                total.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Return full string
+        return total;
+    }
+}
+
+class GetTask extends AsyncTask<Void, Void, JSONObject> {
+    String url;
+    HttpClient client;
+
+    GetTask(String url, HttpClient client) {
+        this.url = url;
+        this.client = client;
+    }
+
+    @Override
+    protected JSONObject doInBackground(Void... v) {
+        HttpGet get = new HttpGet(url.toString());
+
+        HttpResponse response = null;
+        try {
+            response = client.execute(get);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (response == null) {
+            System.err.println("Response error");
+            return null;
+        }
+
+        String responseString = null;
+        try {
+            responseString = inputStreamToString(response.getEntity().getContent()).toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject responseObj = null;
+        try {
+            responseObj = new JSONObject(responseString.toString());
+            return responseObj;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private StringBuilder inputStreamToString(InputStream is) {
+        String line = "";
+        StringBuilder total = new StringBuilder();
+
+        // Wrap a BufferedReader around the InputStream
+        BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+
+        // Read response until the end
+        try {
+            while ((line = rd.readLine()) != null) {
+                total.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Return full string
+        return total;
+    }
 }

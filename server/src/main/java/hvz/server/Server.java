@@ -91,12 +91,44 @@ public class Server {
     	
     }
     
-    public static User[] getAllUsers(){
-    	return null;
+    public static User[] getAllUsers() {
+    	User[] rets = null;
+    	try {
+        	User[] users = DBHandler.getAllUsers(c);
+        	User[] admins = DBHandler.getAllAdmin(c);
+        	rets = new User[users.length + admins.length];
+        	int i = 0; //rets index
+        	for (int j = 0; j < users.length; j++, i++){
+        		rets[i] = users[j];
+        	}
+        	for (int j = 0; j < admins.length; j++, i++){
+        		rets[i] = admins[j];
+        	}
+        	
+    	}
+    	catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    	return rets;
     }
     
     public static void begin(){
-    	System.out.println("GAME BEGUN");
+    	try {
+			DBHandler.start(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    public static boolean checkBegun(){
+    	try {
+			return DBHandler.isStarted(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return false;
     }
 }
 

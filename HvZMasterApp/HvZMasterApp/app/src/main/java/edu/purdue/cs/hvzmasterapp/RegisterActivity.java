@@ -54,9 +54,10 @@ public class RegisterActivity extends ActionBarActivity {
     public void getCode(View view) {
         EditText text = (EditText) findViewById(R.id.feedcodeinput);
         if (text.getText().toString().equals("")) {
-            int code = server.getNewFeedcode();
-            System.err.printf("Code: " + code);
-            text.setText(Integer.toString(code), TextView.BufferType.EDITABLE);
+            boolean admin = ((CheckBox) findViewById(R.id.admin_check)).isChecked();
+            String code = server.getNewFeedcode(admin);
+            System.err.println("feedcode: " + code);
+            text.setText(code, TextView.BufferType.EDITABLE);
         }
     }
 
@@ -67,7 +68,7 @@ public class RegisterActivity extends ActionBarActivity {
         String feedcode = ((EditText) findViewById(R.id.feedcodeinput)).getText().toString();
         boolean admin = ((CheckBox) findViewById(R.id.admin_check)).isChecked();
 
-        System.err.println("user: " + user + "\nadmin: " + admin + "\needcode: " + feedcode + "\npass: " + pass + "");
+        System.err.println("user: " + user + "\nadmin: " + admin + "\nfeedcode: " + feedcode + "\npass: " + pass + "");
 
         TextView msg = (TextView) findViewById(R.id.register_msg);
         if (user.equals("") || pass.equals("") || feedcode.equals("")) {
