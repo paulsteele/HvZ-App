@@ -170,7 +170,6 @@ public class Server{
     
     //returns 0 if game is successfully started
     public void startGame() {
-
     }
     
     //returns time remaining in the game
@@ -192,8 +191,8 @@ public class Server{
 
     public int login(String feedcode, String password){
         StringBuilder url = new StringBuilder(serviceURL);
-        url.append("/user/register");
-        url.append("&feedcode="+feedcode);
+        url.append("/user/login");
+        url.append("?feedcode="+feedcode);
         url.append("&password="+password);
 
         System.err.println(url.toString());
