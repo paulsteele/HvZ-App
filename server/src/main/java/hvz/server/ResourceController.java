@@ -178,6 +178,21 @@ public class ResourceController {
 		}
     	return response.toString();
     }
+    @RequestMapping("/game/isStarted")
+    	public String isStarted() {
+		//Set up response object
+		JSONObject response = new JSONObject();
+    	try{
+        	response.put(ServerConfiguration.success, true);
+        	response.put("started", Server.checkBegun());
+    	}
+    	catch (JSONException e){
+    		e.printStackTrace();
+    		return null;
+    	}
+    	return response.toString();
+
+    	}
     
     @RequestMapping("/user/login")
     public String login(@RequestParam(value = "feedcode", required = false) String feedcode,
