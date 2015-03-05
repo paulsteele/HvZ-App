@@ -235,7 +235,7 @@ public class DBHandler{
 			return false;
 		int bool = rs.getInt("hasBegun");
 		if(bool == 0) return false;
-		else return false;
+		else return true;
 	}
 	public static void start (Connection c)throws SQLException{
 		Statement s = c.createStatement();
