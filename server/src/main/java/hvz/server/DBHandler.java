@@ -190,19 +190,19 @@ public class DBHandler{
 		String pswd = rs.getString("password");
 		return pswd;
 	}
-	public static  User [] getAllUsers(Connection c)throws SQLException{
-		LinkedList<User> users = new LinkedList<User>();
+	public static  Player [] getAllUsers(Connection c)throws SQLException{
+		LinkedList<Player> users = new LinkedList<Player>();
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from  users");
 		while(rs.next()){
 			String username = rs.getString("username");
 			String feedcode = rs.getString("feedCode");
-			User user = new User(username, feedcode, false);
+			Player user = new Player(username, feedcode);
 			users.add(user);
 		}
 		rs.close();
 		s.close();
-		User [] array = users.toArray(new User[users.size()]);
+		Player [] array = users.toArray(new Player[users.size()]);
 		return array;
 	}
 	public static  Admin [] getAllAdmin(Connection c)throws SQLException{

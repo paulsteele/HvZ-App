@@ -85,8 +85,34 @@ public class Server{
     }
     
     //generates and returns a new Feed Code
-    public int getNewFeedcode(){
-        return 0;
+    public String getNewFeedcode(boolean admin){
+        StringBuilder sb = new StringBuilder(serviceURL);
+        sb.append("/feedcode/generate");
+        sb.append("?admin="+admin);
+
+        GetTask task = new GetTask(sb.toString(), client);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            return null;
+        }
+
+        try {
+            String feedcode = response.getString("feedcode");
+            return feedcode;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
     
     //returns a new list of users

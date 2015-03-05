@@ -122,13 +122,13 @@ public class ResourceController {
         			jsonUsers[i].put("username", userObject[i].username);
         			jsonUsers[i].put("feedcode", userObject[i].feedcode);
         			jsonUsers[i].put("isAdmin", userObject[i].isAdmin);
-        			/*if (!userObject[i].isAdmin){
+        			if (!userObject[i].isAdmin){
         				Player pl = (Player) userObject[i];
         				jsonUsers[i].put("isZombie", pl.isZombie);
         			}
         			else {
         				jsonUsers[i].put("isZombie", false);
-        			}*/
+        			}
         			
     			}
     			users.put(jsonUsers);
@@ -178,6 +178,21 @@ public class ResourceController {
 		}
     	return response.toString();
     }
+    @RequestMapping("/game/isStarted")
+    	public String isStarted() {
+		//Set up response object
+		JSONObject response = new JSONObject();
+    	try{
+        	response.put(ServerConfiguration.success, true);
+        	response.put("started", Server.checkBegun());
+    	}
+    	catch (JSONException e){
+    		e.printStackTrace();
+    		return null;
+    	}
+    	return response.toString();
+
+    	}
     
     @RequestMapping("/user/login")
     public String login(@RequestParam(value = "feedcode", required = false) String feedcode,

@@ -115,5 +115,9 @@ public class Server {
     public static void begin(){
     	System.out.println("GAME BEGUN");
     }
+    
+    public static boolean checkBegun(){
+    	return false;
+    }
 }
 
