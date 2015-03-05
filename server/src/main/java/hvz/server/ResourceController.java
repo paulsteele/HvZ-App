@@ -131,7 +131,9 @@ public class ResourceController {
         			}
         			
     			}
-    			users.put(jsonUsers);
+    			for (int i = 0; i < jsonUsers.length; i++){
+    				users.put(i, jsonUsers[i]);
+    			}
     			response.put(ServerConfiguration.success, true);
     			response.put("users", users);
 		} catch (JSONException e) {
