@@ -222,7 +222,7 @@ public class DBHandler{
 	}
 	public static boolean isStarted(Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from gameStats");
+		ResultSet rs = s.executeQuery("select from gameStats where hasB");
 		if (!rs.isBeforeFirst())
 			return false;
 		int bool = rs.getInt("hasBegun");
@@ -231,7 +231,7 @@ public class DBHandler{
 	}
 	public static void start (Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		String command = "update gameStats set hasBegun = 1 where hasBegun = 0";
+		String command = "insert into gameStats values('Whenever it wants to, 1)";
 		s.execute(command);
 	}
 }
