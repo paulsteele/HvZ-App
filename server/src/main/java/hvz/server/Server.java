@@ -62,7 +62,7 @@ public class Server {
     	try{
     		String dbpass = DBHandler.getPassword(user.feedcode, c).toUpperCase();
     		String apppass = password.toUpperCase();
-    		if (dbpass.equals(apppass) == true){
+    		if (dbpass.equalsIgnoreCase(apppass) == true){
     			return user; //successful
     		}
     		else {
