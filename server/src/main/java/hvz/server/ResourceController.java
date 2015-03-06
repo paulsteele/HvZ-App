@@ -208,11 +208,11 @@ public class ResourceController {
     		}
     		else {
     			//if valid
-    			User user = Server.getUser(feedcode);
+    			User user = Server.getUser(feedcode.toUpperCase());
     			if (user != null){
         			user = Server.loginUser(user, password);
         			if (user != null){
-            			return getPlayer(feedcode);
+            			return getPlayer(feedcode.toUpperCase());
         			}
         			else {
         				response.put(ServerConfiguration.success, false);
