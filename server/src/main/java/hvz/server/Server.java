@@ -60,7 +60,9 @@ public class Server {
     
     public static User loginUser(User user, String password){
     	try{
-    		if (DBHandler.getPassword(user.feedcode, c).equals(password) == true){
+    		String dbpass = DBHandler.getPassword(user.feedcode, c).toUpperCase();
+    		String apppass = password.toUpperCase();
+    		if (dbpass.equals(apppass) == true){
     			return user; //successful
     		}
     		else {
