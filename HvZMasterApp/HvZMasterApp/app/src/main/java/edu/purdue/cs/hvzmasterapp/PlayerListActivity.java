@@ -28,14 +28,6 @@ public class PlayerListActivity extends ActionBarActivity {
         populateList();
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
     public void init() {
         humans = new ArrayList<User>();
         zombies = new ArrayList<User>();
@@ -72,6 +64,9 @@ public class PlayerListActivity extends ActionBarActivity {
             for (User u : humans) {
                 addPlayer(hl, u, i++);
             }
+            TextView count = (TextView) findViewById(R.id.human_count);
+            count.setText("Total humans: " + Integer.toString(i-1));
+            count.setVisibility(View.VISIBLE);
         }
         else {
             LinearLayout zl = (LinearLayout) findViewById(R.id.zombie_list);
@@ -80,6 +75,9 @@ public class PlayerListActivity extends ActionBarActivity {
             for (User u : zombies) {
                 addPlayer(zl, u, i++);
             }
+            TextView count = (TextView) findViewById(R.id.zombie_count);
+            count.setText("Total zombies: "+ Integer.toString(i-1));
+            count.setVisibility(View.VISIBLE);
         }
     }
 

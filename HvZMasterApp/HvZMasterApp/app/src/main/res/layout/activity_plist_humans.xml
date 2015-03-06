@@ -15,7 +15,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center_vertical|center_horizontal"
             android:background="@color/background_floating_material_light"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/humans"
@@ -23,9 +23,9 @@
             android:textSize="20sp" />
 
         <TextView
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:layout_gravity="center_horizontal"
             android:background="@color/background_floating_material_dark"
             android:gravity="center_vertical|center_horizontal"
@@ -56,5 +56,16 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/human_count"
+        android:textColor="@color/bright_foreground_material_light"
+        android:textSize="20sp"
+        android:paddingTop="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp" />
 
 </LinearLayout>

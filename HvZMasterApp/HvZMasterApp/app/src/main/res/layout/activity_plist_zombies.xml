@@ -57,4 +57,15 @@
 
     </ScrollView>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/zombie_count"
+        android:textColor="@color/bright_foreground_material_dark"
+        android:textSize="20sp"
+        android:paddingTop="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp" />
+
 </LinearLayout>
