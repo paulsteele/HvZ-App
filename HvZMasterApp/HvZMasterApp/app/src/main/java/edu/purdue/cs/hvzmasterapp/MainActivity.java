@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -39,6 +40,16 @@ public class MainActivity extends ActionBarActivity {
         }
         else if (id == R.id.action_register) {
             Intent intent = new Intent(this, RegisterActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        else if (id == R.id.action_login) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        else if (id == R.id.action_plist) {
+            Intent intent = new Intent(this, PlayerListActivity.class);
             startActivity(intent);
             return true;
         }
