@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -76,79 +77,71 @@ public class ResourceController {
 		}
     	return output.toString();
     }
-    
-    @RequestMapping("/user/get")
-    public String getPlayer (@RequestParam(value="feedcode", required = false) String feedcode){
-		//Set up response object
-		JSONObject response = new JSONObject();
+    /**
+     * Retrieves a user from the database and sends it to the client
+     */
+    @RequestMapping(value = "/user/get/{identifier}", method = RequestMethod.GET)
+    public String getPlayer (@PathVariable("identifier") String identifier){
+		boolean failed = false;
+    	//Set up response object
+		JSONObject output = new JSONObject();
+		//grab the user
+		User user = Server.getUser(identifier);
+		failed = (user == null);
     	try {
-    		//verify that all parameters are valid
-    		if (feedcode == null){
-    			response.put(ServerConfiguration.success, false);
-    		}
-    		else {
-    			User user = Server.getUser(feedcode);
-    			if (user != null) { //means user is found
-        			response.put(ServerConfiguration.success, true);
-        			response.put("username", user.username);
-        			response.put("feedcode", user.feedcode);
-        			response.put("isAdmin", user.isAdmin);
-        			if (!user.isAdmin){
-        				response.put("isZombie", ((Player) user).isZombie);
-        			}
-        			else {
-        				response.put("isZombie", false);
-        			}
+			if (!failed) { //means user is found
+    			output.put("username", user.username);
+    			output.put("feedcode", user.feedcode);
+    			output.put("isAdmin", user.isAdmin);
+    			//add information about zombie status
+    			if (!user.isAdmin){
+    				output.put("isZombie", ((Player) user).isZombie);
     			}
-    			else {//means user is not found
-    				response.put(ServerConfiguration.success, false);
+    			else {
+    				output.put("isZombie", false);
     			}
+			}
+			//info no matter what
+			output.put(ServerConfiguration.success, !failed);
 
-    		}
-    		
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+			//big error
 			e.printStackTrace();
 		}
-    	return response.toString();
+    	return output.toString();
     }
     
-    @RequestMapping("/user/getall")
+    @RequestMapping(value = "/user/get", method = RequestMethod.GET)
     public String getAll () {
 		//Set up response object
-		JSONObject response = new JSONObject();
+		JSONObject output = new JSONObject();
+		//set JSONArray and holder array
 		JSONArray users = new JSONArray();
-
-		
-		
+		User[] userObject = Server.getAllUsers();
     	try {
-    			User[] userObject = Server.getAllUsers();
-    			JSONObject[] jsonUsers = new JSONObject[userObject.length];
-    			for (int i = 0; i < userObject.length; i++){
-    				jsonUsers[i] = new JSONObject();
-        			jsonUsers[i].put(ServerConfiguration.success, true);
-        			jsonUsers[i].put("username", userObject[i].username);
-        			jsonUsers[i].put("feedcode", userObject[i].feedcode);
-        			jsonUsers[i].put("isAdmin", userObject[i].isAdmin);
-        			if (!userObject[i].isAdmin){
-        				Player pl = (Player) userObject[i];
-        				jsonUsers[i].put("isZombie", pl.isZombie);
-        			}
-        			else {
-        				jsonUsers[i].put("isZombie", false);
-        			}
-        			
+			for (int i = 0; i < userObject.length; i++){
+				JSONObject user = new JSONObject();
+				user = new JSONObject();
+    			user.put("username", userObject[i].username);
+    			user.put("feedcode", userObject[i].feedcode);
+    			user.put("isAdmin", userObject[i].isAdmin);
+    			//handle zombie
+    			if (!userObject[i].isAdmin){
+    				Player pl = (Player) userObject[i];
+    				user.put("isZombie", pl.isZombie);
     			}
-    			for (int i = 0; i < jsonUsers.length; i++){
-    				users.put(i, jsonUsers[i]);
+    			else {
+    				user.put("isZombie", false);
     			}
-    			response.put(ServerConfiguration.success, true);
-    			response.put("users", users);
+    			users.put(i, user);
+			}
+			output.put(ServerConfiguration.success, true);
+			output.put("users", users);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+			//big error
 			e.printStackTrace();
 		}
-    	return response.toString();
+    	return output.toString();
     }
     
     @RequestMapping("/tag")
