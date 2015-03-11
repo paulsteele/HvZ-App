@@ -6,67 +6,75 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ResourceController {
 
-    @RequestMapping("/user/register")
-    public String registerPlayer (@RequestParam(value="username", required = false) String username, 
-    								@RequestParam(value = "feedcode" , required = false) String feedcode , 
-    								@RequestParam(value = "password", required = false) String password, 
-    								@RequestParam(value = "admin", defaultValue= "false") boolean admin) {
-		//Set up response object
-		JSONObject response = new JSONObject();
-    	try {
-    		//verify that all parameters are valid
-    		if (username == null || password == null){
-    			response.put(ServerConfiguration.success, false);
-    		}
-    		else {
-    			//generate feedcode if one not provided
-    			String feedcodeVal;
-    			if (feedcode == null){
-    				//need to generate a feedcode
-    				JSONObject generated = new JSONObject(new JSONTokener(generateFeedcode(admin)));
-    				feedcodeVal = generated.getString("feedcode");
-    			}
-    			else {
-    				//player supplied
-    				feedcodeVal = feedcode;
-    			}
-
-    			
-        		//Create a user from info
-        		User user;
-        		if (admin){
-        			user = new Admin(username, feedcodeVal);
-        		}
-        		else{
-        			user = new Player(username, feedcodeVal);
-        		}
-        		//if no feedcode registered, then register the user
-        		if (Server.checkRegistered(user.feedcode) == false){
-        			Server.registerUser(user, password);
-        			response.put(ServerConfiguration.success, true);
-        			response.put("username", username);
-        			response.put("feedcode", feedcodeVal);
-        			response.put("password", password);
-        		}
-        		else {
-        			//already registered
-        			response.put(ServerConfiguration.success, false);
-        		}
-        		
-    		}	
+	/**
+	 * Registers a user and puts into the database
+	 * Valid JSON {"username": "username", "password":"password", "feedcode": "feedcode", "admin": true,
+	 */
+    @RequestMapping(value = "/user/register", method = RequestMethod.POST)
+    public String registerPlayer (@RequestBody String value) {
+    	boolean failed = false;
+    	//take in input and create variables for each entry
+		JSONObject input = null;
+		try {
+			input = new JSONObject(new JSONTokener(value));
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-	
+			failed = true;
+		}
+		String username = null;
+		String feedcode = null;
+		String password = null;
+		boolean admin = false;
+		try{
+			username = input.getString("username");
+			feedcode = input.getString("feedcode");
+			password = input.getString("password");
+			admin = input.getBoolean("admin");
+		}
+		catch (JSONException e){
+			//error 
+			failed = true;
+		}
+		//check values are present
+		if (username == null || password == null || feedcode == null){
+			failed = true;
+		}
+		//check feedcode not taken
+		if (!failed && Server.checkRegistered(feedcode) == true){
+			failed = true;
+		}
+		//Create a user from info
+		User user = null;
+		if (!failed){
+    		if (admin) //create an admin
+    			user = new Admin(username, feedcode);
+    		else //create a player
+    			user = new Player(username, feedcode);
+    		Server.registerUser(user, password);
+		}
+    	//Set up response object
+		JSONObject output = new JSONObject();
+    	try {
+    		if (!failed){ //info only on success
+    			output.put("username", username);
+    			output.put("feedcode", feedcode);
+    			output.put("password", password);
+    		}
+    		//info no matter what
+			output.put(ServerConfiguration.success, !failed);
+        }		
+		catch (JSONException e) {//extreme error
 			e.printStackTrace();
 		}
-    	return response.toString();
+    	return output.toString();
     }
     
     @RequestMapping("/user/get")
