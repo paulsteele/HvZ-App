@@ -100,6 +100,18 @@ public class DBHandler{
 		}
 
 	}	
+	public static void makeGameTable(Connection c){
+		String command = "CREATE TABLE games " + 
+						"gameCode	varchar(25)";
+		try {
+			Statement s = c.createStatement();
+			s.executeUpdate(command);
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
+		
+	}
 	/*public static void main (String [] args) throws SQLException{//for testing
 		Connection c = connect();
 		addPlayer("kyle", 1, "0owqiejflsdkjf", c);
@@ -133,17 +145,17 @@ public class DBHandler{
 			e.printStackTrace();
 		}
 	}
-	public static void addAdmin(String name,  String feed, String gameCode  Connection c) throws SQLException{
+	public static void addAdmin(String name,  String feed, String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
 		String command = "insert into admins values(" + "'" +name + "' " + ", '" + feed + "' , '" + gameCode + "')";
 		s.executeUpdate(command);
 	}
-	public static void addPlayer(String name, int isZombie, String feed, String gameCode Connection c) throws SQLException{
+	public static void addPlayer(String name, int isZombie, String feed, String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
 		String command = "insert into users values("+ "'" +name + "' " + ", '" + feed + "', " + isZombie + ", '" + gameCode+ "')";
 		s.executeUpdate(command);
 	}
-	public static void removePlayer(String feedCode, gameCode Connection c)throws SQLException{
+	public static void removePlayer(String feedCode, String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
 		String command = "delete from users where feedcode = '" + feedCode + "' " +  "AND gameCode = " + "'" + gameCode + "'"; 
 		s.executeUpdate(command);
@@ -153,30 +165,31 @@ public class DBHandler{
 		String command = "delete from users where gameCode = " + gameCode ; 
 		s.executeUpdate(command);
 	}
-	public static void makeZombie(String feedCode, Connection c)throws SQLException{
+	public static void makeZombie(String feedCode, String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
 		String command = "update users set isZombie = 1 where feedCode = '" + feedCode + "'" + 
 		"and gameCode = '" + gameCode + "'"; 
 		s.executeUpdate(command);	
 	}
-	public static void makeHuman(String feedCode, Connection c)throws SQLException{
+	public static void makeHuman(String feedCode, String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		String command = "update users set isZombie = 0 where feedCode = '" + feedCode + "'"; 
+		String command = "update users set isZombie = 0 where feedCode = '" + feedCode + "'" +
+		"and gameCode = '" + gameCode + "'";  
 		s.executeUpdate(command);	
 	}
-	public static void tag(String tagger, String tagged, Connection c)throws SQLException{
+	public static void tag(String tagger, String tagged, String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into tags values('" + tagger + "', '" + tagged + "')";
+		String command = "insert into tags values('" + tagger + "', '" + tagged + "', '" + gameCode + "')";
 		s.executeUpdate(command);		
 	}
-	public static void setPassword(String feedCode, String pswd, Connection c)throws SQLException{
+	public static void setPassword(String feedCode, String pswd, String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into passwords values('" + feedCode + "', " + "'" + pswd + "'" + ")";
+		String command = "insert into passwords values('" + feedCode + "', " + "'" + pswd + "', '" + gameCode + "')";
 		s.executeUpdate(command);
 	}
-	public static Admin getAdmin(String feedCode, Connection c)throws SQLException{
+	public static Admin getAdmin(String feedCode, String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from admins where feedcode = '" + feedCode + "'");
+		ResultSet rs = s.executeQuery("select * from admins where feedcode = '" + feedCode + "' AND gameCode = '" + gameCode + "'");
 		//no player
 		if (!rs.isBeforeFirst())
 			return null;
@@ -185,9 +198,9 @@ public class DBHandler{
 		Admin admin = new Admin(name, feed);
 		return admin;
 	}
-	public static Player getPlayer(String feedCode, Connection c)throws SQLException{
+	public static Player getPlayer(String feedCode, String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from users where feedcode = '" + feedCode + "'");
+		ResultSet rs = s.executeQuery("select * from users where feedcode = '" + feedCode + "' AND gameCode = '" + gameCode + "'");
 		//no player
 		if (!rs.isBeforeFirst())
 			return null;
@@ -196,16 +209,16 @@ public class DBHandler{
 		Player player = new Player(name, feed);
 		return player;
 	}
-	public static String getPassword(String feedCode, Connection c)throws SQLException{
+	public static String getPassword(String feedCode, String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from passwords where feedcode = '" + feedCode + "'");
+		ResultSet rs = s.executeQuery("select * from passwords where feedcode = '" + feedCode + "' AND gameCode = '" + gameCode + "'");
 		String pswd = rs.getString("password");
 		return pswd;
 	}
-	public static  Player [] getAllUsers(Connection c)throws SQLException{
+	public static  Player [] getAllUsers(String gameCode, Connection c)throws SQLException{
 		LinkedList<Player> users = new LinkedList<Player>();
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from  users");
+		ResultSet rs = s.executeQuery("select * from  users where gameCode = '" + gameCode + "'");
 		while(rs.next()){
 			String username = rs.getString("username");
 			String feedcode = rs.getString("feedCode");
@@ -217,10 +230,10 @@ public class DBHandler{
 		Player [] array = users.toArray(new Player[users.size()]);
 		return array;
 	}
-	public static  Admin [] getAllAdmin(Connection c)throws SQLException{
+	public static  Admin [] getAllAdmin(String gameCode, Connection c)throws SQLException{
 		LinkedList<Admin> admins = new LinkedList<Admin>();
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from  admins");
+		ResultSet rs = s.executeQuery("select * from  admins where gameCode = '" + gameCode + "'");
 		while(rs.next()){
 			String username = rs.getString("username");
 			String feedcode = rs.getString("feedCode");
