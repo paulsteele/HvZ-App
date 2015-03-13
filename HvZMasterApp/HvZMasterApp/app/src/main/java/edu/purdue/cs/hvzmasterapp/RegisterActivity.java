@@ -27,16 +27,12 @@ public class RegisterActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_register, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if (id == R.id.action_main) {
@@ -45,6 +41,16 @@ public class RegisterActivity extends ActionBarActivity {
             return true;
         }
         else if (id == R.id.action_register) {
+            return true;
+        }
+        else if (id == R.id.action_login) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        else if (id == R.id.action_plist) {
+            Intent intent = new Intent(this, PlayerListActivity.class);
+            startActivity(intent);
             return true;
         }
 
@@ -80,13 +86,10 @@ public class RegisterActivity extends ActionBarActivity {
             int error = server.register(user, feedcode, pass, admin);
             if (error == 0) {
                 msg.setText("Success!");
+
                 msg.setTextColor(Color.GREEN);
                 msg.setVisibility(View.VISIBLE);
-                /* Start login activity after */
-                /*
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-                 */
+
                 finish();
             }
             else {

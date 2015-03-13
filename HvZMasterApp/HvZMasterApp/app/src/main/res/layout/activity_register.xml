@@ -11,7 +11,6 @@
 
         <android.support.v7.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/card1"
             android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_height="64dp"
@@ -23,7 +22,6 @@
             android:layout_marginBottom="8dp">
 
             <TextView
-                android:id="@+id/menu_text1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/register"
@@ -43,7 +41,7 @@
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_gravity="center"
             android:layout_width="0dp"
-            android:layout_height="400dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             card_view:cardCornerRadius="4dp"
             android:layout_marginLeft="16dp"
@@ -51,103 +49,87 @@
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="32dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:id="@+id/registerlayout">
+                android:padding="32dp">
 
-                <TextView
-                    android:id="@+id/usertext"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/usrprompt"
-                    android:textColor="#000000"
-                    android:textSize="18sp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignBottom="@+id/userinput"
-                    android:gravity="center_vertical"
-                    android:layout_marginRight="8dp" />
-                <EditText
-                    android:id="@+id/userinput"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:maxLength="20"
-                    android:layout_alignParentLeft="false"
-                    android:layout_alignParentTop="false"
-                    android:layout_alignParentBottom="false"
-                    android:layout_toRightOf="@+id/usertext" />
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Admin?"
-                    android:id="@+id/admin_check"
-                    android:layout_below="@+id/usertext"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:button="@null"
-                    android:drawableRight="?android:attr/listChoiceIndicatorMultiple"/>
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/feedcodetext"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/codeprompt"
-                    android:textColor="#000000"
-                    android:textSize="18sp"
-                    android:layout_alignParentLeft="false"
-                    android:gravity="center_vertical"
-                    android:layout_alignBottom="@+id/feedcodeinput"
-                    android:layout_alignTop="@+id/feedcodeinput"
-                    android:layout_marginRight="8dp" />
-                <EditText
-                    android:id="@+id/feedcodeinput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:layout_alignParentLeft="false"
-                    android:layout_alignParentStart="false"
-                    android:layout_toRightOf="@+id/feedcodetext"
-                    android:layout_below="@+id/admin_check"
-                    android:layout_marginBottom="8dp" />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:text="@string/getcode"
-                    android:id="@+id/feedcode_button"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:background="@color/background_floating_material_dark"
-                    android:textColor="@color/bright_foreground_material_dark"
-                    android:layout_alignParentEnd="true"
-                    android:layout_below="@+id/feedcodeinput"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:clickable="true"
-                    android:onClick="getCode" />
+                    <EditText
+                        android:id="@+id/userinput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:hint="Username" />
 
-                <TextView
-                    android:id="@+id/passtext"
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pwprompt"
-                    android:textColor="#000000"
-                    android:textSize="18sp"
-                    android:layout_alignParentLeft="false"
-                    android:layout_alignBottom="@+id/passinput"
-                    android:gravity="center_vertical"
-                    android:layout_marginRight="8dp"
-                    android:layout_above="@+id/feedcode_button" />
-                <EditText
-                    android:id="@+id/passinput"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+                    <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Admin?"
+                            android:id="@+id/admin_check"
+                            android:button="@null"
+                            android:drawableRight="?android:attr/listChoiceIndicatorMultiple" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:layout_below="@+id/feedcode_button"
-                    android:layout_toRightOf="@+id/passtext"
-                    android:layout_toEndOf="@+id/passtext" />
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/feedcodeinput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:layout_marginBottom="8dp"
+                        android:hint="Feedcode" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:text="@string/getcode"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:background="@color/background_floating_material_dark"
+                        android:textColor="@color/bright_foreground_material_dark"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:clickable="true"
+                        android:onClick="getCode" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:id="@+id/passinput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:hint="Password" />
+                </LinearLayout>
 
                 <Button
                     android:layout_width="wrap_content"
@@ -157,14 +139,9 @@
                     style="?android:attr/borderlessButtonStyle"
                     android:background="@color/background_floating_material_dark"
                     android:textColor="@color/bright_foreground_material_dark"
-                    android:layout_below="@+id/passinput"
-                    android:layout_alignParentBottom="false"
-                    android:layout_alignParentRight="false"
-                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="16dp"
                     android:clickable="true"
                     android:onClick="register"
-                    android:id="@+id/register_button"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     android:layout_marginBottom="16dp" />
@@ -174,9 +151,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:layout_below="@+id/register_button"
                     android:visibility="invisible" />
-            </RelativeLayout>
+
+            </LinearLayout>
 
         </android.support.v7.widget.CardView>
 

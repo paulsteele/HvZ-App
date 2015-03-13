@@ -59,8 +59,12 @@ public class Server {
     }
     
     public static User loginUser(User user, String password){
+    	if (user == null)
+    		return null;
     	try{
-    		if (DBHandler.getPassword(user.feedcode, c).equals(password) == true){
+    		String dbpass = DBHandler.getPassword(user.feedcode, c);
+    		String apppass = password;
+    		if (dbpass.equals(apppass) == true){
     			return user; //successful
     		}
     		else {

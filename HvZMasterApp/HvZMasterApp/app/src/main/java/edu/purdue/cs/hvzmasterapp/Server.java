@@ -52,16 +52,16 @@ public class Server{
     }
     
     //returns a user using its unique ID
-    public User getPlayer(String uniqueID){
-		StringBuilder url = new StringBuilder(serviceURL);
+    public User getPlayer(String code){
+		/*StringBuilder url = new StringBuilder(serviceURL);
 		url.append("/user/get");
-		url.append("?feedcode="+feedcode);
+		url.append("?feedcode="+code);
 		
 		System.err.println(url.toString());
 		PostTask post = new PostTask(url.toString(), client);
 		JSONObject response = null;
-		String username, feedcode, isAdmin;
-		boolean isAdmin;
+		String username, feedcode;
+		boolean isZombie, isAdmin;
 		try {
 			response = post.execute().get();
 		} catch (InterruptedException e) {
@@ -70,18 +70,18 @@ public class Server{
 			e.printStackTrace();			}
 
 		if (response == null) {
-			return -1;
+			return null;
 		}
 		try {
 			username = response.getString("username");
 			feedcode = response.getString("feedcode");
 			isAdmin = response.getBoolean("isAdmin");
-			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		
-		return new user(username, feedcode, isAdmin);
+		return new User(username, feedcode, isAdmin);*/
+        return null;
     }
     
     //generates and returns a new Feed Code
@@ -116,7 +116,45 @@ public class Server{
     }
     
     //returns a new list of users
-    public ArrayList<User> getUserList(){
+    public ArrayList<User> getUserList() {
+        StringBuilder sb = new StringBuilder(serviceURL);
+        sb.append("/user/getall");
+
+        GetTask task = new GetTask(sb.toString(), client);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            System.err.println("response error");
+            return null;
+        }
+
+        ArrayList<User> list = new ArrayList<User>();
+        try {
+            JSONArray users = response.getJSONArray("users");
+
+            for (int i = 0; i < users.length(); i++) {
+                JSONObject user = users.getJSONObject(i);
+                String usr = user.getString("username");
+                String code = user.getString("feedcode");
+                boolean isZombie = user.getBoolean("isZombie");
+                boolean admin = user.getBoolean("isAdmin");
+                User u = new User(usr, code, isZombie, admin);
+                list.add(u);
+            }
+
+            return list;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
     
@@ -131,8 +169,7 @@ public class Server{
     }
     
     //returns 0 if game is successfully started
-    public void startGame(){
-    
+    public void startGame() {
     }
     
     //returns time remaining in the game
@@ -149,6 +186,41 @@ public class Server{
             //use username
         */
         return 0;
+    }
+
+
+    public int login(String feedcode, String password){
+        StringBuilder url = new StringBuilder(serviceURL);
+        url.append("/user/login");
+        url.append("?feedcode="+feedcode);
+        url.append("&password="+password);
+
+        System.err.println(url.toString());
+
+        PostTask task = new PostTask(url.toString(), client);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            return -1;
+        }
+
+        try {
+            if (response.getBoolean("success")) {
+                return 0;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
     }
 
     /* Function to add user to database */
