@@ -152,7 +152,7 @@ public class DBHandler{
 	}
 	public static void addPlayer(String name, int isZombie, String feed, String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into users values("+ "'" +name + "' " + ", '" + feed + "', " + isZombie + ", '" + gameCode+ "')";
+		String command = "insert into users values('" +name + "' " + ", '" + feed + "', " + isZombie + ", '" + gameCode+ "')";
 		s.executeUpdate(command);
 	}
 	public static void removePlayer(String feedCode, String gameCode, Connection c)throws SQLException{
@@ -245,19 +245,24 @@ public class DBHandler{
 		Admin [] array = admins.toArray(new Admin[admins.size()]);
 		return array;
 	}
-	public static boolean isStarted(Connection c)throws SQLException{
+	public static boolean isStarted(String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from gameStats where endTime = 'initialEndDate'");
 		if (!rs.isBeforeFirst())
 			return false;
-		int bool = rs.getInt("hasBegun");
+		int bool = rs.getInt("hasBegun where gameCode = '" + gameCode + "'");
 		if(bool == 0) return false;
-		else return true;
+		else return true;//do you ever return true?
 	}
-	public static void start (Connection c)throws SQLException{
+	public static void start (String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		String command = "update gameStats set hasBegun = 1 where endTime = 'initialEndDate'";
+		String command = "update gameStats set hasBegun = 1 where gameCode = '" + gameCode + "'";
 		s.executeUpdate(command);
+	}
+	public static void newGame(String gameCode, Connection c) throws SQLException{
+		Statement s = c.createStatement();
+		String command = "insert into users games(
+
 	}
 }
 //do not store in plain text
