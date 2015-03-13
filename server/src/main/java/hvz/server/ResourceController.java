@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMapping; 
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,9 +18,9 @@ public class ResourceController {
 
 	/**
 	 * Registers a user and puts into the database
-	 * Valid JSON {"username": "username", "password":"password", "feedcode": "feedcode", "admin": true,
+	 * Valid JSON {"username": "username", "password":"password", "feedcode": "feedcode", "admin": true}
 	 */
-    @RequestMapping(value = "/user/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
     public String registerPlayer (@RequestBody String value) {
     	boolean failed = false;
     	//take in input and create variables for each entry
@@ -77,10 +77,57 @@ public class ResourceController {
 		}
     	return output.toString();
     }
+    
+    /**
+     * trys to login a user
+     * Valid JSON {"password": "password}
+     */
+    @RequestMapping(value = "/user/{identifier}", method = RequestMethod.POST)
+    public String login(@PathVariable("identifier") String identifier, @RequestBody String value) {
+    	boolean failed = false;
+    	//take in input and create variables for each entry
+		JSONObject input = null;
+		try {
+			input = new JSONObject(new JSONTokener(value));
+		} catch (JSONException e) {
+			failed = true;
+		}
+		String password = null;
+		try{
+			password = input.getString("password");
+		}
+		catch (JSONException e){
+			//error 
+			failed = true;
+		}
+		//check values are present
+		if (password == null){
+			failed = true;
+		}
+		User user = Server.getUser(identifier.toUpperCase());
+    	user = Server.loginUser(user, password);
+    	if (user == null)
+    		failed = true;
+		if (!failed){
+			return getPlayer(identifier.toUpperCase());
+    	}
+    	//Set up response object
+		JSONObject output = new JSONObject();
+    	try {
+    		//info no matter what
+			output.put(ServerConfiguration.success, !failed);
+		} catch (JSONException e) {
+			//really bad error
+			System.out.println("JSONException while attempting to login");
+			e.printStackTrace();
+		}
+    	return output.toString();
+    }
+    
     /**
      * Retrieves a user from the database and sends it to the client
      */
-    @RequestMapping(value = "/user/get/{identifier}", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/{identifier}", method = RequestMethod.GET)
     public String getPlayer (@PathVariable("identifier") String identifier){
 		boolean failed = false;
     	//Set up response object
@@ -111,7 +158,7 @@ public class ResourceController {
     	return output.toString();
     }
     
-    @RequestMapping(value = "/user/get", method = RequestMethod.GET)
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
     public String getAll () {
 		//Set up response object
 		JSONObject output = new JSONObject();
@@ -141,6 +188,64 @@ public class ResourceController {
 			//big error
 			e.printStackTrace();
 		}
+    	return output.toString();
+    }
+    
+    /**
+     * generates a feedcode
+     * Valid JSON {"admin": false}
+     */
+    @RequestMapping (value = "feedcode", method  = RequestMethod.POST)
+    public String generateFeedcode(@RequestBody String value){
+    	boolean failed = false;
+    	//take in input and create variables for each entry
+		JSONObject input = null;
+		try {
+			input = new JSONObject(new JSONTokener(value));
+		} catch (JSONException e) {
+			failed = true;
+		}
+		boolean admin = false;
+		try{
+			admin = input.getBoolean("admin");
+		}
+		catch (JSONException e){
+			//error 
+			failed = true;
+		}
+
+		if (failed){
+			admin = false;
+		}
+		boolean done = false;
+		String feedcode = null;
+		//loop through until unique feedcode has been generated
+		while(!done){
+	    	//generate a unique string code
+	    	feedcode = RandomStringUtils.randomAlphanumeric(ServerConfiguration.feedcodeLength -1);
+	    	//add prefix based on player or admin
+	    	char prefix;
+	    	if (admin)
+	    		prefix = ServerConfiguration.adminPrefix;
+	    	else
+	    		 prefix = ServerConfiguration.playerPrefix;
+	    	
+	    	feedcode = prefix + feedcode.toUpperCase();
+	    	done = !Server.checkRegistered(feedcode);
+		}
+    	//Set up response object
+    	JSONObject output = new JSONObject();
+    	//verify that feedcode isn't taken
+    	try {
+			output.put(ServerConfiguration.success, true);
+			output.put("feedcode", feedcode);
+	    	}
+		catch (JSONException e) {
+			// TODO Auto-generated catch block
+			System.out.println("JSONException while verifying generated feed code");
+			e.printStackTrace();
+		}
+    	
     	return output.toString();
     }
     
@@ -195,76 +300,5 @@ public class ResourceController {
     	}
     	return response.toString();
 
-    	}
-    
-    @RequestMapping("/user/login")
-    public String login(@RequestParam(value = "feedcode", required = false) String feedcode,
-    					@RequestParam(value = "password", required = false) String password){
-		//Set up response object
-		JSONObject response = new JSONObject();
-    	try {
-    		//verify that all parameters are valid
-    		if (feedcode == null || password == null){
-    			response.put(ServerConfiguration.success, false);
-    		}
-    		else {
-    			//if valid
-    			User user = Server.getUser(feedcode.toUpperCase());
-    			if (user != null){
-        			user = Server.loginUser(user, password);
-        			if (user != null){
-            			return getPlayer(feedcode.toUpperCase());
-        			}
-        			else {
-        				response.put(ServerConfiguration.success, false);
-        			}
-
-    			}
-    			else {
-    				response.put(ServerConfiguration.success, false);
-    			}
-
-    		}
-    		
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			System.out.println("JSONException while attempting to login");
-			e.printStackTrace();
-		}
-    	return response.toString();
-    }
-    
-    @RequestMapping ("feedcode/generate")
-    public String generateFeedcode(@RequestParam(value = "admin", defaultValue = "false")boolean admin){
-    	//generate a unique string code
-    	String feedcode = RandomStringUtils.randomAlphanumeric(ServerConfiguration.feedcodeLength -1);
-    	//add prefix based on player or admin
-    	char prefix;
-    	if (admin)
-    		prefix = ServerConfiguration.adminPrefix;
-    	else
-    		 prefix = ServerConfiguration.playerPrefix;
-    	
-    	feedcode = prefix + feedcode.toUpperCase();
-    	
-    	//Set up response object
-    	JSONObject response = new JSONObject();
-    	//verify that feedcode isn't taken
-    	try {
-	    	if (Server.checkRegistered(feedcode) == false){
-				response.put(ServerConfiguration.success, true);
-				response.put("feedcode", feedcode);
-	    	}
-	    	else { //if it is taken, regenrate one
-				return generateFeedcode(admin);
-	    	}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			System.out.println("JSONException while verifying generated feed code");
-			e.printStackTrace();
-		}
-    	
-    	return response.toString();
-    }
-    
+    	}    
 }

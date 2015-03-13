@@ -7,39 +7,23 @@ Server will run on 128.211.191.47:8080
 
 
 ####Server Mappings
-Registers a player to the game being run by the server.
-Needs a username and password.
-Can be supplied with a feedcode and an admin flag.
 
-`/user/register?username="username"&password="password[&feedcode="feedcode"&admin="false"]`
+`/user`
 
-Generates a feedcode, it is checked to make sure that it is already not taken but won't be held for the player until `/user/register` is called with that feedcode.
-Can be supplied with admin flag.
+ * POST: registers a user
+ 	* `{"username": value, "feedcode": value, "admin": value, "password": value}`
+ 	* username, feedcode, and password are strings, while admin is a boolean
+ * GET: gets all users
 
-`/feedcode/generate?admin="false"`
+`/user/identifier`
 
-Returns player information
-Needs the feedcode of that player
+ * POST: logs in a user
+ 	* `{"password": value}`
+ 	* password is a string
+ * GET: retrieves a single user
 
-`/user/get?feedcode="feedcode"`
+`/feedcode`
 
-Returns all players
-
-`/user/getall`
-
-Preforms tag action.
-Needs the feedcodes of the tagger and the tagged.
-
-`/tag?tagger="tagger"&tagged="tagged"`
-
-Starts the game session.
-
-`/game/begin`
-
-Checks to see if game session is running.
-
-`/game/isstarted`
-
-Logs an existing player into the game.
-
-`/user/login?feedcode="feedcode"&password="password"`
+ * POST: generates a feedcode
+ 	* `{"admin", value}`
+ 	* admin is a boolean
