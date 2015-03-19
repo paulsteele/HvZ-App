@@ -65,7 +65,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
-                        android:hint="Username" />
+                        android:hint="@string/usrprompt" />
 
                 </LinearLayout>
 
@@ -81,7 +81,7 @@
                     <CheckBox
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Admin?"
+                            android:text="@string/adminprompt"
                             android:id="@+id/admin_check"
                             android:button="@null"
                             android:drawableRight="?android:attr/listChoiceIndicatorMultiple" />
@@ -96,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="text"
                         android:layout_marginBottom="8dp"
-                        android:hint="Feedcode" />
+                        android:hint="@string/codeprompt" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -117,7 +117,8 @@
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
                         android:clickable="true"
-                        android:onClick="getCode" />
+                        android:onClick="getCode"
+                        android:layout_marginBottom="8dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -128,7 +129,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:hint="Password" />
+                        android:hint="@string/pwprompt"
+                        android:layout_marginBottom="8dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -139,7 +141,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:hint="Re-type password" />
+                        android:hint="@string/passreprompt" />
                 </LinearLayout>
 
                 <Button

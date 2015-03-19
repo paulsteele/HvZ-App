@@ -11,6 +11,10 @@ import android.widget.PopupWindow;
 import android.content.Intent;
 import android.widget.TextView;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * Created by manasigoel on 3/4/15.
  */
@@ -66,9 +70,10 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     public void login(View view){
-        String feedcode = ((EditText)findViewById(R.id.feedcode)).getText().toString();
+        String username = ((EditText)findViewById(R.id.username)).getText().toString();
         String password = ((EditText)findViewById(R.id.password)).getText().toString();
-        int status = server.login(feedcode, password);
+        String hash = hash(password);
+        int status = server.login(username, hash);
         if (status == 0) {
             TextView msg = (TextView) findViewById(R.id.login_msg);
             msg.setText("Success!");
@@ -88,5 +93,30 @@ public class LoginActivity extends ActionBarActivity {
     public void register(View view){
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
+    }
+
+    public String hash(String string)
+    {
+        MessageDigest sha1 = null;
+        try
+        {
+            sha1 = MessageDigest.getInstance("SHA-1");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            sha1.update(string.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException | NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        byte[] hash = sha1.digest();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < hash.length; i++) {
+            sb.append(Integer.toString((hash[i] & 0xff) + 0x100, 16).substring(1));
+        }
+
+        return sb.toString();
     }
 }
