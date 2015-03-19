@@ -71,14 +71,22 @@ public class RegisterActivity extends ActionBarActivity {
         /* Get user inputs */
         String user = ((EditText) findViewById(R.id.userinput)).getText().toString();
         String pass = ((EditText) findViewById(R.id.passinput)).getText().toString();
+        String repass = ((EditText) findViewById(R.id.passreinput)).getText().toString();
         String feedcode = ((EditText) findViewById(R.id.feedcodeinput)).getText().toString();
         boolean admin = ((CheckBox) findViewById(R.id.admin_check)).isChecked();
 
-        System.err.println("user: " + user + "\nadmin: " + admin + "\nfeedcode: " + feedcode + "\npass: " + pass + "");
-
         TextView msg = (TextView) findViewById(R.id.register_msg);
+
+        System.err.println("user: " + user + "\nadmin: " + admin + "\nfeedcode: " + feedcode + "\npass1: " + pass + "\npass2: " + repass);
+        if (!pass.equals(repass)) {
+            msg.setText("Passwords do not match.");
+            msg.setTextColor(Color.RED);
+            msg.setVisibility(View.VISIBLE);
+            return;
+        }
+
         if (user.equals("") || pass.equals("") || feedcode.equals("")) {
-            msg.setText("Username and/or password and/or feedcode empty.");
+            msg.setText("Field(s) are empty");
             msg.setTextColor(Color.RED);
         }
         else {
