@@ -45,20 +45,7 @@ public class LoginActivity extends ActionBarActivity {
         if (id == R.id.action_main) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-            return true;
-        }
-        else if (id == R.id.action_register) {
-            Intent intent = new Intent(this, RegisterActivity.class);
-            startActivity(intent);
-            return true;
-        }
-        else if (id == R.id.action_login) {
-            return true;
-        }
-        else if (id == R.id.action_plist) {
-            Intent intent = new Intent(this, PlayerListActivity.class);
-            startActivity(intent);
-            return true;
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
