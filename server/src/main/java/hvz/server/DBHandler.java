@@ -263,12 +263,12 @@ public class DBHandler{
 		Statement s = c.createStatement();
 		String command = "insert into games( '" + gameCode + "')";
 	}
-	public static boolean isGamecodeTaken(String gameCode, Connection c){
+	public static boolean isGamecodeTaken(String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from games");
 		while(rs.next()){
 			String code = rs.getString("gameCode");
-			if(code.equals(gameCode)
+			if(code.equals(gameCode))
 				return true;
 			else continue;
 		}
