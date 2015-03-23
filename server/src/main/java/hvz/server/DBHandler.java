@@ -34,7 +34,7 @@ public class DBHandler{
 	public static void createTable(Connection c) {
 		String command = "CREATE TABLE users " + 
 				"(username		varchar(25), " + 
-				"feedCode 		varchar(25)," + 
+				"feedCode 		varchar(40)," + 
 				"isZombie	 	int)" +
 				"gameCode		varchar(25)";
 		try {
@@ -66,7 +66,7 @@ public class DBHandler{
 		}
 		
 		command = "CREATE TABLE passwords " + 
-				"(feedCode		varchar(25), " + 
+				"(feedCode		varchar(40), " + 
 				"password 		varchar(25))" + 
 				"gameCode		varchar(25)";
 		try {
@@ -77,8 +77,8 @@ public class DBHandler{
 			e.printStackTrace();
 		}
 		command = "CREATE TABLE tags" + 
-				"(tagger		varchar(25), " + 
-				"tagged 		varchar(25))" +
+				"(tagger		varchar(40), " + 
+				"tagged 		varchar(40))" +
 				"gameCode		varchar(25)";
 		try {
 			Statement s = c.createStatement();
@@ -89,7 +89,7 @@ public class DBHandler{
 		}
 		command = "CREATE TABLE admins " + 
 				"(username		varchar(25), " + 
-				"feedCode 		varchar(25))" +
+				"feedCode 		varchar(40))" +
 				"gameCode		varchar(25)";
 		try {
 			Statement s = c.createStatement();
@@ -261,11 +261,17 @@ public class DBHandler{
 	}
 	public static void newGame(String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into users games(
-
+		String command = "insert into games( '" + gameCode + "')";
+	}
+	public static boolean isGamecodeTaken(String gameCode, Connection c) throws SQLException{
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from games");
+		while(rs.next()){
+			String code = rs.getString("gameCode");
+			if(code.equals(gameCode))
+				return true;
+			else continue;
+		}
+		return false;
 	}
 }
-//do not store in plain text
-//game id table
-//add double check for same password	
-//game stats end time if game started or not 
