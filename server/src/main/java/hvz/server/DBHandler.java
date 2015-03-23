@@ -35,7 +35,7 @@ public class DBHandler{
 		String command = "CREATE TABLE users " + 
 				"(username		varchar(25), " + 
 				"feedCode 		varchar(40)," + 
-				"isZombie	 	int" +
+				"isZombie	 	int, " +
 				"gameCode		varchar(25))";
 		try {
 			Statement s = c.createStatement();
@@ -218,7 +218,7 @@ public class DBHandler{
 	public static  Player [] getAllUsers(String gameCode, Connection c)throws SQLException{
 		LinkedList<Player> users = new LinkedList<Player>();
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from  users where gameCode = '" + gameCode + "'");
+		ResultSet rs = s.executeQuery("select * from users where gameCode = '" + gameCode + "'");
 		while(rs.next()){
 			String username = rs.getString("username");
 			String feedcode = rs.getString("feedCode");
