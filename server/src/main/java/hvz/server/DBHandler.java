@@ -263,8 +263,15 @@ public class DBHandler{
 		Statement s = c.createStatement();
 		String command = "insert into games( '" + gameCode + "')";
 	}
+	public static boolean isGamecodeTaken(String gameCode, Connection c){
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from games");
+		while(rs.next()){
+			String code = rs.getString("gameCode");
+			if(code.equals(gameCode)
+				return true;
+			else continue;
+		}
+		return false;
+	}
 }
-//do not store in plain text
-//game id table
-//add double check for same password	
-//game stats end time if game started or not 
