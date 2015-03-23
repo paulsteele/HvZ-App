@@ -26,4 +26,14 @@
         android:id="@+id/tag"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="80dp" />
+
+    <TextView
+        android:id="@+id/tag_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        android:layout_marginTop="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp" />
 </LinearLayout>
