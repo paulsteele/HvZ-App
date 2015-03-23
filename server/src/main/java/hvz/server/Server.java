@@ -136,6 +136,15 @@ public class Server {
     	return false;
     }
     
+    public static void createGame(String gamecode){
+    	try {
+			DBHandler.newGame(gamecode, c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
     public static String generateGamecode(){
     	boolean done = false;
     	String gamecode = null;
@@ -143,6 +152,7 @@ public class Server {
 	    	gamecode = RandomStringUtils.randomAlphanumeric(ServerConfiguration.feedcodeLength -1);
 	    	gamecode = 'G'+ gamecode.toUpperCase();
 	    	//check if exists
+	    	done = !checkGameExisits(gamecode);
     	}
     	return gamecode;
     }
