@@ -277,7 +277,7 @@ public class DBHandler{
 	}
 	public static boolean isUsernameTaken(String username, String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from users");
+		ResultSet rs = s.executeQuery("select * from users where gameCode = '" + gameCode + "'");
 		while(rs.next()){
 			String name = rs.getString("username");
 			if(username.equals(name))
