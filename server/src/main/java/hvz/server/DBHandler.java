@@ -262,6 +262,7 @@ public class DBHandler{
 	public static void newGame(String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
 		String command = "insert into games( '" + gameCode + "')";
+		s.executeUpdate(command);
 	}
 	public static boolean isGamecodeTaken(String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
@@ -274,6 +275,7 @@ public class DBHandler{
 		}
 		return false;
 	}
+	//public static boolean isUsernameTake(String username, Connection c);
 	public static void changeGamecode(String feedCode, String newGame, String oldGame, Connection c) throws SQLException{
 		Statement s = c.createStatement();
 		String command = "update users set gameCode = '" + newGame + "' where feedCode = '" + feedCode + "' and gameCode = '" + oldGame + "'" ;   
