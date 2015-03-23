@@ -44,34 +44,30 @@ public class Server{
     
     //returns a user using its unique ID
     public User getPlayer(String code){
-		/*StringBuilder url = new StringBuilder(serviceURL);
-		url.append("/user/get");
-		url.append("?feedcode="+code);
-		
-		System.err.println(url.toString());
-		PostTask post = new PostTask(url.toString(), client);
-		JSONObject response = null;
-		String username, feedcode;
-		boolean isZombie, isAdmin;
-		try {
-			response = post.execute().get();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();			}
+        GetTask task = new GetTask(serviceURL + "/user/" + code, client);
 
-		if (response == null) {
-			return null;
-		}
-		try {
-			username = response.getString("username");
-			feedcode = response.getString("feedcode");
-			isAdmin = response.getBoolean("isAdmin");
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		
-		return new User(username, feedcode, isAdmin);*/
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            Log.e("getUser", "Server reponse error");
+            return null;
+        }
+
+        try {
+            if (response.getBoolean("success")) {
+                Log.e("getUser", "Success");
+                return new User(response.getString("username"), response.getString("feedcode"),
+                        response.getBoolean("isZombie"), response.getBoolean("isAdmin"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
     
