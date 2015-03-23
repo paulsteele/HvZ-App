@@ -48,7 +48,7 @@ public class DBHandler{
 		command = "CREATE TABLE gameStats" + 
 				"(endTime 	varchar(25), " +
 				"hasBegun	int)" +
-				"gameCode	varchar(25)";		//1 for true, 0 for false
+				"gameCode	varchar(25))";		//1 for true, 0 for false
 		try {
 			Statement s = c.createStatement();
 			s.executeUpdate(command);
@@ -68,7 +68,7 @@ public class DBHandler{
 		command = "CREATE TABLE passwords " + 
 				"(feedCode		varchar(40), " + 
 				"password 		varchar(25))" + 
-				"gameCode		varchar(25)";
+				"gameCode		varchar(25))";
 		try {
 			Statement s = c.createStatement();
 			s.executeUpdate(command);
@@ -79,7 +79,7 @@ public class DBHandler{
 		command = "CREATE TABLE tags" + 
 				"(tagger		varchar(40), " + 
 				"tagged 		varchar(40))" +
-				"gameCode		varchar(25)";
+				"gameCode		varchar(25))";
 		try {
 			Statement s = c.createStatement();
 			s.executeUpdate(command);
@@ -90,7 +90,7 @@ public class DBHandler{
 		command = "CREATE TABLE admins " + 
 				"(username		varchar(25), " + 
 				"feedCode 		varchar(40))" +
-				"gameCode		varchar(25)";
+				"gameCode		varchar(25))";
 		try {
 			Statement s = c.createStatement();
 			s.executeUpdate(command);
@@ -99,7 +99,16 @@ public class DBHandler{
 			e.printStackTrace();
 		}
 		command = "CREATE TABLE games " + 
-						"gameCode	varchar(25)";
+						"(gameCode	varchar(25))";
+		try {
+			Statement s = c.createStatement();
+			s.executeUpdate(command);
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
+		command = "CREATE TABLE missions " + 
+						"(gameCode	varchar(25))";
 		try {
 			Statement s = c.createStatement();
 			s.executeUpdate(command);
@@ -228,6 +237,19 @@ public class DBHandler{
 		s.close();
 		Admin [] array = admins.toArray(new Admin[admins.size()]);
 		return array;
+	}
+	public static String [] getAllGames(Connection c) throws SQLException{
+		LinkedList<String> games = new LinkedList<String>();
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from  games");
+		while(rs.next()){
+			String gc = rs.getString("gameCode");
+			games.add(gc);
+		}
+		rs.close();
+		s.close();
+		String [] gameArray = games.toArray(new String[games.size()]);
+		return gameArray;
 	}
 	public static boolean isStarted(String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
