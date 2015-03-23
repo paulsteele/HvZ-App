@@ -57,6 +57,16 @@ public class DBHandler{
 			e.printStackTrace();
 		}
 
+		command = "CREATE TABLE reviveCodes" + 
+				"(reviveCode varchar(25), " +
+				"gameCode	varchar(25))" ;//1 for true, 0 for false
+		try {
+			Statement s = c.createStatement();
+			s.executeUpdate(command);
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
 		
 		command = "CREATE TABLE passwords " + 
 				"(feedCode		varchar(40), " + 
@@ -104,7 +114,8 @@ public class DBHandler{
 						"(gameCode	varchar(25), " +
 						"humanObjective	varchar(500), " +
 						"zombieObective	varchar(500), " +
-						"isCompleted		int)";
+						"isCompleted	int " +
+						"title			varchar(25))";
 		try {
 			Statement s = c.createStatement();
 			s.executeUpdate(command);
@@ -263,7 +274,7 @@ public class DBHandler{
 	}
 	public static void newGame(String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into games( '" + gameCode + "')";
+		String command = "insert into games values('" + gameCode + "')";
 		s.executeUpdate(command);
 	}
 	public static boolean isGamecodeTaken(String gameCode, Connection c) throws SQLException{
