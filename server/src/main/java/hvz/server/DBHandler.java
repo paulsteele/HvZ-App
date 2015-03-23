@@ -101,7 +101,7 @@ public class DBHandler{
 			e.printStackTrace();
 		}
 		command = "CREATE TABLE missions " + 
-						"(gameCode	varchar(25) " +
+						"(gameCode	varchar(25), " +
 						"humanObjective	varchar(500), " +
 						"zombieObective	varchar(500), " +
 						"isCompleted		int)";
