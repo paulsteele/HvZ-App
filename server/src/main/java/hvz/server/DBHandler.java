@@ -35,8 +35,8 @@ public class DBHandler{
 		String command = "CREATE TABLE users " + 
 				"(username		varchar(25), " + 
 				"feedCode 		varchar(40)," + 
-				"isZombie	 	int)" +
-				"gameCode		varchar(25)";
+				"isZombie	 	int, " +
+				"gameCode		varchar(25))";
 		try {
 			Statement s = c.createStatement();
 			s.executeUpdate(command);
@@ -47,8 +47,8 @@ public class DBHandler{
 		
 		command = "CREATE TABLE gameStats" + 
 				"(endTime 	varchar(25), " +
-				"hasBegun	int)" +
-				"gameCode	varchar(25)";		//1 for true, 0 for false
+				"hasBegun	int, " +
+				"gameCode	varchar(25))";		//1 for true, 0 for false
 		try {
 			Statement s = c.createStatement();
 			s.executeUpdate(command);
@@ -56,19 +56,22 @@ public class DBHandler{
 		catch (SQLException e){
 			e.printStackTrace();
 		}
-		try{
+
+		command = "CREATE TABLE reviveCodes" + 
+				"(reviveCode varchar(25), " +
+				"gameCode	varchar(25))" ;//1 for true, 0 for false
+		try {
 			Statement s = c.createStatement();
-			command = "insert into gameStats values('initialEndDate', 0)";
-			s.execute(command);
+			s.executeUpdate(command);
 		}
-		catch(SQLException e){
+		catch (SQLException e){
 			e.printStackTrace();
 		}
 		
 		command = "CREATE TABLE passwords " + 
 				"(feedCode		varchar(40), " + 
-				"password 		varchar(25))" + 
-				"gameCode		varchar(25)";
+				"password 		varchar(25), " + 
+				"gameCode		varchar(25))";
 		try {
 			Statement s = c.createStatement();
 			s.executeUpdate(command);
@@ -78,8 +81,8 @@ public class DBHandler{
 		}
 		command = "CREATE TABLE tags" + 
 				"(tagger		varchar(40), " + 
-				"tagged 		varchar(40))" +
-				"gameCode		varchar(25)";
+				"tagged 		varchar(40), " +
+				"gameCode		varchar(25))";
 		try {
 			Statement s = c.createStatement();
 			s.executeUpdate(command);
@@ -89,8 +92,8 @@ public class DBHandler{
 		}
 		command = "CREATE TABLE admins " + 
 				"(username		varchar(25), " + 
-				"feedCode 		varchar(40))" +
-				"gameCode		varchar(25)";
+				"feedCode 		varchar(40), " +
+				"gameCode		varchar(25))";
 		try {
 			Statement s = c.createStatement();
 			s.executeUpdate(command);
@@ -98,32 +101,29 @@ public class DBHandler{
 		catch (SQLException e){
 			e.printStackTrace();
 		}
-
+		command = "CREATE TABLE games" + 
+						"(gameCode	varchar(25))";
+		try {
+			Statement s = c.createStatement();
+			s.executeUpdate(command);
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
+		command = "CREATE TABLE missions " + 
+						"(gameCode	varchar(25), " +
+						"humanObjective	varchar(500), " +
+						"zombieObective	varchar(500), " +
+						"isCompleted	int " +
+						"title			varchar(25))";
+		try {
+			Statement s = c.createStatement();
+			s.executeUpdate(command);
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
 	}	
-	public static void makeGameTable(Connection c){
-		String command = "CREATE TABLE games " + 
-						"gameCode	varchar(25)";
-		try {
-			Statement s = c.createStatement();
-			s.executeUpdate(command);
-		}
-		catch (SQLException e){
-			e.printStackTrace();
-		}
-		
-	}
-	/*public static void main (String [] args) throws SQLException{//for testing
-		Connection c = connect();
-		addPlayer("kyle", 1, "0owqiejflsdkjf", c);
-		addPlayer("ben", 1, "12345", c);
-		addPlayer("logan", 1, "0owqiejflsdkjf", c);
-		addPlayer("paul", 1, "0owqiejflsdkjf", c);
-		addPlayer("sam", 1, "0owqiejflsdkjf", c);
-		Player s = getPlayer("12345", c);
-		System.out.println("the player with id 12345 is: " + s.username);
-		Player p = getPlayer("12345", c);
-		disconnect(c);
-	}*/
 	public static Connection connect(){
 		try{
 		Class.forName("org.sqlite.JDBC");
@@ -218,7 +218,7 @@ public class DBHandler{
 	public static  Player [] getAllUsers(String gameCode, Connection c)throws SQLException{
 		LinkedList<Player> users = new LinkedList<Player>();
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from  users where gameCode = '" + gameCode + "'");
+		ResultSet rs = s.executeQuery("select * from users where gameCode = '" + gameCode + "'");
 		while(rs.next()){
 			String username = rs.getString("username");
 			String feedcode = rs.getString("feedCode");
@@ -245,6 +245,19 @@ public class DBHandler{
 		Admin [] array = admins.toArray(new Admin[admins.size()]);
 		return array;
 	}
+	public static String [] getAllGames(Connection c) throws SQLException{
+		LinkedList<String> games = new LinkedList<String>();
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from  games");
+		while(rs.next()){
+			String gc = rs.getString("gameCode");
+			games.add(gc);
+		}
+		rs.close();
+		s.close();
+		String [] gameArray = games.toArray(new String[games.size()]);
+		return gameArray;
+	}
 	public static boolean isStarted(String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from gameStats where endTime = 'initialEndDate'");
@@ -261,10 +274,44 @@ public class DBHandler{
 	}
 	public static void newGame(String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into games( '" + gameCode + "')";
+		String command = "insert into games values('" + gameCode + "')";
+		s.executeUpdate(command);
+	}
+	public static boolean isGamecodeTaken(String gameCode, Connection c) throws SQLException{
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from games");
+		while(rs.next()){
+			String code = rs.getString("gameCode");
+			if(code.equals(gameCode))
+				return true;
+			else continue;
+		}
+		return false;
+	}
+	public static boolean isUsernameTaken(String username, String gameCode, Connection c) throws SQLException{
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from users where gameCode = '" + gameCode + "'");
+		while(rs.next()){
+			String name = rs.getString("username");
+			if(username.equals(name))
+				return true;
+			else continue;
+		}
+		return false;	
+	}
+	public static void changeGamecode(String feedCode, String newGame, String oldGame, Connection c) throws SQLException{
+		Statement s = c.createStatement();
+		String command = "update users set gameCode = '" + newGame + "' where feedCode = '" + feedCode + "' and gameCode = '" + oldGame + "'" ;   
+		s.executeUpdate(command);	
+	}
+	public static void addMission(String gameCode, String humanObjective, String zombieObjective, int isCompleted, String title, Connection c) throws SQLException{
+		Statement s = c.createStatement();
+		String command = "insert into missions values('" +gameCode + "' " + ", '" + humanObjective + "', " + zombieObjective + ", 0, '" + title+ "')";
+		s.executeUpdate(command);
+	}
+	public static void completedMission(String gameCode, String title, Connection c) throws SQLException {
+		Statement s = c.createStatement();
+		String command = "update missions set isCompleted = 1, where gameCode = " + gameCode + "and title = " + title + "'";
+		s.executeUpdate(command);		
 	}
 }
-//do not store in plain text
-//game id table
-//add double check for same password	
-//game stats end time if game started or not 

@@ -84,4 +84,11 @@ public class MainActivity extends ActionBarActivity {
         Intent intent = new Intent(this, PlayerListActivity.class);
         startActivity(intent);
     }
+
+    /* Tag players */
+    public void tag(View view) {
+        Intent intent = new Intent(this, TagActivity.class);
+        startActivity(intent);
+        intent.putExtra("feedcode");
+    }
 }
