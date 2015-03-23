@@ -309,4 +309,9 @@ public class DBHandler{
 		String command = "insert into missions values('" +gameCode + "' " + ", '" + humanObjective + "', " + zombieObjective + ", 0, '" + title+ "')";
 		s.executeUpdate(command);
 	}
+	public static void completedMission(String gameCode, String title, Connection c) throws SQLException {
+		Statement s = c.createStatement();
+		String command = "update missions set isCompleted = 1, where gameCode = " + gameCode + "and title = " + title + "'";
+		s.executeUpdate(command);		
+	}
 }
