@@ -274,9 +274,9 @@ public class DBHandler{
 		}
 		return false;
 	}
-	public static void changeGamecode(String feedCode, String gameCode, Connection c) throws SQLException{
+	public static void changeGamecode(String feedCode, String newGame, String oldGame, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		String command = "update users set gameCode = '" + gameCode + "' where feedCode = '" + feedCode + "'";   
+		String command = "update users set gameCode = '" + newGame + "' where feedCode = '" + feedCode + "' and gameCode = '" + oldGame + "'" ;   
 		s.executeUpdate(command);	
 	}
 }
