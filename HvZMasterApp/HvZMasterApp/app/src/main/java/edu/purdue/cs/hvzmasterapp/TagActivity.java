@@ -59,7 +59,7 @@ public class TagActivity extends ActionBarActivity {
         }
         else {
             TextView msg = (TextView) findViewById(R.id.tag_msg);
-            msg.setText("Username/password does not match");
+            msg.setText("Failed to tag player");
             msg.setTextColor(Color.RED);
             msg.setVisibility(View.VISIBLE);
         }

@@ -66,9 +66,9 @@ public class MainActivity extends ActionBarActivity {
     }
 
     /* Tag players */
-    public void tagging(View view) {
+    public void tag(View view) {
         Intent intent = new Intent(this, TagActivity.class);
         startActivity(intent);
-        intent.getStringExtra("feedcode");
+        intent.putExtra("feedcode");
     }
 }
