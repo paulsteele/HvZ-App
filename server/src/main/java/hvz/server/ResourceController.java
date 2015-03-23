@@ -20,9 +20,10 @@ public class ResourceController {
 	 * Registers a user and puts into the database
 	 * Valid JSON {"username": "username", "password":"password", "feedcode": "feedcode", "admin": true}
 	 */
-    @RequestMapping(value = "/user", method = RequestMethod.POST)
-    public String registerPlayer (@RequestBody String value) {
-    	boolean failed = false;
+    @RequestMapping(value = "/{game}/user", method = RequestMethod.POST)
+    public String registerPlayer (@RequestBody String value, @PathVariable("game") String game) {
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+
     	//take in input and create variables for each entry
 		JSONObject input = null;
 		try {
@@ -49,7 +50,7 @@ public class ResourceController {
 			failed = true;
 		}
 		//check feedcode not taken
-		if (!failed && Server.checkRegistered(feedcode) == true){
+		if (!failed && Server.checkRegistered(feedcode, game) == true){
 			failed = true;
 		}
 		//Create a user from info
@@ -59,7 +60,7 @@ public class ResourceController {
     			user = new Admin(username, feedcode);
     		else //create a player
     			user = new Player(username, feedcode);
-    		Server.registerUser(user, password);
+    		Server.registerUser(user, password, game);
 		}
     	//Set up response object
 		JSONObject output = new JSONObject();
@@ -82,9 +83,10 @@ public class ResourceController {
      * trys to login a user
      * Valid JSON {"password": "password}
      */
-    @RequestMapping(value = "/user/{identifier}", method = RequestMethod.POST)
-    public String login(@PathVariable("identifier") String identifier, @RequestBody String value) {
-    	boolean failed = false;
+    @RequestMapping(value = "/{game}/user/{identifier}", method = RequestMethod.POST)
+    public String login(@PathVariable("identifier") String identifier, @RequestBody String value, 
+    		@PathVariable("game") String game) {
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	//take in input and create variables for each entry
 		JSONObject input = null;
 		try {
@@ -104,12 +106,12 @@ public class ResourceController {
 		if (password == null){
 			failed = true;
 		}
-		User user = Server.getUser(identifier.toUpperCase());
-    	user = Server.loginUser(user, password);
+		User user = Server.getUser(identifier, game);
+    	user = Server.loginUser(user, password, game);
     	if (user == null)
     		failed = true;
 		if (!failed){
-			return getPlayer(identifier.toUpperCase());
+			return getPlayer(identifier, game);
     	}
     	//Set up response object
 		JSONObject output = new JSONObject();
@@ -127,13 +129,13 @@ public class ResourceController {
     /**
      * Retrieves a user from the database and sends it to the client
      */
-    @RequestMapping(value = "/user/{identifier}", method = RequestMethod.GET)
-    public String getPlayer (@PathVariable("identifier") String identifier){
-		boolean failed = false;
+    @RequestMapping(value = "/{game}/user/{identifier}", method = RequestMethod.GET)
+    public String getPlayer (@PathVariable("identifier") String identifier, @PathVariable("game") String game){
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	//Set up response object
 		JSONObject output = new JSONObject();
 		//grab the user
-		User user = Server.getUser(identifier);
+		User user = Server.getUser(identifier, game);
 		failed = (user == null);
     	try {
 			if (!failed) { //means user is found
@@ -158,13 +160,13 @@ public class ResourceController {
     	return output.toString();
     }
     
-    @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public String getAll () {
+    @RequestMapping(value = "/{game}/user", method = RequestMethod.GET)
+    public String getAll (@PathVariable("game") String game) {
 		//Set up response object
 		JSONObject output = new JSONObject();
 		//set JSONArray and holder array
 		JSONArray users = new JSONArray();
-		User[] userObject = Server.getAllUsers();
+		User[] userObject = Server.getAllUsers(game);
     	try {
 			for (int i = 0; i < userObject.length; i++){
 				JSONObject user = new JSONObject();
@@ -195,9 +197,9 @@ public class ResourceController {
      * generates a feedcode
      * Valid JSON {"admin": false}
      */
-    @RequestMapping (value = "feedcode", method  = RequestMethod.POST)
-    public String generateFeedcode(@RequestBody String value){
-    	boolean failed = false;
+    @RequestMapping (value = "{game}/feedcode", method  = RequestMethod.POST)
+    public String generateFeedcode(@RequestBody String value, @PathVariable("game") String game){
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	//take in input and create variables for each entry
 		JSONObject input = null;
 		try {
@@ -231,7 +233,7 @@ public class ResourceController {
 	    		 prefix = ServerConfiguration.playerPrefix;
 	    	
 	    	feedcode = prefix + feedcode.toUpperCase();
-	    	done = !Server.checkRegistered(feedcode);
+	    	done = !Server.checkRegistered(feedcode, game);
 		}
     	//Set up response object
     	JSONObject output = new JSONObject();
@@ -249,9 +251,10 @@ public class ResourceController {
     	return output.toString();
     }
     
-    @RequestMapping("/tag")
+    @RequestMapping("/{game}/tag")
     public String tag(@RequestParam(value = "tagger", required = false) String tagger,
-    					@RequestParam(value = "tagged", required = false) String tagged){
+    					@RequestParam(value = "tagged", required = false) String tagged,
+    					@PathVariable("game") String game){
 		//Set up response object
 		JSONObject response = new JSONObject();
     	try {
@@ -271,14 +274,15 @@ public class ResourceController {
     	return response.toString();
     }
     
-    @RequestMapping("/game/begin")
-    public String beginGame () {
-		//Set up response object
+    @RequestMapping("/{game}/begin")
+    public String beginGame (@PathVariable("game") String game) {
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	//Set up response object
 		JSONObject response = new JSONObject();
     	try {
     		//start the game
-    		Server.begin();
-    		response.put(ServerConfiguration.success, true);
+    		Server.begin(game);
+    		response.put(ServerConfiguration.success, !failed);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			System.out.println("JSONException while trying to begin game");
@@ -286,13 +290,15 @@ public class ResourceController {
 		}
     	return response.toString();
     }
-    @RequestMapping("/game/isstarted")
-    	public String isStarted() {
-		//Set up response object
+    
+    @RequestMapping("/{game}/isstarted")
+    	public String isStarted(@PathVariable("game") String game) {
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	//Set up response object
 		JSONObject response = new JSONObject();
     	try{
-        	response.put(ServerConfiguration.success, true);
-        	response.put("started", Server.checkBegun());
+        	response.put(ServerConfiguration.success, !failed);
+        	response.put("started", Server.checkBegun(game));
     	}
     	catch (JSONException e){
     		e.printStackTrace();
