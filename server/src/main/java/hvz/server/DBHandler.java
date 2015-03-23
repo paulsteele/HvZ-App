@@ -304,4 +304,9 @@ public class DBHandler{
 		String command = "update users set gameCode = '" + newGame + "' where feedCode = '" + feedCode + "' and gameCode = '" + oldGame + "'" ;   
 		s.executeUpdate(command);	
 	}
+	public static void addMission(String gameCode, String humanObjective, String zombieObjective, int isCompleted, String title, Connection c) throws SQLException{
+		Statement s = c.createStatement();
+		String command = "insert into missions values('" +gameCode + "' " + ", '" + humanObjective + "', " + zombieObjective + ", 0, '" + title+ "')";
+		s.executeUpdate(command);
+	}
 }
