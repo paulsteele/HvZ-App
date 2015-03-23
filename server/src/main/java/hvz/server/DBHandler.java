@@ -98,10 +98,7 @@ public class DBHandler{
 		catch (SQLException e){
 			e.printStackTrace();
 		}
-
-	}	
-	public static void makeGameTable(Connection c){
-		String command = "CREATE TABLE games " + 
+		command = "CREATE TABLE games " + 
 						"gameCode	varchar(25)";
 		try {
 			Statement s = c.createStatement();
@@ -110,20 +107,7 @@ public class DBHandler{
 		catch (SQLException e){
 			e.printStackTrace();
 		}
-		
-	}
-	/*public static void main (String [] args) throws SQLException{//for testing
-		Connection c = connect();
-		addPlayer("kyle", 1, "0owqiejflsdkjf", c);
-		addPlayer("ben", 1, "12345", c);
-		addPlayer("logan", 1, "0owqiejflsdkjf", c);
-		addPlayer("paul", 1, "0owqiejflsdkjf", c);
-		addPlayer("sam", 1, "0owqiejflsdkjf", c);
-		Player s = getPlayer("12345", c);
-		System.out.println("the player with id 12345 is: " + s.username);
-		Player p = getPlayer("12345", c);
-		disconnect(c);
-	}*/
+	}	
 	public static Connection connect(){
 		try{
 		Class.forName("org.sqlite.JDBC");
