@@ -20,7 +20,8 @@
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/humans"
             android:textColor="@color/bright_foreground_material_light"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:id="@+id/" />
 
         <TextView
             android:layout_width="0dp"
