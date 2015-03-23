@@ -19,10 +19,10 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (!isLoggedIn) {
+        /*if (!isLoggedIn) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivityForResult(intent, 1);
-        }
+        }*/
     }
 
     @Override
@@ -36,22 +36,18 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_main) {
-            return true;
         }
         else if (id == R.id.action_register) {
             Intent intent = new Intent(this, RegisterActivity.class);
             startActivity(intent);
-            return true;
         }
         else if (id == R.id.action_login) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
-            return true;
         }
         else if (id == R.id.action_plist) {
             Intent intent = new Intent(this, PlayerListActivity.class);
             startActivity(intent);
-            return true;
         }
 
         return super.onOptionsItemSelected(item);

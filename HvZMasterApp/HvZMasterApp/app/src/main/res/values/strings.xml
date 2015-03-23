@@ -17,11 +17,13 @@
     <string name="action_main">Main</string>
     <string name="action_register">Register</string>
     <string name="getcode">Get Feed Code</string>
-    <string name="pwprompt">Password:</string>
-    <string name="usrprompt">Username:</string>
-    <string name="codeprompt">Feed code:</string>
+    <string name="pwprompt">Enter password</string>
+    <string name="usrprompt">Enter username</string>
+    <string name="codeprompt">Enter feed code</string>
+    <string name="adminprompt">Admin?</string>
+    <string name="passreprompt">Re-type password</string>
     <string name="title_activity_plist">Player List</string>
-    <string name="Zombies">Zombies</string>
-    <string name="zombies">Zombies</string>
     <string name="humans">Humans</string>
+    <string name="zombies">Zombies</string>
+    <string name="login">Login</string>
 </resources>
