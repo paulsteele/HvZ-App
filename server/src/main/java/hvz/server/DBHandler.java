@@ -275,7 +275,17 @@ public class DBHandler{
 		}
 		return false;
 	}
-	//public static boolean isUsernameTake(String username, Connection c);
+	public static boolean isUsernameTaken(String username, String gameCode, Connection c) throws SQLException{
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from users");
+		while(rs.next()){
+			String name = rs.getString("username");
+			if(username.equals(name))
+				return true;
+			else continue;
+		}
+		return false;	
+	}
 	public static void changeGamecode(String feedCode, String newGame, String oldGame, Connection c) throws SQLException{
 		Statement s = c.createStatement();
 		String command = "update users set gameCode = '" + newGame + "' where feedCode = '" + feedCode + "' and gameCode = '" + oldGame + "'" ;   
