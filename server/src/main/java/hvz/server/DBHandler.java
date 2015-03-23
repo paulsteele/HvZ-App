@@ -47,7 +47,7 @@ public class DBHandler{
 		
 		command = "CREATE TABLE gameStats" + 
 				"(endTime 	varchar(25), " +
-				"hasBegun	int)" +
+				"hasBegun	int, " +
 				"gameCode	varchar(25))";		//1 for true, 0 for false
 		try {
 			Statement s = c.createStatement();
@@ -67,7 +67,7 @@ public class DBHandler{
 		
 		command = "CREATE TABLE passwords " + 
 				"(feedCode		varchar(40), " + 
-				"password 		varchar(25))" + 
+				"password 		varchar(25), " + 
 				"gameCode		varchar(25))";
 		try {
 			Statement s = c.createStatement();
@@ -78,7 +78,7 @@ public class DBHandler{
 		}
 		command = "CREATE TABLE tags" + 
 				"(tagger		varchar(40), " + 
-				"tagged 		varchar(40))" +
+				"tagged 		varchar(40), " +
 				"gameCode		varchar(25))";
 		try {
 			Statement s = c.createStatement();
@@ -89,7 +89,7 @@ public class DBHandler{
 		}
 		command = "CREATE TABLE admins " + 
 				"(username		varchar(25), " + 
-				"feedCode 		varchar(40))" +
+				"feedCode 		varchar(40), " +
 				"gameCode		varchar(25))";
 		try {
 			Statement s = c.createStatement();
@@ -98,7 +98,7 @@ public class DBHandler{
 		catch (SQLException e){
 			e.printStackTrace();
 		}
-		command = "CREATE TABLE games " + 
+		command = "CREATE TABLE games" + 
 						"(gameCode	varchar(25))";
 		try {
 			Statement s = c.createStatement();
@@ -108,7 +108,10 @@ public class DBHandler{
 			e.printStackTrace();
 		}
 		command = "CREATE TABLE missions " + 
-						"(gameCode	varchar(25))";
+						"(gameCode	varchar(25) " +
+						"humanObjective	varchar(500), " +
+						"zombieObective	varchar(500), " +
+						"isCompleted		int)";
 		try {
 			Statement s = c.createStatement();
 			s.executeUpdate(command);
