@@ -35,8 +35,8 @@ public class DBHandler{
 		String command = "CREATE TABLE users " + 
 				"(username		varchar(25), " + 
 				"feedCode 		varchar(40)," + 
-				"isZombie	 	int)" +
-				"gameCode		varchar(25)";
+				"isZombie	 	int" +
+				"gameCode		varchar(25))";
 		try {
 			Statement s = c.createStatement();
 			s.executeUpdate(command);
