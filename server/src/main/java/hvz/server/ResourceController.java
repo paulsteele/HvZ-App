@@ -274,6 +274,22 @@ public class ResourceController {
     	return response.toString();
     }
     
+    @RequestMapping(value = "/newgame", method  = RequestMethod.GET)
+    public String createGame() {
+    	String gamecode = Server.generateGamecode();
+    	boolean failed = false;
+    	Server.createGame(gamecode);
+    	JSONObject response = new JSONObject();
+    	try {
+    		response.put(ServerConfiguration.success, !failed);
+    		response.put("gamecode", gamecode);
+    	}
+    	catch(JSONException e){
+    		e.printStackTrace();
+    	}
+    	return response.toString();
+    }
+    
     @RequestMapping("/{game}/begin")
     public String beginGame (@PathVariable("game") String game) {
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
