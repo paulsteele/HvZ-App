@@ -56,14 +56,7 @@ public class DBHandler{
 		catch (SQLException e){
 			e.printStackTrace();
 		}
-		try{
-			Statement s = c.createStatement();
-			command = "insert into gameStats values('initialEndDate', 0)";
-			s.execute(command);
-		}
-		catch(SQLException e){
-			e.printStackTrace();
-		}
+
 		
 		command = "CREATE TABLE passwords " + 
 				"(feedCode		varchar(40), " + 
