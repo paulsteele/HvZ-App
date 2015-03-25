@@ -50,7 +50,11 @@ public class ResourceController {
 			failed = true;
 		}
 		//check feedcode not taken
-		if (!failed && Server.checkRegistered(feedcode, game) == true){
+		if (!failed && Server.checkRegisteredFeedcode(feedcode, game) == true){
+			failed = true;
+		}
+		//check username not taken
+		if (!failed && Server.checkRegisteredUsername(username) == true){
 			failed = true;
 		}
 		//Create a user from info
@@ -233,7 +237,7 @@ public class ResourceController {
 	    		 prefix = ServerConfiguration.playerPrefix;
 	    	
 	    	feedcode = prefix + feedcode.toUpperCase();
-	    	done = !Server.checkRegistered(feedcode, game);
+	    	done = !Server.checkRegisteredFeedcode(feedcode, game);
 		}
     	//Set up response object
     	JSONObject output = new JSONObject();

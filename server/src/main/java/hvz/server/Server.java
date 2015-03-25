@@ -22,7 +22,7 @@ public class Server {
     	SpringApplication.run(Server.class, args);
     }
     
-    public static boolean checkRegistered(String feedcode, String gamecode){
+    public static boolean checkRegisteredFeedcode(String feedcode, String gamecode){
     	boolean found = false;
     	//if either a user is found in the admin database or the player database return false
     	try {
@@ -30,6 +30,16 @@ public class Server {
 				found = true;
 			else if (DBHandler.getAdmin(feedcode, gamecode, c) != null)
 				found = true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return found;
+    }
+    public static boolean checkRegisteredUsername(String username){
+    	boolean found = false;
+    	try {
+			found = DBHandler.isUsernameTaken(username, "NULL", c); //TODO REPLACE NULL
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
