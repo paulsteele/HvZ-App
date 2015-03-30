@@ -66,7 +66,9 @@ public class LoginActivity extends ActionBarActivity {
             msg.setText("Success!");
             msg.setTextColor(Color.GREEN);
             msg.setVisibility(View.VISIBLE);
-            setResult(1);
+            Intent data = new Intent();
+            data.putExtra("username", username);
+            setResult(RESULT_OK, data);
             finish();
         }
         else {

@@ -18,6 +18,7 @@ public class ServerConfiguration implements EmbeddedServletContainerCustomizer {
 	public static final char playerPrefix = 'P'; //prefix to add to player feedcodes
 	public static final char gamePrefix = 'G'; //prefix for game codes
 	public static final String success = "success"; //success message
+	public static final String dummyCode = "00000000"; //value for a not assigned player.
 	/**
 	 * Component function to actually handle customizations.
 	 */
