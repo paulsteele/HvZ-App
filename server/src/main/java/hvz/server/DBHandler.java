@@ -289,10 +289,17 @@ public class DBHandler{
 		}
 		return false;	
 	}
-	public static void changeGamecode(String feedCode, String newGame, String oldGame, Connection c) throws SQLException{
-		Statement s = c.createStatement();
-		String command = "update users set gameCode = '" + newGame + "' where feedCode = '" + feedCode + "' and gameCode = '" + oldGame + "'" ;   
-		s.executeUpdate(command);	
+	public static void changeGamecode(String username, String newGame, boolean isAdmin, Connection c) throws SQLException{
+		if(isAdmin = false){
+			Statement s = c.createStatement();
+			String command = "update users set gameCode = '" + newGame + "' where username = '" + username + "'"; 
+			s.executeUpdate(command);
+		}
+		else{
+			Statement s = c.createStatement();
+			String command = "update admins set gameCode = '" + newGame + "' where username = '" + username + "'";   
+			s.executeUpdate(command);
+		}
 	}
 	public static void addMission(String gameCode, String humanObjective, String zombieObjective, int isCompleted, String title, Connection c) throws SQLException{
 		Statement s = c.createStatement();
@@ -322,4 +329,16 @@ public class DBHandler{
 			return false;
 		return true;
 	}	
+	public static void changeFeedCode(String username, String newFeedCode, boolean isAdmin, Connection c){
+		if(isAdmin == false){
+			Statement s = c.createStatement();
+			String command = "update users set feedCode = '" + newFeedCode + "' where username = '" + username + "' and gameCode = '" + oldGame + "'" ;   
+			s.executeUpdate(command);	
+		}
+		else{
+			Statement s = c.createStatement();
+			String command = "update admins set feedCode = '" + newFeedCode + "' where username = '" + username + "' and gameCode = '" + oldGame + "'" ;   
+			s.executeUpdate(command);	
+		}
+	}
 }
