@@ -57,7 +57,7 @@ public class DBHandler{
 		}
 		
 		command = "CREATE TABLE passwords " + 
-				"(feedCode		varchar(40), " + 
+				"(username		varchar(40), " + 
 				"password 		varchar(25), " + 
 				"gameCode		varchar(25))";
 		try {
@@ -172,14 +172,14 @@ public class DBHandler{
 		String command = "insert into tags values('" + tagger + "', '" + tagged + "', '" + gameCode + "')";
 		s.executeUpdate(command);		
 	}
-	public static void setPassword(String feedCode, String pswd, String gameCode, Connection c)throws SQLException{
+	public static void setPassword(String username, String pswd, String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into passwords values('" + feedCode + "', " + "'" + pswd + "', '" + gameCode + "')";
+		String command = "insert into passwords values('" + username + "', " + "'" + pswd + "', '" + gameCode + "')";
 		s.executeUpdate(command);
 	}
-	public static Admin getAdmin(String feedCode, Connection c)throws SQLException{
+	public static Admin getAdmin(String username, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from admins where feedcode = '" + feedCode + "'");
+		ResultSet rs = s.executeQuery("select * from admins where username = '" + username + "'");
 		//no player
 		if (!rs.isBeforeFirst())
 			return null;
@@ -188,9 +188,9 @@ public class DBHandler{
 		Admin admin = new Admin(name, feed);
 		return admin;
 	}
-	public static Player getPlayer(String feedCode, Connection c)throws SQLException{
+	public static Player getPlayer(String username, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from users where feedcode = '" + feedCode + "'";
+		ResultSet rs = s.executeQuery("select * from users where username = '" + username + "'");
 		//no player
 		if (!rs.isBeforeFirst())
 			return null;
@@ -199,9 +199,9 @@ public class DBHandler{
 		Player player = new Player(name, feed);
 		return player;
 	}
-	public static String getPassword(String feedCode, String gameCode, Connection c)throws SQLException{
+	public static String getPassword(String username, String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from passwords where feedcode = '" + feedCode + "' AND gameCode = '" + gameCode + "'");
+		ResultSet rs = s.executeQuery("select * from passwords where username = '" + username + "' AND gameCode = '" + gameCode + "'");
 		String pswd = rs.getString("password");
 		return pswd;
 	}
