@@ -321,7 +321,7 @@ public class DBHandler{
 		String command = "delete from reviveCodes where reviveCode  = '" + reviveCode + "' " +  "AND gameCode = " + "'" + gameCode + "'"; 
 		s.executeUpdate(command);
 	}
-	public static boolean validateReviveCode(String reviveCode, String gameCode, Connection c){
+	public static boolean validateReviveCode(String reviveCode, String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from reviveCodes where reviveCode  = '" + reviveCode + "' and gameCode = '" + gameCode + "'");
 		//no player
@@ -329,15 +329,15 @@ public class DBHandler{
 			return false;
 		return true;
 	}	
-	public static void changeFeedCode(String username, String newFeedCode, boolean isAdmin, Connection c){
+	public static void changeFeedCode(String username, String newFeedCode, boolean isAdmin, Connection c) throws SQLException{
 		if(isAdmin == false){
 			Statement s = c.createStatement();
-			String command = "update users set feedCode = '" + newFeedCode + "' where username = '" + username + "' and gameCode = '" + oldGame + "'" ;   
+			String command = "update users set feedCode = '" + newFeedCode + "' where username = '" + username + "'";  
 			s.executeUpdate(command);	
 		}
 		else{
 			Statement s = c.createStatement();
-			String command = "update admins set feedCode = '" + newFeedCode + "' where username = '" + username + "' and gameCode = '" + oldGame + "'" ;   
+			String command = "update admins set feedCode = '" + newFeedCode + "' where username = '" + username + "'";
 			s.executeUpdate(command);	
 		}
 	}
