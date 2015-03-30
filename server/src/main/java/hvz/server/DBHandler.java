@@ -314,8 +314,12 @@ public class DBHandler{
 		String command = "delete from reviveCodes where reviveCode  = '" + reviveCode + "' " +  "AND gameCode = " + "'" + gameCode + "'"; 
 		s.executeUpdate(command);
 	}
-	public static void validateReviveCode(String reviveCode, String gameCode, Connection c){
-		
-	}
+	public static boolean validateReviveCode(String reviveCode, String gameCode, Connection c){
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from reviveCodes where reviveCode  = '" + reviveCode + "' and gameCode = '" + gameCode + "'");
+		//no player
+		if (!rs.isBeforeFirst())
+			return false;
+		return true;
+	}	
 }
-//get admin/ get player no arg for gamecode, but 
