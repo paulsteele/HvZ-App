@@ -25,7 +25,7 @@ public class Server {
     public static boolean checkRegisteredFeedcode(String feedcode, String gamecode){
     	boolean found = false;
     	//if either a user is found in the admin database or the player database return false
-    	try {
+    	/*try {
 			if (DBHandler.getPlayer(feedcode, gamecode, c) != null)
 				found = true;
 			else if (DBHandler.getAdmin(feedcode, gamecode, c) != null)
@@ -33,13 +33,13 @@ public class Server {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
     	return found;
     }
     public static boolean checkRegisteredUsername(String username){
     	boolean found = false;
     	try {
-			found = DBHandler.isUsernameTaken(username, "NULL", c); //TODO REPLACE NULL
+			found = DBHandler.isUsernameTaken(username, c); 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,21 +47,21 @@ public class Server {
     	return found;
     }
     
-    public static boolean registerUser(User user, String password, String gamecode) {
+    public static boolean registerUser(User user, String password) {
     	try {
     		//Add admin or player
 	    	if (user.isAdmin){
-	    		DBHandler.addAdmin(user.username, user.feedcode, gamecode, c);
+	    		DBHandler.addAdmin(user.username, user.feedcode, user.gamecode, c);
 	    	}
 	    	else{
 	    		Player p = (Player) user;
 	    		int zombie = 0;
 	    		if (p.isZombie)
 	    			zombie = 1;
-	    		DBHandler.addPlayer(p.username, zombie , p.feedcode, gamecode, c);
+	    		DBHandler.addPlayer(p.username, zombie , p.feedcode, user.gamecode, c);
 	    	}
 	    	//Add password for user
-	    	DBHandler.setPassword(user.feedcode, password, gamecode, c);
+	    	DBHandler.setPassword(user.username, password, c);
     	}
     	catch (SQLException e){
     		return false;
@@ -73,7 +73,7 @@ public class Server {
     	if (user == null)
     		return null;
     	try{
-    		String dbpass = DBHandler.getPassword(user.feedcode, gamecode, c);
+    		String dbpass = DBHandler.getPassword(user.username, c);
     		String apppass = password;
     		if (dbpass.equals(apppass) == true){
     			return user; //successful
@@ -88,14 +88,14 @@ public class Server {
     	return null;
     }
     
-    public static User getUser(String feedcode, String gamecode){
+    public static User getUser(String username){
     	User user = null;
     	try {
-        	if (DBHandler.getPlayer(feedcode, gamecode, c) != null){
-        		user = DBHandler.getPlayer(feedcode, gamecode, c);
+        	if (DBHandler.getPlayer(username,  c) != null){
+        		user = DBHandler.getPlayer(username, c);
         	}
-    		else if (DBHandler.getAdmin(feedcode, gamecode, c) != null){
-    			user = DBHandler.getAdmin(feedcode, gamecode, c);
+    		else if (DBHandler.getAdmin(username, c) != null){
+    			user = DBHandler.getAdmin(username, c);
     		}
     	}
     	catch (SQLException e) {

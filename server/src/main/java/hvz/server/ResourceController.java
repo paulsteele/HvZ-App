@@ -20,9 +20,9 @@ public class ResourceController {
 	 * Registers a user and puts into the database
 	 * Valid JSON {"username": "username", "password":"password", "feedcode": "feedcode", "admin": true}
 	 */
-    @RequestMapping(value = "/{game}/user", method = RequestMethod.POST)
-    public String registerPlayer (@RequestBody String value, @PathVariable("game") String game) {
-    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
+    public String registerPlayer (@RequestBody String value) {
+    	boolean failed = false;
 
     	//take in input and create variables for each entry
 		JSONObject input = null;
@@ -32,12 +32,11 @@ public class ResourceController {
 			failed = true;
 		}
 		String username = null;
-		String feedcode = null;
+		String feedcode = ServerConfiguration.dummyCode; //empty feedcode for registration
 		String password = null;
 		boolean admin = false;
 		try{
 			username = input.getString("username");
-			feedcode = input.getString("feedcode");
 			password = input.getString("password");
 			admin = input.getBoolean("admin");
 		}
@@ -46,13 +45,10 @@ public class ResourceController {
 			failed = true;
 		}
 		//check values are present
-		if (username == null || password == null || feedcode == null){
+		if (username == null || password == null ){
 			failed = true;
 		}
-		//check feedcode not taken
-		if (!failed && Server.checkRegisteredFeedcode(feedcode, game) == true){
-			failed = true;
-		}
+		
 		//check username not taken
 		if (!failed && Server.checkRegisteredUsername(username) == true){
 			failed = true;
@@ -64,7 +60,7 @@ public class ResourceController {
     			user = new Admin(username, feedcode);
     		else //create a player
     			user = new Player(username, feedcode);
-    		Server.registerUser(user, password, game);
+    		Server.registerUser(user, password);
 		}
     	//Set up response object
 		JSONObject output = new JSONObject();
@@ -87,10 +83,10 @@ public class ResourceController {
      * trys to login a user
      * Valid JSON {"password": "password}
      */
-    @RequestMapping(value = "/{game}/user/{identifier}", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/{identifier}", method = RequestMethod.POST)
     public String login(@PathVariable("identifier") String identifier, @RequestBody String value, 
     		@PathVariable("game") String game) {
-    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	boolean failed = false;
     	//take in input and create variables for each entry
 		JSONObject input = null;
 		try {
@@ -110,7 +106,7 @@ public class ResourceController {
 		if (password == null){
 			failed = true;
 		}
-		User user = Server.getUser(identifier, game);
+		User user = Server.getUser(identifier);
     	user = Server.loginUser(user, password, game);
     	if (user == null)
     		failed = true;
@@ -139,7 +135,7 @@ public class ResourceController {
     	//Set up response object
 		JSONObject output = new JSONObject();
 		//grab the user
-		User user = Server.getUser(identifier, game);
+		User user = Server.getUser(identifier);
 		failed = (user == null);
     	try {
 			if (!failed) { //means user is found
