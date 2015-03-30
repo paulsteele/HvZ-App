@@ -104,7 +104,36 @@ public class Server{
 
         return null;
     }
-    
+
+    public String getReviveCode(boolean admin){
+        JSONObject request = new JSONObject();
+        try {
+            request.put("admin", admin);
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+        Log.d("Revivecode", request.toString());
+
+        PostTask task = new PostTask(serviceURL + "/revivecode",client,request);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        }catch (InterruptedException | ExecutionException e){
+            e.printStackTrace();
+        }
+        if (response == null){
+            Log.e("Get revive code", "Server response error");
+            return null;
+        }
+
+        try {
+            return response.getString("revivecode");
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
     //returns a new list of users
     public ArrayList<User> getUserList() {
         GetTask task = new GetTask(serviceURL + "/user", client);
@@ -146,7 +175,54 @@ public class Server{
     
     //returns 0 if tagging was successful
     public int tag(User tagger, User taggee){
-        return 0;
+        JSONObject gotTagged = new JSONObject();
+        JSONObject didTag = new JSONObject();
+        //put for one who got tagged
+        try{
+            gotTagged.put("username",taggee.username);
+            gotTagged.put("feedcode",taggee.uniqueID);
+            gotTagged.put("isZombie",taggee.isZombie);
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+        Log.d("Taggee", gotTagged.toString());
+        //put for tagger
+        try{
+            didTag.put("username",taggee.username);
+            didTag.put("feedcode",taggee.uniqueID);
+            didTag.put("isZombie",taggee.isZombie);
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+        Log.d("Tagger", didTag.toString());
+
+        return 1;
+    }
+
+    //returns 0 if user reverted to human successfully
+    public int revive(boolean zombie){
+        JSONObject request = new JSONObject();
+        try{
+            request.put("zombie", zombie);
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+        Log.d("turnHuman", request.toString());
+
+        PostTask task = new PostTask(serviceURL + "/turnHuman",client,request);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        }catch (InterruptedException | ExecutionException e){
+            e.printStackTrace();
+        }
+        if (response == null) {
+            Log.e("Turn Human", "Server response error");
+            return 1;
+        }
+
+        return 1;
     }
     
     //returns an image of a map
