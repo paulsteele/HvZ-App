@@ -316,6 +316,11 @@ public class DBHandler{
 	}
 	public static void deleteReviveCode(String reviveCode, String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
+		String command = "insert into users reviveCodes('" +reviveCode + "' ,'" + gameCode + "'";
+		s.executeUpdate(command);
+	}
+	public static void addReviveCode(String reviveCode, String gameCode, Connection c) throws SQLException{
+		Statement s = c.createStatement();
 		String command = "delete from reviveCodes where reviveCode  = '" + reviveCode + "' " +  "AND gameCode = " + "'" + gameCode + "'"; 
 		s.executeUpdate(command);
 	}
