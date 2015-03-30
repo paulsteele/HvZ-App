@@ -18,7 +18,7 @@ public class ResourceController {
 
 	/**
 	 * Registers a user and puts into the database
-	 * Valid JSON {"username": "username", "password":"password", "feedcode": "feedcode", "admin": true}
+	 * Valid JSON {"username": "username", "password":"password", "admin": true}
 	 */
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     public String registerPlayer (@RequestBody String value) {
@@ -60,6 +60,7 @@ public class ResourceController {
     			user = new Admin(username, feedcode);
     		else //create a player
     			user = new Player(username, feedcode);
+    		user.gamecode = ServerConfiguration.dummyCode;
     		Server.registerUser(user, password);
 		}
     	//Set up response object
@@ -67,7 +68,6 @@ public class ResourceController {
     	try {
     		if (!failed){ //info only on success
     			output.put("username", username);
-    			output.put("feedcode", feedcode);
     			output.put("password", password);
     		}
     		//info no matter what
@@ -83,9 +83,8 @@ public class ResourceController {
      * trys to login a user
      * Valid JSON {"password": "password}
      */
-    @RequestMapping(value = "/user/{identifier}", method = RequestMethod.POST)
-    public String login(@PathVariable("identifier") String identifier, @RequestBody String value, 
-    		@PathVariable("game") String game) {
+    @RequestMapping(value = "/user/{username}", method = RequestMethod.POST)
+    public String login(@PathVariable("username") String username, @RequestBody String value) {
     	boolean failed = false;
     	//take in input and create variables for each entry
 		JSONObject input = null;
@@ -106,12 +105,12 @@ public class ResourceController {
 		if (password == null){
 			failed = true;
 		}
-		User user = Server.getUser(identifier);
-    	user = Server.loginUser(user, password, game);
+		User user = Server.getUser(username);
+    	user = Server.loginUser(user, password);
     	if (user == null)
     		failed = true;
 		if (!failed){
-			return getPlayer(identifier, game);
+			return getPlayer(username, user.gamecode);
     	}
     	//Set up response object
 		JSONObject output = new JSONObject();
@@ -129,19 +128,20 @@ public class ResourceController {
     /**
      * Retrieves a user from the database and sends it to the client
      */
-    @RequestMapping(value = "/{game}/user/{identifier}", method = RequestMethod.GET)
-    public String getPlayer (@PathVariable("identifier") String identifier, @PathVariable("game") String game){
+    @RequestMapping(value = "/{game}/user/{username}", method = RequestMethod.GET)
+    public String getPlayer (@PathVariable("username") String username, @PathVariable("game") String game){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	//Set up response object
 		JSONObject output = new JSONObject();
 		//grab the user
-		User user = Server.getUser(identifier);
+		User user = Server.getUser(username);
 		failed = (user == null);
     	try {
 			if (!failed) { //means user is found
     			output.put("username", user.username);
     			output.put("feedcode", user.feedcode);
     			output.put("isAdmin", user.isAdmin);
+    			output.put("game", user.gamecode);
     			//add information about zombie status
     			if (!user.isAdmin){
     				output.put("isZombie", ((Player) user).isZombie);
@@ -222,7 +222,7 @@ public class ResourceController {
 		boolean done = false;
 		String feedcode = null;
 		//loop through until unique feedcode has been generated
-		while(!done){
+		while(!done && !failed){
 	    	//generate a unique string code
 	    	feedcode = RandomStringUtils.randomAlphanumeric(ServerConfiguration.feedcodeLength -1);
 	    	//add prefix based on player or admin
@@ -239,9 +239,11 @@ public class ResourceController {
     	JSONObject output = new JSONObject();
     	//verify that feedcode isn't taken
     	try {
-			output.put(ServerConfiguration.success, true);
-			output.put("feedcode", feedcode);
-	    	}
+			output.put(ServerConfiguration.success, !failed);
+			if (!failed){
+				output.put("feedcode", feedcode);	
+			}
+	    }
 		catch (JSONException e) {
 			// TODO Auto-generated catch block
 			System.out.println("JSONException while verifying generated feed code");

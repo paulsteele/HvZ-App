@@ -25,15 +25,12 @@ public class Server {
     public static boolean checkRegisteredFeedcode(String feedcode, String gamecode){
     	boolean found = false;
     	//if either a user is found in the admin database or the player database return false
-    	/*try {
-			if (DBHandler.getPlayer(feedcode, gamecode, c) != null)
-				found = true;
-			else if (DBHandler.getAdmin(feedcode, gamecode, c) != null)
-				found = true;
+    	try {
+			found = DBHandler.isFeedcodeTaken(feedcode, gamecode, c);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
     	return found;
     }
     public static boolean checkRegisteredUsername(String username){
@@ -69,7 +66,7 @@ public class Server {
     	return true;
     }
     
-    public static User loginUser(User user, String password, String gamecode){
+    public static User loginUser(User user, String password){
     	if (user == null)
     		return null;
     	try{

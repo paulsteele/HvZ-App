@@ -91,7 +91,7 @@ public class DBHandler{
 		command = "CREATE TABLE games" + 
 						"(endTime 	varchar(25), " +
 						"hasBegun	int, " +
-						"(gameCode	varchar(25))";
+						"gameCode	varchar(25))";
 		try {
 			Statement s = c.createStatement();
 			s.executeUpdate(command);
@@ -283,6 +283,17 @@ public class DBHandler{
 		while(rs.next()){
 			String name = rs.getString("username");
 			if(username.equals(name))
+				return true;
+			else continue;
+		}
+		return false;	
+	}
+	public static boolean isFeedcodeTaken(String feedcode, String gamecode, Connection c) throws SQLException{
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from users where gameCode = '" + gamecode + "'");
+		while(rs.next()){
+			String code = rs.getString("gameCode");
+			if(feedcode.equals(code))
 				return true;
 			else continue;
 		}
