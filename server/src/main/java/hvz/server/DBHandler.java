@@ -199,9 +199,9 @@ public class DBHandler{
 		Player player = new Player(name, feed);
 		return player;
 	}
-	public static String getPassword(String username, String gameCode, Connection c)throws SQLException{
+	public static String getPassword(String username, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from passwords where username = '" + username + "' AND gameCode = '" + gameCode + "'");
+		ResultSet rs = s.executeQuery("select * from passwords where username = '" + username + "'");
 		String pswd = rs.getString("password");
 		return pswd;
 	}
