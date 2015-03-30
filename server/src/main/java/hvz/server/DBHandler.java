@@ -45,18 +45,6 @@ public class DBHandler{
 			e.printStackTrace();
 		}
 		
-		/*command = "CREATE TABLE gameStats" + 
-				"(endTime 	varchar(25), " +
-				"hasBegun	int, " +
-				"gameCode	varchar(25))";		//1 for true, 0 for false
-		try {
-			Statement s = c.createStatement();
-			s.executeUpdate(command);
-		}
-		catch (SQLException e){
-			e.printStackTrace();
-		}*/
-
 		command = "CREATE TABLE reviveCodes" + 
 				"(reviveCode varchar(25), " +
 				"gameCode	varchar(25))" ;//1 for true, 0 for false
@@ -102,6 +90,8 @@ public class DBHandler{
 			e.printStackTrace();
 		}
 		command = "CREATE TABLE games" + 
+						"(endTime 	varchar(25), " +
+						"hasBegun	int, " +
 						"(gameCode	varchar(25))";
 		try {
 			Statement s = c.createStatement();
