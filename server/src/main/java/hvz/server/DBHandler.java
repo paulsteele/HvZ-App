@@ -177,9 +177,9 @@ public class DBHandler{
 		String command = "insert into passwords values('" + feedCode + "', " + "'" + pswd + "', '" + gameCode + "')";
 		s.executeUpdate(command);
 	}
-	public static Admin getAdmin(String feedCode, String gameCode, Connection c)throws SQLException{
+	public static Admin getAdmin(String feedCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from admins where feedcode = '" + feedCode + "' AND gameCode = '" + gameCode + "'");
+		ResultSet rs = s.executeQuery("select * from admins where feedcode = '" + feedCode + "'");
 		//no player
 		if (!rs.isBeforeFirst())
 			return null;
@@ -188,9 +188,9 @@ public class DBHandler{
 		Admin admin = new Admin(name, feed);
 		return admin;
 	}
-	public static Player getPlayer(String feedCode, String gameCode, Connection c)throws SQLException{
+	public static Player getPlayer(String feedCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from users where feedcode = '" + feedCode + "' AND gameCode = '" + gameCode + "'");
+		ResultSet rs = s.executeQuery("select * from users where feedcode = '" + feedCode + "'";
 		//no player
 		if (!rs.isBeforeFirst())
 			return null;
@@ -314,8 +314,8 @@ public class DBHandler{
 		String command = "delete from reviveCodes where reviveCode  = '" + reviveCode + "' " +  "AND gameCode = " + "'" + gameCode + "'"; 
 		s.executeUpdate(command);
 	}
+	public static void validateReviveCode(String reviveCode, String gameCode, Connection c){
+		
+	}
 }
-//check validity 
-//of feedcode
-//delete revive code
-//add revive code
+//get admin/ get player no arg for gamecode, but 
