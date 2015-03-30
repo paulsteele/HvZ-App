@@ -58,8 +58,7 @@ public class DBHandler{
 		
 		command = "CREATE TABLE passwords " + 
 				"(username		varchar(40), " + 
-				"password 		varchar(25), " + 
-				"gameCode		varchar(25))";
+				"password 		varchar(25))";
 		try {
 			Statement s = c.createStatement();
 			s.executeUpdate(command);
@@ -104,7 +103,7 @@ public class DBHandler{
 						"(gameCode	varchar(25), " +
 						"humanObjective	varchar(500), " +
 						"zombieObective	varchar(500), " +
-						"isCompleted	int " +
+						"isCompleted	int, " +
 						"title			varchar(25))";
 		try {
 			Statement s = c.createStatement();
@@ -172,9 +171,9 @@ public class DBHandler{
 		String command = "insert into tags values('" + tagger + "', '" + tagged + "', '" + gameCode + "')";
 		s.executeUpdate(command);		
 	}
-	public static void setPassword(String username, String pswd, String gameCode, Connection c)throws SQLException{
+	public static void setPassword(String username, String pswd, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into passwords values('" + username + "', " + "'" + pswd + "', '" + gameCode + "')";
+		String command = "insert into passwords values('" + username + "', " + "'" + pswd + "')";
 		s.executeUpdate(command);
 	}
 	public static Admin getAdmin(String username, Connection c)throws SQLException{
@@ -278,9 +277,9 @@ public class DBHandler{
 		}
 		return false;
 	}
-	public static boolean isUsernameTaken(String username, String gameCode, Connection c) throws SQLException{
+	public static boolean isUsernameTaken(String username, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from users where gameCode = '" + gameCode + "'");
+		ResultSet rs = s.executeQuery("select * from users");
 		while(rs.next()){
 			String name = rs.getString("username");
 			if(username.equals(name))
@@ -324,7 +323,6 @@ public class DBHandler{
 	public static boolean validateReviveCode(String reviveCode, String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from reviveCodes where reviveCode  = '" + reviveCode + "' and gameCode = '" + gameCode + "'");
-		//no player
 		if (!rs.isBeforeFirst())
 			return false;
 		return true;
