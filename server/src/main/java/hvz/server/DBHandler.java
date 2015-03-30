@@ -45,7 +45,7 @@ public class DBHandler{
 			e.printStackTrace();
 		}
 		
-		command = "CREATE TABLE gameStats" + 
+		/*command = "CREATE TABLE gameStats" + 
 				"(endTime 	varchar(25), " +
 				"hasBegun	int, " +
 				"gameCode	varchar(25))";		//1 for true, 0 for false
@@ -55,7 +55,7 @@ public class DBHandler{
 		}
 		catch (SQLException e){
 			e.printStackTrace();
-		}
+		}*/
 
 		command = "CREATE TABLE reviveCodes" + 
 				"(reviveCode varchar(25), " +
@@ -314,4 +314,13 @@ public class DBHandler{
 		String command = "update missions set isCompleted = 1, where gameCode = " + gameCode + "and title = " + title + "'";
 		s.executeUpdate(command);		
 	}
+	public static void deleteReviveCode(String reviveCode, String gameCode, Connection c) throws SQLException{
+		Statement s = c.createStatement();
+		String command = "delete from reviveCodes where reviveCode  = '" + reviveCode + "' " +  "AND gameCode = " + "'" + gameCode + "'"; 
+		s.executeUpdate(command);
+	}
 }
+//check validity 
+//of feedcode
+//delete revive code
+//add revive code
