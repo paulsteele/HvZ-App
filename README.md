@@ -33,5 +33,10 @@ Server will run on 128.211.191.47:8080
 `{game}/feedcode`
 
  * POST: generates a feedcode
- 	* `{"admin", value}`
+ 	* `{"admin": value}`
  	* admin is a boolean
+
+ `{game}/tag`
+
+ * POST: executes a tag
+ 	* `{"tagger": feedcode, "tagged": feedcode}
