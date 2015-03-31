@@ -208,6 +208,9 @@ public class ResourceController {
     	return output.toString();
     }
     
+    /**
+     * Returns all users in a current game
+     */
     @RequestMapping(value = "/{game}/user", method = RequestMethod.GET)
     public String getAll (@PathVariable("game") String game) {
 		//Set up response object
@@ -301,20 +304,42 @@ public class ResourceController {
     	return output.toString();
     }
     
-    @RequestMapping("/{game}/tag")
-    public String tag(@RequestParam(value = "tagger", required = false) String tagger,
-    					@RequestParam(value = "tagged", required = false) String tagged,
-    					@PathVariable("game") String game){
-		//Set up response object
+    /**
+     * process a tag request fails if cannibal tags or users don't exist
+     * Valid JSON {"tagger": feedcode, "tagged": feedcode}
+     */
+    @RequestMapping(value = "/{game}/tag", method = RequestMethod.POST)
+    public String tag(@RequestBody String value, @PathVariable("game") String game){
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	//take in input and create variables for each entry
+		JSONObject input = null;
+		try {
+			input = new JSONObject(new JSONTokener(value));
+		} catch (JSONException e) {
+			failed = true;
+		}
+		String taggerString = null;
+		String taggedString = null;
+		try{
+			taggerString = input.getString("tagger");
+			taggedString = input.getString("tagged");
+		}
+		catch (JSONException e){
+			//error 
+			failed = true;
+		}
+    	if (taggerString == null || taggedString == null){
+    		failed = true;
+    	}
+    	//implement the tag
+    	if (!failed){
+    		failed = Server.tag(taggerString, taggedString, game);
+    	}
+		
+    	//Set up response object
 		JSONObject response = new JSONObject();
     	try {
-    		//verify that all parameters are valid
-    		if (tagger == null || tagged == null){
-    			response.put(ServerConfiguration.success, false);
-    		}
-    		else {
-    			response.put(ServerConfiguration.success, true);
-    		}
+    		response.put(ServerConfiguration.success, !failed);
     		
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

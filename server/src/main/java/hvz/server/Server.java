@@ -192,5 +192,9 @@ public class Server {
 			}
     	}
     }
+    
+    public static boolean tag(String tagger, String tagged, String gamecode){
+    	return false;
+    }
 }
 
