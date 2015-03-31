@@ -173,5 +173,24 @@ public class Server {
 			return false;
 		}
     }
+    
+    public static void updateUser(String username, String feedcode, String gamecode, boolean admin) {
+    	if (feedcode != null){
+    		try {
+				DBHandler.changeFeedCode(username, feedcode	, admin, c);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	if (gamecode != null){
+    		try {
+				DBHandler.changeGamecode(username, gamecode, admin, c);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    }
 }
 

@@ -8,18 +8,26 @@ Server will run on 128.211.191.47:8080
 
 ####Server Mappings
 
-`{game}/user`
+`/user`
 
  * POST: registers a user
- 	* `{"username": value, "feedcode": value, "admin": value, "password": value}`
+ 	* `{"username": value, "admin": value, "password": value}`
  	* username, feedcode, and password are strings, while admin is a boolean
+ * PUT: update a user
+ 	* `{"feedcode": value, "gamecode": value}`
+
+
+`{game}/user`
  * GET: gets all users
 
-`{game}/user/{identifier}`
+`/user/{identifier}`
 
  * POST: logs in a user
  	* `{"password": value}`
  	* password is a string
+
+`{game}/user/{identifier}`
+
  * GET: retrieves a single user
 
 `{game}/feedcode`

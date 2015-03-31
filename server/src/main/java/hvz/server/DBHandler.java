@@ -185,6 +185,7 @@ public class DBHandler{
 		String name = rs.getString("username");
 		String feed = rs.getString("feedCode");
 		Admin admin = new Admin(name, feed);
+		admin.gamecode = rs.getString("gameCode");
 		return admin;
 	}
 	public static Player getPlayer(String username, Connection c)throws SQLException{
@@ -196,6 +197,7 @@ public class DBHandler{
 		String name = rs.getString("username");
 		String feed = rs.getString("feedCode");
 		Player player = new Player(name, feed);
+		player.gamecode = rs.getString("gameCode");
 		return player;
 	}
 	public static String getPassword(String username, Connection c)throws SQLException{
@@ -263,7 +265,7 @@ public class DBHandler{
 	}
 	public static void newGame(String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into games values('" + gameCode + "')";
+		String command = "insert into games values('end', 0 ,'" + gameCode + "')";
 		s.executeUpdate(command);
 	}
 	public static boolean isGamecodeTaken(String gameCode, Connection c) throws SQLException{
@@ -300,7 +302,7 @@ public class DBHandler{
 		return false;	
 	}
 	public static void changeGamecode(String username, String newGame, boolean isAdmin, Connection c) throws SQLException{
-		if(isAdmin = false){
+		if(isAdmin == false){
 			Statement s = c.createStatement();
 			String command = "update users set gameCode = '" + newGame + "' where username = '" + username + "'"; 
 			s.executeUpdate(command);

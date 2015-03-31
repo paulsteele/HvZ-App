@@ -80,6 +80,54 @@ public class ResourceController {
     }
     
     /**
+     * Updates a user 
+     * Valid JSON {"feedcode": "feedocde", "gamecode": "gamecode"}
+     */
+    @RequestMapping(value = "/user/{username}", method = RequestMethod.PUT)
+    public String update(@PathVariable("username") String username, @RequestBody String value) {
+    	boolean failed = false;
+    	//take in input and create variables for each entry
+		JSONObject input = null;
+		try {
+			input = new JSONObject(new JSONTokener(value));
+		} catch (JSONException e) {
+			failed = true;
+		}
+		String feedcode = null;
+		String gamecode = null;
+		try{
+			feedcode = input.getString("feedcode");
+			gamecode = input.getString("gamecode");
+			
+		}
+		catch (JSONException e){
+			//error 
+			failed = true;
+		}
+		
+		User user = Server.getUser(username);
+		if (user == null)
+			failed = true;
+		
+		if (!failed){
+			Server.updateUser(username, feedcode, gamecode, user.isAdmin);
+		}
+		
+    	//Set up response object
+		JSONObject output = new JSONObject();
+    	try {
+    		//info no matter what
+			output.put(ServerConfiguration.success, !failed);
+        }		
+		catch (JSONException e) {//extreme error
+			e.printStackTrace();
+		}
+    	return output.toString();
+		
+		
+    }
+    
+    /**
      * trys to login a user
      * Valid JSON {"password": "password}
      */
@@ -141,7 +189,7 @@ public class ResourceController {
     			output.put("username", user.username);
     			output.put("feedcode", user.feedcode);
     			output.put("isAdmin", user.isAdmin);
-    			output.put("game", user.gamecode);
+    			output.put("gamecode", user.gamecode);
     			//add information about zombie status
     			if (!user.isAdmin){
     				output.put("isZombie", ((Player) user).isZombie);
