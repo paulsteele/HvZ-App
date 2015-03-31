@@ -10,18 +10,40 @@ import org.springframework.context.annotation.ComponentScan;
 
 /**
  * Server Starter
- *
+ * Also holds functions that talk to db handler.
  */
+
 @ComponentScan
 @EnableAutoConfiguration
 public class Server {
-	private static Connection c;
+	
+	private static Connection c; //The connection to the database
+	
+	/**
+	 * Sets up Server info and then starts the server
+	 */
     public static void main( String[] args ) {
+    	//setup basic server configuration values
     	ServerConfiguration.setPortNumber(8080);
+    	//obtain connection to database
     	c = DBHandler.init();
-    	SpringApplication.run(Server.class, args);
+    	//make sure connection was created correctly
+    	try {
+			if (!c.isClosed()){
+				//actually begin the server
+				SpringApplication.run(Server.class, args);
+			}
+				
+		} catch (SQLException e) {
+			System.out.println("Error encountered in database initilization");
+			e.printStackTrace();
+		}
     }
     
+    /**
+     * Checks in a game to see if a feedcode is taken
+     * returns true if it is found
+     */
     public static boolean checkRegisteredFeedcode(String feedcode, String gamecode){
     	boolean found = false;
     	//if either a user is found in the admin database or the player database return false
@@ -33,6 +55,11 @@ public class Server {
 		}
     	return found;
     }
+    
+    /**
+     * Checks in the entire server to see if a username is take
+     * returns true if it is found
+     */
     public static boolean checkRegisteredUsername(String username){
     	boolean found = false;
     	try {
@@ -44,6 +71,9 @@ public class Server {
     	return found;
     }
     
+    /**
+     * Takes a user and stores it the database
+     */
     public static boolean registerUser(User user, String password) {
     	try {
     		//Add admin or player
@@ -66,6 +96,9 @@ public class Server {
     	return true;
     }
     
+    /**
+     * Takes a user and a given password and checks to see if the password matches
+     */
     public static User loginUser(User user, String password){
     	if (user == null)
     		return null;
@@ -85,6 +118,9 @@ public class Server {
     	return null;
     }
     
+    /**
+     * returns a user, via a username 
+     */
     public static User getUser(String username){
     	User user = null;
     	try {
@@ -99,10 +135,29 @@ public class Server {
     		e.printStackTrace();
     	}
     	return user;
-
-    	
     }
     
+    /**
+     * returns a user, via a username 
+     */
+    public static User getUser(String feedcode, String gamecode){
+    	User user = null;
+    	/*try {
+        	if (DBHandler.getPlayer(username,  c) != null){
+        		user = DBHandler.getPlayer(username, c);
+        	}
+    		else if (DBHandler.getAdmin(username, c) != null){
+    			user = DBHandler.getAdmin(username, c);
+    		}
+    	}
+    	catch (SQLException e) {
+    		e.printSt*/
+    	return user;
+    }
+    
+    /**
+     * Gets all users in a game, (Admins too!)
+     */
     public static User[] getAllUsers(String gamecode) {
     	User[] rets = null;
     	try {
@@ -124,6 +179,9 @@ public class Server {
     	return rets;
     }
     
+    /**
+     * starts a given game
+     */
     public static void begin(String gamecode){
     	try {
 			DBHandler.start(gamecode, c);
@@ -133,6 +191,9 @@ public class Server {
 		}
     }
     
+    /**
+     * Checks to see if a given game has started
+     */
     public static boolean checkBegun(String gamecode){
     	try {
 			return DBHandler.isStarted(gamecode, c);
@@ -143,6 +204,9 @@ public class Server {
     	return false;
     }
     
+    /**
+     * Creates a new game
+     */
     public static void createGame(String gamecode){
     	try {
 			DBHandler.newGame(gamecode, c);
@@ -152,6 +216,10 @@ public class Server {
 		}
     }
     
+    /**
+     * generates a new gamecode that is guaranteed to be unique
+     * @return
+     */
     public static String generateGamecode(){
     	boolean done = false;
     	String gamecode = null;
@@ -164,6 +232,9 @@ public class Server {
     	return gamecode;
     }
     
+    /**
+     * Checks to see if a gamecode exists
+     */
     public static boolean checkGameExisits(String game){
     	try {
 			return DBHandler.isGamecodeTaken(game, c);
@@ -174,6 +245,9 @@ public class Server {
 		}
     }
     
+    /**
+     * given a username, change its feedcode and/or gamecode to the new values
+     */
     public static void updateUser(String username, String feedcode, String gamecode, boolean admin) {
     	if (feedcode != null){
     		try {
@@ -193,6 +267,9 @@ public class Server {
     	}
     }
     
+    /**
+     * perform a tag, returns false if cannibal tags, or users don't exist
+     */
     public static boolean tag(String tagger, String tagged, String gamecode){
     	return false;
     }
