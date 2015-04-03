@@ -26,4 +26,5 @@
     <string name="humans">Humans</string>
     <string name="zombies">Zombies</string>
     <string name="login">Login</string>
+    <string name="title_activity_game_list">GameListActivity</string>
 </resources>

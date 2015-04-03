@@ -238,7 +238,12 @@ public class Server{
     public void getTimeRemaining(){
     
     }
-    
+
+    // get list of games
+    public ArrayList<Game> getGameList() {
+        return null;
+    }
+
     // returns 0 if login was successful
     // can either use username or feedcode
     public int login(String identifier, String password){

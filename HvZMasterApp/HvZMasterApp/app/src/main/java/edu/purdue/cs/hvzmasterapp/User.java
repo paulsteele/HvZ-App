@@ -5,6 +5,7 @@ public class User{
     public String uniqueID;
     public boolean isAdmin;
     public boolean isZombie;
+    public String gameId;
 
     public User(String username, String uniqueID, boolean isZombie, boolean isAdmin){
         this.username = username;

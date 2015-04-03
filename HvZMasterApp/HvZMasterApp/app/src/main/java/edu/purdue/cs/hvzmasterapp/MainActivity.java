@@ -10,19 +10,33 @@ import android.view.View;
 import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
-    public Server server = Server.getInstance();
-    public boolean isLoggedIn = false;
-    public User self;
-
+    private Server server = Server.getInstance();
+    private boolean isLoggedIn = false;
+    private Globals g = Globals.getInstance();
+    private User self = g.getSelf();
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_player);
+        // log in player
         if (!isLoggedIn) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivityForResult(intent, 1);
         }
+        // get player to join game
+        if (g.getSelf().gameId.equals("000000")) {
+            Intent intent = new Intent(this, GameListActivity.class);
+            startActivityForResult(intent, 1);
+        }
+        // distringuish views for admin/players
         if (self.isAdmin) {
+            setContentView(R.layout.activity_main_admin);
+            TextView text = (TextView) findViewById(R.id.adminlabel);
+            text.setText("Admin: " + self.username);
+            text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+        }
+        else {
             setContentView(R.layout.activity_main_player);
             TextView text = (TextView) findViewById(R.id.playerlabel);
             if (self.isZombie) {
@@ -31,12 +45,6 @@ public class MainActivity extends ActionBarActivity {
             else {
                 text.setText("Human: " + self.username);
             }
-            text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
-        }
-        else if (self.isZombie) {
-            setContentView(R.layout.activity_main_admin);
-            TextView text = (TextView) findViewById(R.id.adminlabel);
-            text.setText("Admin: " + self.username);
             text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
         }
     }
@@ -75,7 +83,7 @@ public class MainActivity extends ActionBarActivity {
         if (requestCode == RESULT_OK) {
             isLoggedIn = true;
             String user = data.getStringExtra("username");
-            self = server.getPlayer(user);
+            g.setSelf(server.getPlayer(user));
         }
     }
 
@@ -89,6 +97,6 @@ public class MainActivity extends ActionBarActivity {
     public void tag(View view) {
         Intent intent = new Intent(this, TagActivity.class);
         startActivity(intent);
-        intent.putExtra("feedcode");
+        intent.putExtra("feedcode", self.uniqueID);
     }
 }
