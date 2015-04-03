@@ -8,6 +8,11 @@ Server will run on 128.211.191.47:8080
 
 ####Server Mappings
 
+`/`
+
+ * POST: Creates a game
+ * GET: Gets a list of all games
+
 `/user`
 
  * POST: registers a user
@@ -16,8 +21,13 @@ Server will run on 128.211.191.47:8080
  * PUT: update a user
  	* `{"feedcode": value, "gamecode": value}`
 
+`{game}`
+
+ * PUT: Start the game
+ * GET: Check if game is started
 
 `{game}/user`
+
  * GET: gets all users
 
 `/user/{identifier}`

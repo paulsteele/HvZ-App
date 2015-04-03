@@ -11,8 +11,16 @@ echo `curl -Ss -X GET localhost:8080/00000000/user/paul`
 #get All
 echo `curl -Ss -X GET localhost:8080/00000000/user`
 #create a game
-echo `curl -Ss -X GET localhost:8080/newgame`
+response=`curl -Ss -X POST localhost:8080/`
+echo $response
+code=${response:13:8}
+#get all games
+echo `curl -Ss -X GET localhost:8080/`
+#get feedcode
+response=`curl -Ss -X POST -H "Content-Type: application/json" -d '{"admin": "false"}' localhost:8080/$code/feedcode `
+echo $response
+fcode=${response:13:8}
 #update user
-echo `curl -Ss -X PUT -H "Content-Type: application/json" -d '{"feedcode": "APPLE", "gamecode": "BANANA"}' localhost:8080/user/paul`
+echo `curl -Ss -X PUT -H "Content-Type: application/json" -d '{"feedcode": "'$fcode'", "gamecode":"'$code'"}' localhost:8080/user/paul`
 #another login to show difference
 echo `curl -Ss -X POST -H "Content-Type: application/json" -d '{"password": "pass"}' localhost:8080/user/paul` #good case

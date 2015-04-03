@@ -363,7 +363,35 @@ public class ResourceController {
     	return response.toString();
     }
     
-    @RequestMapping(value = "/newgame", method  = RequestMethod.GET)
+    /**
+     * get all games
+     */
+    @RequestMapping(value ="/", method = RequestMethod.GET)
+    public String getGames(){
+    	//Set up response object
+    	JSONObject output = new JSONObject();
+    	//set JSONArray and holder array
+    	JSONArray gameList = new JSONArray();
+    	String[] gameStringList = Server.getAllGames();
+    	for (int i = 0; i < gameStringList.length;i++){
+    		gameList.put(gameStringList[i]);
+    	}
+    	try {
+			output.put("games", gameList);
+			output.put(ServerConfiguration.success, true);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return output.toString();		
+    }
+    
+    /**
+     * Will create a new game, and add to the list
+     * No JSON
+     */
+    @RequestMapping(value = "/", method  = RequestMethod.POST)
     public String createGame() {
     	String gamecode = Server.generateGamecode();
     	boolean failed = false;
@@ -379,7 +407,10 @@ public class ResourceController {
     	return response.toString();
     }
     
-    @RequestMapping("/{game}/begin")
+    /**
+     * sets a game to begin
+     */
+    @RequestMapping(value = "{game}", method = RequestMethod.PUT)
     public String beginGame (@PathVariable("game") String game) {
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	//Set up response object
@@ -396,7 +427,10 @@ public class ResourceController {
     	return response.toString();
     }
     
-    @RequestMapping("/{game}/isstarted")
+    /**
+     * Checks to see if a game has begun
+     */
+    @RequestMapping(value = "{game}", method = RequestMethod.GET)
     	public String isStarted(@PathVariable("game") String game) {
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	//Set up response object

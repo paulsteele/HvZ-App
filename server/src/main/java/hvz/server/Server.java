@@ -246,6 +246,20 @@ public class Server {
     }
     
     /**
+     * retrieve list of all games
+     */
+    public static String[] getAllGames(){
+    	String[] games = null;
+    	try {
+			games = DBHandler.getAllGames(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return games;
+    }
+    
+    /**
      * given a username, change its feedcode and/or gamecode to the new values
      */
     public static void updateUser(String username, String feedcode, String gamecode, boolean admin) {
