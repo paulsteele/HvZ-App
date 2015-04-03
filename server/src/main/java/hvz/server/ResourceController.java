@@ -216,6 +216,37 @@ public class ResourceController {
     	return output.toString();
     }
     
+    @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
+    public String getPlayer (@PathVariable("username") String username){
+    	//Set up response object
+		JSONObject output = new JSONObject();
+		//grab the user
+		User user = Server.getUser(username);
+		boolean failed = (user == null);
+    	try {
+			if (!failed) { //means user is found
+    			output.put("username", user.username);
+    			output.put("feedcode", user.feedcode);
+    			output.put("isAdmin", user.isAdmin);
+    			output.put("gamecode", user.gamecode);
+    			//add information about zombie status
+    			if (!user.isAdmin){
+    				output.put("isZombie", ((Player) user).isZombie);
+    			}
+    			else {
+    				output.put("isZombie", false);
+    			}
+			}
+			//info no matter what
+			output.put(ServerConfiguration.success, !failed);
+
+		} catch (JSONException e) {
+			//big error
+			e.printStackTrace();
+		}
+    	return output.toString();
+    }
+    
     /**
      * Returns all users in a current game
      */

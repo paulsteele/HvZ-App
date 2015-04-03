@@ -21,32 +21,33 @@ Server will run on 128.211.191.47:8080
  * PUT: update a user
  	* `{"feedcode": value, "gamecode": value}`
 
-`{game}`
-
- * PUT: Start the game
- * GET: Check if game is started
-
-`{game}/user`
-
- * GET: gets all users
-
-`/user/{identifier}`
+`/user/{username}`
 
  * POST: logs in a user
  	* `{"password": value}`
  	* password is a string
+ * GET:  retrieves a user by username
 
-`{game}/user/{identifier}`
+`/{game}`
 
- * GET: retrieves a single user
+ * PUT: Start the game
+ * GET: Check if game is started
 
-`{game}/feedcode`
+`/{game}/user`
 
- * POST: generates a feedcode
+ * GET: gets all users in a game
+
+`/{game}/user/{feedcode}`
+
+ * GET: retrieves a single user by feedcode in a game
+
+`/{game}/feedcode`
+
+ * POST: generates a feedcode in a game
  	* `{"admin": value}`
  	* admin is a boolean
 
- `{game}/tag`
+ `/{game}/tag`
 
  * POST: executes a tag
  	* `{"tagger": feedcode, "tagged": feedcode}
