@@ -1,8 +1,10 @@
 package edu.purdue.cs.hvzmasterapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,19 +15,34 @@ public class MainActivity extends ActionBarActivity {
     private Server server = Server.getInstance();
     private boolean isLoggedIn = false;
     private Globals g = Globals.getInstance();
-    private User self = g.getSelf();
-    
+    private User self;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_player);
         // log in player
-        if (!isLoggedIn) {
+        //SaveSharedPreference.clearUserName(MainActivity.this);
+        String username = SaveSharedPreference.getUserName(MainActivity.this);
+        if(username.length() == 0) {
+            Log.d("Main", "Starting login activity");
             Intent intent = new Intent(this, LoginActivity.class);
             startActivityForResult(intent, 1);
         }
+        else {
+            setupLayout();
+        }
+    }
+
+    public void setupLayout() {
+        /* temp user */
+        g.setSelf(new User("wells", null, null, false, true));
+        self = g.getSelf();
+
         // get player to join game
-        if (g.getSelf().gameId.equals("000000")) {
+        Log.d("Main", "Self gameid: " + self.gameID);
+        if (self.gameID.equals("000000")) {
+            Log.d("Main", "Starting game list activity");
             Intent intent = new Intent(this, GameListActivity.class);
             startActivityForResult(intent, 1);
         }
@@ -49,41 +66,14 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_main) {
-        }
-        else if (id == R.id.action_register) {
-            Intent intent = new Intent(this, RegisterActivity.class);
-            startActivity(intent);
-        }
-        else if (id == R.id.action_login) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        }
-        else if (id == R.id.action_plist) {
-            Intent intent = new Intent(this, PlayerListActivity.class);
-            startActivity(intent);
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     /* Create user from login credentials */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RESULT_OK) {
-            isLoggedIn = true;
+        if (requestCode == Activity.RESULT_OK) {
             String user = data.getStringExtra("username");
-            g.setSelf(server.getPlayer(user));
+            SaveSharedPreference.setUserName(MainActivity.this, user);
+            //g.setSelf(server.getPlayer(user));
+            setupLayout();
         }
     }
 

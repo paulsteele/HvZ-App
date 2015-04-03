@@ -1,8 +1,10 @@
 package edu.purdue.cs.hvzmasterapp;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,9 +68,10 @@ public class LoginActivity extends ActionBarActivity {
             msg.setText("Success!");
             msg.setTextColor(Color.GREEN);
             msg.setVisibility(View.VISIBLE);
-            Intent data = new Intent();
-            data.putExtra("username", username);
-            setResult(RESULT_OK, data);
+            SaveSharedPreference.setUserName(LoginActivity.this, username);
+            Intent intent = new Intent();
+            intent.putExtra("username", username);
+            setResult(Activity.RESULT_OK, intent);
             finish();
         }
         else {

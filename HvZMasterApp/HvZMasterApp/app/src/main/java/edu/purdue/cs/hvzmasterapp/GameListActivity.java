@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,6 +25,7 @@ public class GameListActivity extends ActionBarActivity {
     ArrayList<Game> gameList;
     ArrayList<String> itemList = new ArrayList<>();
     Server server = Server.getInstance();
+    private Globals global = Globals.getInstance();
     ListView list;
 
     @Override
@@ -32,10 +35,30 @@ public class GameListActivity extends ActionBarActivity {
 
         gameList = server.getGameList();
         if (gameList == null) {
+            gameList = new ArrayList<>();
             gameList.add(new Game("There are currently no games available.", "000000"));
         }
 
+        /* testing */
+        addItems();
+
         list = (ListView) findViewById(R.id.gamelistview);
+
+        if (global.getSelf().isAdmin) {
+            View seperator = findViewById(R.id.listseperator);
+            seperator.setVisibility(View.VISIBLE);
+            TextView footer =  (TextView) findViewById(R.id.footer);
+            footer.setVisibility(View.VISIBLE);
+
+            footer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    /* start create game view here */
+                    Log.d("Game list", "Create game pressed");
+                }
+            });
+        }
+
         GameAdapter adapter = new GameAdapter(this, gameList);
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
