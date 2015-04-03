@@ -43,6 +43,9 @@ public class ResourceController {
 			//error 
 			failed = true;
 		}
+		catch (NullPointerException e){
+			failed = true;
+		}
 		//check values are present
 		if (username == null || password == null ){
 			failed = true;
@@ -103,6 +106,9 @@ public class ResourceController {
 			//error 
 			failed = true;
 		}
+		catch (NullPointerException e){
+			failed = true;
+		}
 		
 		User user = Server.getUser(username);
 		if (user == null)
@@ -146,6 +152,9 @@ public class ResourceController {
 		}
 		catch (JSONException e){
 			//error 
+			failed = true;
+		}
+		catch (NullPointerException e){
 			failed = true;
 		}
 		//check values are present
@@ -265,6 +274,9 @@ public class ResourceController {
 			//error 
 			failed = true;
 		}
+		catch (NullPointerException e){
+			failed = true;
+		}
 
 		if (failed){
 			admin = false;
@@ -325,6 +337,9 @@ public class ResourceController {
 		}
 		catch (JSONException e){
 			//error 
+			failed = true;
+		}
+		catch (NullPointerException e){
 			failed = true;
 		}
     	if (taggerString == null || taggedString == null){
