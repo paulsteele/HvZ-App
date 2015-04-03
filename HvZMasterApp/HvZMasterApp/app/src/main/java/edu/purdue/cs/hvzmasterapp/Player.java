@@ -5,7 +5,7 @@ public class Player extends User {
         public boolean isZombie;
 
         public Player(String username, String uniqueID){
-                super(username, uniqueID, false, false);
+                super(username, uniqueID, null, false, false);
         }
 
         public void isZombie(){

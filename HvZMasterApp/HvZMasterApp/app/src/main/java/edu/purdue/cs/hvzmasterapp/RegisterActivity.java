@@ -51,27 +51,16 @@ public class RegisterActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void getCode(View view) {
-        EditText text = (EditText) findViewById(R.id.feedcodeinput);
-        if (text.getText().toString().equals("")) {
-            boolean admin = ((CheckBox) findViewById(R.id.admin_check)).isChecked();
-            String code = server.getNewFeedcode(admin);
-            System.err.println("feedcode: " + code);
-            text.setText(code, TextView.BufferType.EDITABLE);
-        }
-    }
-
     public void register(View view) {
         /* Get user inputs */
         String user = ((EditText) findViewById(R.id.userinput)).getText().toString();
         String pass = ((EditText) findViewById(R.id.passinput)).getText().toString();
         String repass = ((EditText) findViewById(R.id.passreinput)).getText().toString();
-        String feedcode = ((EditText) findViewById(R.id.feedcodeinput)).getText().toString();
         boolean admin = ((CheckBox) findViewById(R.id.admin_check)).isChecked();
 
         TextView msg = (TextView) findViewById(R.id.register_msg);
 
-        System.err.println("user: " + user + "\nadmin: " + admin + "\nfeedcode: " + feedcode + "\npass1: " + pass + "\npass2: " + repass);
+        System.err.println("user: " + user + "\nadmin: " + admin + "\npass1: " + pass + "\npass2: " + repass);
         if (!pass.equals(repass)) {
             msg.setText("Passwords do not match.");
             ((EditText) findViewById(R.id.passinput)).setText("");
@@ -81,7 +70,7 @@ public class RegisterActivity extends ActionBarActivity {
             return;
         }
 
-        if (user.equals("") || pass.equals("") || feedcode.equals("")) {
+        if (user.equals("") || pass.equals("")) {
             msg.setText("Field(s) are empty");
             msg.setTextColor(Color.RED);
         }
@@ -89,7 +78,7 @@ public class RegisterActivity extends ActionBarActivity {
             // Register user
             String passhash = hash(pass);
             Log.d("register", "Password hash: " + passhash);
-            int error = server.register(user, feedcode, passhash, admin);
+            int error = server.register(user, passhash, admin);
             if (error == 0) {
                 msg.setText("Success!");
 

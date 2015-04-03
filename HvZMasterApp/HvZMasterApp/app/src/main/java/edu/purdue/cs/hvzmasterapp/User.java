@@ -5,11 +5,22 @@ public class User{
     public String uniqueID;
     public boolean isAdmin;
     public boolean isZombie;
-    public String gameId;
+    public String gameID;
 
-    public User(String username, String uniqueID, boolean isZombie, boolean isAdmin){
+    public User(String username, String uniqueID, String gameID, boolean isZombie, boolean isAdmin){
         this.username = username;
-        this.uniqueID = uniqueID;
+        if (uniqueID != null) {
+            this.uniqueID = uniqueID;
+        }
+        else {
+            this.uniqueID = "000000";
+        }
+        if (gameID != null) {
+            this.gameID = gameID;
+        }
+        else {
+            this.gameID = "000000";
+        }
         this.isZombie = isZombie;
         this.isAdmin = isAdmin;
     }

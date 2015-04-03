@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:id="@+id/gamelistlayout">
 
     <TextView
         android:layout_width="match_parent"
@@ -16,14 +17,33 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp" />
-
+        android:layout_marginBottom="16dp"
+        android:layout_above="@+id/gamelistview" />
     <ListView
         android:id="@+id/gamelistview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp" />
-
+    <View
+        android:id="@+id/listseperator"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@android:color/black"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create New Game"
+        android:textSize="24sp"
+        android:textColor="#000000"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"/>
 
 </LinearLayout>

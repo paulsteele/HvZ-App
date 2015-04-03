@@ -61,7 +61,7 @@ public class Server{
         try {
             if (response.getBoolean("success")) {
                 Log.e("getUser", "Success");
-                return new User(response.getString("username"), response.getString("feedcode"),
+                return new User(response.getString("username"), response.getString("feedcode"), response.getString("gameid"),
                         response.getBoolean("isZombie"), response.getBoolean("isAdmin"));
             }
         } catch (JSONException e) {
@@ -161,7 +161,7 @@ public class Server{
                 String code = user.getString("feedcode");
                 boolean isZombie = user.getBoolean("isZombie");
                 boolean admin = user.getBoolean("isAdmin");
-                User u = new User(usr, code, isZombie, admin);
+                User u = new User(usr, code, null, isZombie, admin);
                 list.add(u);
             }
 
@@ -294,7 +294,7 @@ public class Server{
      * Verify username/feedcode are not taken
      * return non-zero if error occurs
      */
-    public int register(String username, String feedcode, String password, boolean admin) {
+    public int register(String username, String password, boolean admin) {
         StringBuilder url = new StringBuilder(serviceURL);
         url.append("/user");
         /* url.append("?username="+username);
@@ -305,7 +305,6 @@ public class Server{
         JSONObject request = new JSONObject();
         try {
             request.put("username", username);
-            request.put("feedcode", feedcode);
             request.put("password", password);
             request.put("admin", admin);
         } catch (JSONException e) {
