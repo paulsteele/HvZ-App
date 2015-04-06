@@ -251,16 +251,16 @@ public class DBHandler{
 	}
 	public static boolean isStarted(String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from gameStats where endTime = 'initialEndDate'");
+		ResultSet rs = s.executeQuery("select * from games where gameCode = '" + gameCode + "'");
 		if (!rs.isBeforeFirst())
 			return false;
-		int bool = rs.getInt("hasBegun where gameCode = '" + gameCode + "'");
+		int bool = rs.getInt("hasBegun");
 		if(bool == 0) return false;
 		else return true;//do you ever return true?
 	}
 	public static void start (String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		String command = "update gameStats set hasBegun = 1 where gameCode = '" + gameCode + "'";
+		String command = "update games set hasBegun = 1 where gameCode = '" + gameCode + "'";
 		s.executeUpdate(command);
 	}
 	public static void newGame(String gameCode, Connection c) throws SQLException{
