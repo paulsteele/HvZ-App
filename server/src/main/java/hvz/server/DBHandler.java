@@ -188,9 +188,21 @@ public class DBHandler{
 		admin.gamecode = rs.getString("gameCode");
 		return admin;
 	}
-	public static Player getPlayer(String username, Connection c)throws SQLException{
+	public static Player getPlayerU(String username, Connection c)throws SQLException{//get player by username
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from users where username = '" + username + "'");
+		//no player
+		if (!rs.isBeforeFirst())
+			return null;
+		String name = rs.getString("username");
+		String feed = rs.getString("feedCode");
+		Player player = new Player(name, feed);
+		player.gamecode = rs.getString("gameCode");
+		return player;
+	}
+	public static Player getPlayerFG(String feedCode, String gameCode, Connection c)throws SQLException{//getplayer by feed and game code
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from users where feedCode = '" + feedCode + "' and gameCode = '" + gameCode + "'");
 		//no player
 		if (!rs.isBeforeFirst())
 			return null;
