@@ -244,7 +244,14 @@ public class Server {
 			return false;
 		}
     }
-    
+    /**
+     * generate a revive code
+     */
+    public static String generateRevivecode(){
+        String revivecode = null;
+        revivecode = RandomStringUtils.randomAlphanumeric(ServerConfiguration.feedcodeLength -1);
+        return revivecode;
+    }
     /**
      * retrieve list of all games
      */
