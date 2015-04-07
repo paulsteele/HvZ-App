@@ -228,6 +228,19 @@ public class Server {
             e.printStackTrace();
         }
     }
+
+    /*
+    *   Admin Deletes mission
+    */
+    public static void deleteMission(String gamecode, String title){
+        try{
+            DBHandler.completedMission(gamecode,title,c);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+    }
+
     /**
      * generates a new gamecode that is guaranteed to be unique
      * @return
