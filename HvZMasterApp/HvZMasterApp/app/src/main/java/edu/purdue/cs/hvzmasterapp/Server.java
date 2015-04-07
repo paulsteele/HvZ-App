@@ -62,7 +62,7 @@ public class Server{
         try {
             if (response.getBoolean("success")) {
                 Log.e("getUser", "Success");
-                return new User(response.getString("username"), response.getString("feedcode"), response.getString("gameid"),
+                return new User(response.getString("username"), response.getString("feedcode"), response.getString("gamecode"),
                         response.getBoolean("isZombie"), response.getBoolean("isAdmin"));
             }
         } catch (JSONException e) {
@@ -73,9 +73,9 @@ public class Server{
     }
     
     //generates and returns a new Feed Code
-    public String getNewFeedcode(String gameid, boolean admin){
+    public String getNewFeedcode(String gamecode, boolean admin){
         StringBuilder url = new StringBuilder(serviceURL);
-        url.append("/" + gameid + "/");
+        url.append("/" + gamecode + "/");
         url.append("feedcode");
 
         JSONObject request = new JSONObject();
@@ -245,11 +245,45 @@ public class Server{
     
     }
 
-    public int createGame() {
-        return 0;
+    // returns 0 if register was successful, else non-zero
+    public int createGame(String gamename, String creator) {
+        JSONObject request = new JSONObject();
+
+        try {
+            request.put("gamename", gamename);
+            request.put("creator", creator);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        PostTask task = new PostTask(serviceURL, client, request);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            return -1;
+        }
+
+        try {
+            if (response.getBoolean("success")) {
+                return 0;
+            }
+            else {
+                return 1;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
     }
 
-    // get list of games
+    // returns list of all games
     public ArrayList<Game> getGameList() {
         GetTask task = new GetTask(serviceURL, client);
 
@@ -271,8 +305,8 @@ public class Server{
             JSONArray games = response.getJSONArray("games");
 
             for (int i = 0; i < games.length(); i++) {
-                String gameid = games.getString(i);
-                list.add(new Game(gameid));
+                String gamecode = games.getString(i);
+                list.add(new Game(gamecode));
             }
 
             return list;
@@ -283,8 +317,8 @@ public class Server{
         return null;
     }
 
-    public int addPlayerToGame(String gameid, String username) {
-        String feedcode = getNewFeedcode(gameid, false);
+    public int addPlayerToGame(String gamecode, String username) {
+        String feedcode = getNewFeedcode(gamecode, false);
 
         /* put request url */
         StringBuilder url = new StringBuilder(serviceURL);
@@ -294,7 +328,7 @@ public class Server{
         JSONObject request = new JSONObject();
         try {
             request.put("feedcode", feedcode);
-            request.put("gamecode", gameid);
+            request.put("gamecode", gamecode);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -325,8 +359,7 @@ public class Server{
         return 0;
     }
 
-    // returns 0 if login was successful
-    // can either use username or feedcode
+    // returns 0 if login was successful, else non-zero
     public int login(String identifier, String password){
         StringBuilder url = new StringBuilder(serviceURL);
         url.append("/user/");
@@ -371,10 +404,7 @@ public class Server{
         return -1;
     }
 
-    /* Function to add user to database
-     * Verify username/feedcode are not taken
-     * return non-zero if error occurs
-     */
+    // returns 0 if register was successful, else non-zero
     public int register(String username, String password, boolean admin) {
         StringBuilder url = new StringBuilder(serviceURL);
         url.append("/user");
@@ -413,6 +443,9 @@ public class Server{
             if (response.getBoolean("success")) {
                 Log.e("Register", "success");
                 return 0;
+            }
+            else {
+                return 1;
             }
         } catch (JSONException e) {
             e.printStackTrace();

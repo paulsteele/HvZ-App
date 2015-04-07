@@ -22,6 +22,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class LoginActivity extends ActionBarActivity {
     Server server = Server.getInstance();
+    Globals g = Globals.getInstance();
 
     PopupWindow popup;
 
@@ -69,14 +70,28 @@ public class LoginActivity extends ActionBarActivity {
             msg.setTextColor(Color.GREEN);
             msg.setVisibility(View.VISIBLE);
             SaveSharedPreference.setUserName(LoginActivity.this, username);
+            g.setSelf(server.getPlayer(username));
             Intent intent = new Intent();
             intent.putExtra("username", username);
             setResult(Activity.RESULT_OK, intent);
+
             finish();
+        }
+        else if (status == 1) {
+            TextView msg = (TextView) findViewById(R.id.login_msg);
+            msg.setText("Username/password does not match");
+            msg.setTextColor(Color.RED);
+            msg.setVisibility(View.VISIBLE);
+        }
+        else if (status == -1) {
+            TextView msg = (TextView) findViewById(R.id.login_msg);
+            msg.setText("Unable to connect to server");
+            msg.setTextColor(Color.RED);
+            msg.setVisibility(View.VISIBLE);
         }
         else {
             TextView msg = (TextView) findViewById(R.id.login_msg);
-            msg.setText("Username/password does not match");
+            msg.setText("Unknown error");
             msg.setTextColor(Color.RED);
             msg.setVisibility(View.VISIBLE);
         }

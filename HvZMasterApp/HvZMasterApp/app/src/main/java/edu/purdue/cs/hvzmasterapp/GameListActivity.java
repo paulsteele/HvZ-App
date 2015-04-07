@@ -1,6 +1,7 @@
 package edu.purdue.cs.hvzmasterapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -20,7 +21,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-
 public class GameListActivity extends ActionBarActivity {
     ArrayList<Game> gameList;
     ArrayList<String> itemList = new ArrayList<>();
@@ -38,11 +38,8 @@ public class GameListActivity extends ActionBarActivity {
         gameList = server.getGameList();
         if (gameList == null) {
             gameList = new ArrayList<>();
-            gameList.add(new Game("There are currently no games available.", "000000"));
+            gameList.add(new Game("There are currently no games available.", "000000", null));
         }
-
-        /* testing */
-        //addItems();
 
         list = (ListView) findViewById(R.id.gamelistview);
 
@@ -68,20 +65,12 @@ public class GameListActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
                 // select game to join and show confirmation menu
                 Log.d("GameList", "Game name: " + gameList.get(position).getName());
-                if (gameList.get(position).getId().equals("000000")) {
+                if (gameList.get(position).getCode().equals("000000")) {
                     //do nothing
                 }
             }
         });
     }
-
-    private void addItems() {
-        gameList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            gameList.add(new Game("Game #" + (i+1), Integer.toString(i*10)));
-        }
-    }
-
 
     private class GameAdapter extends ArrayAdapter<Game> {
         public GameAdapter(Context context, ArrayList<Game> games) {
@@ -101,9 +90,15 @@ public class GameListActivity extends ActionBarActivity {
             TextView id = (TextView) convertView.findViewById(R.id.gameId);
             // Populate the data into the template view using the data object
             //name.setText(game.getName());
-            id.setText(game.getId());
+            id.setText(game.getCode());
             // Return the completed view to render on screen
             return convertView;
         }
+    }
+
+    public void createGame(View view) {
+        Intent intent = new Intent(this, CreateGameActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.animator.slide_left, R.animator.slide_right);
     }
 }

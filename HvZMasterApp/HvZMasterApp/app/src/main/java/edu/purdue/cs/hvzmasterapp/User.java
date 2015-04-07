@@ -7,6 +7,15 @@ public class User{
     public boolean isZombie;
     public String gameID;
 
+    public User(String username, boolean isAdmin) {
+        this.username = username;
+        this.isAdmin = isAdmin;
+
+        this.isZombie = false;
+        this.uniqueID = "000000";
+        this.gameID = "000000";
+    }
+
     public User(String username, String uniqueID, String gameID, boolean isZombie, boolean isAdmin){
         this.username = username;
         if (uniqueID != null) {
