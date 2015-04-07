@@ -166,7 +166,7 @@ public class ResourceController {
     	if (user == null)
     		failed = true;
 		if (!failed){
-			return getPlayer(username, user.gamecode);
+			return getPlayer(username);
     	}
     	//Set up response object
 		JSONObject output = new JSONObject();
