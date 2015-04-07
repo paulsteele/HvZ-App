@@ -200,7 +200,7 @@ public class DBHandler{
 		player.gamecode = rs.getString("gameCode");
 		return player;
 	}
-	public static Admin getAdminFG(String feedCode, String gameCode, Connection c){
+	public static Admin getAdminFG(String feedCode, String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from admins where feedCode = '" + feedCode + "' and gameCode = '" + gameCode + "'");
 		//no player
@@ -208,9 +208,9 @@ public class DBHandler{
 			return null;
 		String name = rs.getString("username");
 		String feed = rs.getString("feedCode");
-		Player player = new Player(name, feed);
-		player.gamecode = rs.getString("gameCode");
-		return player;
+		Admin admin = new Admin(name, feed);
+		admin.gamecode = rs.getString("gameCode");
+		return admin;
 	}
 	public static Player getPlayerFG(String feedCode, String gameCode, Connection c)throws SQLException{//getplayer by feed and game code
 		Statement s = c.createStatement();
