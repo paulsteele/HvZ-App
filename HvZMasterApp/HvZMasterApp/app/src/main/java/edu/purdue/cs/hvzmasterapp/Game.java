@@ -5,24 +5,29 @@ package edu.purdue.cs.hvzmasterapp;
  */
 public class Game {
     private String name;
-    private String id;
+    private String code;
+    private String creator;
 
-
-    public Game(String id) {
+    public Game(String code) {
         this.name = null;
-        this.id = id;
+        this.code = code;
+        this.creator = null;
     }
 
-    public Game(String name, String id) {
+    public Game(String name, String code, String creator) {
         this.name = name;
-        this.id = id;
+        this.code = code;
+        this.creator = creator;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getId() {
-        return id;
+    public String getCode() {
+        return code;
+    }
+    public String getCreator() {
+        return code;
     }
 }

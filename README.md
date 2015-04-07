@@ -11,6 +11,7 @@ Server will run on 128.211.191.47:8080
 `/`
 
  * POST: Creates a game
+ 	* {"gamename": value, "creator": value}
  * GET: Gets a list of all games
 
 `/user`
@@ -48,7 +49,7 @@ Server will run on 128.211.191.47:8080
  	* `{"admin": value}`
  	* admin is a boolean
 
- `/{game}/tag`
+`/{game}/tag`
 
  * POST: executes a tag
  	* `{"tagger": feedcode, "tagged": feedcode}

@@ -91,8 +91,8 @@ public class DBHandler{
 		command = "CREATE TABLE games" + 
 						"(endTime 	varchar(25), " +
 						"hasBegun	int, " +
-						"gameCode	varchar(25)" +
-						"name		varchar(25)" +
+						"gameCode	varchar(25)," +
+						"name		varchar(25)," +
 						"creator	varchar(25))";
 		try {
 			Statement s = c.createStatement();
@@ -270,7 +270,7 @@ public class DBHandler{
 			String creator = rs.getString("creator");
 			String name = rs.getString("name");
 			String gc = rs.getString("gameCode");
-			Game g = new Game(gc, creator, name);
+			Game g = new Game(gc, name, creator);
 			games.add(g);
 		}
 		rs.close();

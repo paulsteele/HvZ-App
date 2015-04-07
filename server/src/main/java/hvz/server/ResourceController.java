@@ -381,7 +381,7 @@ public class ResourceController {
     	}
     	//implement the tag
     	if (!failed){
-    		failed = Server.tag(taggerString, taggedString, game);
+    		failed = !Server.tag(taggerString, taggedString, game);
     	}
 		
     	//Set up response object
@@ -406,11 +406,16 @@ public class ResourceController {
     	JSONObject output = new JSONObject();
     	//set JSONArray and holder array
     	JSONArray gameList = new JSONArray();
-    	String[] gameStringList = Server.getAllGames();
-    	for (int i = 0; i < gameStringList.length;i++){
-    		gameList.put(gameStringList[i]);
-    	}
+    	Game[] gameGameList = Server.getAllGames();
     	try {
+    		for (int i = 0; i < gameGameList.length;i++){
+    			JSONObject game = new JSONObject();
+    			game.put("gamecode", gameGameList[i].gameCode);
+    			game.put("gamename", gameGameList[i].name);
+    			game.put("creator", gameGameList[i].creator);
+    			gameList.put(game);
+    		}
+    	
 			output.put("games", gameList);
 			output.put(ServerConfiguration.success, true);
 		} catch (JSONException e) {
@@ -423,13 +428,30 @@ public class ResourceController {
     
     /**
      * Will create a new game, and add to the list
-     * No JSON
+     * Valid JSON {"gamename": value, "creator": value}
      */
     @RequestMapping(value = "/", method  = RequestMethod.POST)
-    public String createGame() {
+    public String createGame(@RequestBody String value) {
+    	boolean failed = false; //immediately fail if game doesn't exist
+    	//take in input and create variables for each entry
+		JSONObject input = null;
+		String gamename = null;
+		String creator = null;
+		try {
+			input = new JSONObject(new JSONTokener(value));
+			gamename = input.getString("gamename");
+			creator = input.getString("creator");
+		}
+		catch (JSONException e){
+			//error 
+			failed = true;
+		}
+		catch (NullPointerException e){
+			failed = true;
+		}
+    	
     	String gamecode = Server.generateGamecode();
-    	boolean failed = false;
-    	Server.createGame(gamecode);
+    	Server.createGame(gamecode, gamename, creator);
     	JSONObject response = new JSONObject();
     	try {
     		response.put(ServerConfiguration.success, !failed);
@@ -479,5 +501,5 @@ public class ResourceController {
     	}
     	return response.toString();
 
-    	}    
+    	}   
 }

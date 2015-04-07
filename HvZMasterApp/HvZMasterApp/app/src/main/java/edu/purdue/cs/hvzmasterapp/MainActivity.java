@@ -40,13 +40,12 @@ public class MainActivity extends ActionBarActivity {
     public void setupLayout() {
         User self = g.getSelf();
 
+        if (self == null) {
+            return;
+        }
+
         // get player to join game
         Log.d("Main", "Self gameid: " + self.gameID);
-        if (self.gameID.equals("000000")) {
-            Log.d("Main", "Starting game list activity");
-            Intent intent = new Intent(this, GameListActivity.class);
-            startActivityForResult(intent, 1);
-        }
         // distringuish views for admin/players
         if (self.isAdmin) {
             setContentView(R.layout.activity_main_admin);
@@ -65,6 +64,12 @@ public class MainActivity extends ActionBarActivity {
             }
             text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
         }
+
+        if (self.gameID.equals("000000")) {
+            Log.d("Main", "Starting game list activity");
+            Intent intent = new Intent(this, GameListActivity.class);
+            startActivityForResult(intent, 1);
+        }
     }
 
     /* Create user from login credentials */
@@ -72,9 +77,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Activity.RESULT_OK) {
             String user = data.getStringExtra("username");
-            SaveSharedPreference.setUserName(MainActivity.this, user);
-            setUser(user);
-            setupLayout();
+            this.recreate();
         }
     }
 

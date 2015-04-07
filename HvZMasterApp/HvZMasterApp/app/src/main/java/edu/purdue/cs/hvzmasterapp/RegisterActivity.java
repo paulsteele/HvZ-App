@@ -78,17 +78,24 @@ public class RegisterActivity extends ActionBarActivity {
             // Register user
             String passhash = hash(pass);
             Log.d("register", "Password hash: " + passhash);
-            int error = server.register(user, passhash, admin);
-            if (error == 0) {
+            int status = server.register(user, passhash, admin);
+            if (status == 0) {
                 msg.setText("Success!");
 
                 msg.setTextColor(Color.GREEN);
-                msg.setVisibility(View.VISIBLE);
 
                 finish();
             }
-            else {
+            else if (status == 1) {
                 msg.setText("Username and/or feedcode already taken.");
+                msg.setTextColor(Color.RED);
+            }
+            else if (status == -1) {
+                msg.setText("Unable to connect to server");
+                msg.setTextColor(Color.RED);
+            }
+            else {
+                msg.setText("Unknown error");
                 msg.setTextColor(Color.RED);
             }
         }
