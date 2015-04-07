@@ -218,7 +218,7 @@ public class Server{
         Log.d("Taggee", gotTagged.toString());
         //put for tagger
         try{
-            didTag.put("feedcode",taggee);
+            didTag.put("feedcode",tagger);
         }catch(JSONException e){
             e.printStackTrace();
         }

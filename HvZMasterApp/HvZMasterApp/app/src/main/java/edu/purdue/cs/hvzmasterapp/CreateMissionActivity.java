@@ -28,7 +28,7 @@ public class CreateMissionActivity extends ActionBarActivity{
         String name = ((EditText)findViewById(R.id.missionName)).getText().toString();
         String objectives = ((EditText)findViewById(R.id.missionObjectives)).getText().toString();
         String reward = ((EditText)findViewById(R.id.missionReward)).getText().toString();
-        int status = server.addMission(name, objectives, reward);
+        /*int status = server.addMission(name, objectives, reward);
         if (status == 0) {
             TextView msg = (TextView) findViewById(R.id.create_mission_msg);
             msg.setText("Success!");
@@ -41,7 +41,7 @@ public class CreateMissionActivity extends ActionBarActivity{
             msg.setText("Mission could not be added");
             msg.setTextColor(Color.RED);
             msg.setVisibility(View.VISIBLE);
-        }
+        }*/
     }
 }
 
