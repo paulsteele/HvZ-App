@@ -13,16 +13,13 @@ import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
     private Server server = Server.getInstance();
-    private boolean isLoggedIn = false;
     private Globals g = Globals.getInstance();
-    private User self;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_player);
         // log in player
-        //SaveSharedPreference.clearUserName(MainActivity.this);
         String username = SaveSharedPreference.getUserName(MainActivity.this);
         if(username.length() == 0) {
             Log.d("Main", "Starting login activity");
@@ -30,14 +27,18 @@ public class MainActivity extends ActionBarActivity {
             startActivityForResult(intent, 1);
         }
         else {
+            setUser(username);
             setupLayout();
         }
     }
 
+    public void setUser(String username) {
+        User self = server.getPlayer(username);
+        g.setSelf(self);
+    }
+
     public void setupLayout() {
-        /* temp user */
-        g.setSelf(new User("wells", null, null, false, true));
-        self = g.getSelf();
+        User self = g.getSelf();
 
         // get player to join game
         Log.d("Main", "Self gameid: " + self.gameID);
@@ -72,7 +73,7 @@ public class MainActivity extends ActionBarActivity {
         if (requestCode == Activity.RESULT_OK) {
             String user = data.getStringExtra("username");
             SaveSharedPreference.setUserName(MainActivity.this, user);
-            //g.setSelf(server.getPlayer(user));
+            setUser(user);
             setupLayout();
         }
     }
@@ -85,6 +86,7 @@ public class MainActivity extends ActionBarActivity {
 
     /* Tag players */
     public void tag(View view) {
+        User self = g.getSelf();
         Intent intent = new Intent(this, TagActivity.class);
         startActivity(intent);
         intent.putExtra("feedcode", self.uniqueID);

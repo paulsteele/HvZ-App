@@ -28,6 +28,8 @@ public class GameListActivity extends ActionBarActivity {
     private Globals global = Globals.getInstance();
     ListView list;
 
+    int numGames = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +42,7 @@ public class GameListActivity extends ActionBarActivity {
         }
 
         /* testing */
-        addItems();
+        //addItems();
 
         list = (ListView) findViewById(R.id.gamelistview);
 
@@ -95,10 +97,10 @@ public class GameListActivity extends ActionBarActivity {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.gameitem, parent, false);
             }
             // Lookup view for data population
-            TextView name = (TextView) convertView.findViewById(R.id.gameName);
+            //TextView name = (TextView) convertView.findViewById(R.id.gameName);
             TextView id = (TextView) convertView.findViewById(R.id.gameId);
             // Populate the data into the template view using the data object
-            name.setText(game.getName());
+            //name.setText(game.getName());
             id.setText(game.getId());
             // Return the completed view to render on screen
             return convertView;

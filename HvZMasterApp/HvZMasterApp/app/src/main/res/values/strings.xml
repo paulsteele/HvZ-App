@@ -21,10 +21,11 @@
     <string name="usrprompt">Enter username</string>
     <string name="codeprompt">Enter feed code</string>
     <string name="adminprompt">Admin?</string>
+    <string name="nameprompt">Enter name of game</string>
     <string name="passreprompt">Re-type password</string>
     <string name="title_activity_plist">Player List</string>
     <string name="humans">Humans</string>
     <string name="zombies">Zombies</string>
     <string name="login">Login</string>
-    <string name="title_activity_game_list">GameListActivity</string>
+    <string name="submit">Submit</string>
 </resources>
