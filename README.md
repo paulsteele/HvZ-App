@@ -18,14 +18,15 @@ Server will run on 128.211.191.47:8080
  * POST: registers a user
  	* `{"username": value, "admin": value, "password": value}`
  	* username, feedcode, and password are strings, while admin is a boolean
- * PUT: update a user
- 	* `{"feedcode": value, "gamecode": value}`
+
 
 `/user/{username}`
 
  * POST: logs in a user
  	* `{"password": value}`
  	* password is a string
+ * PUT: update a user
+ 	* `{"feedcode": value, "gamecode": value}`
  * GET:  retrieves a user by username
 
 `/{game}`

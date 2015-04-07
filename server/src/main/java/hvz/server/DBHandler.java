@@ -176,7 +176,7 @@ public class DBHandler{
 		String command = "insert into passwords values('" + username + "', " + "'" + pswd + "')";
 		s.executeUpdate(command);
 	}
-	public static Admin getAdmin(String username, Connection c)throws SQLException{
+	public static Admin getAdminU(String username, Connection c)throws SQLException{
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from admins where username = '" + username + "'");
 		//no player
@@ -199,6 +199,18 @@ public class DBHandler{
 		Player player = new Player(name, feed);
 		player.gamecode = rs.getString("gameCode");
 		return player;
+	}
+	public static Admin getAdminFG(String feedCode, String gameCode, Connection c) throws SQLException{
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from admins where feedCode = '" + feedCode + "' and gameCode = '" + gameCode + "'");
+		//no player
+		if (!rs.isBeforeFirst())
+			return null;
+		String name = rs.getString("username");
+		String feed = rs.getString("feedCode");
+		Admin admin = new Admin(name, feed);
+		admin.gamecode = rs.getString("gameCode");
+		return admin;
 	}
 	public static Player getPlayerFG(String feedCode, String gameCode, Connection c)throws SQLException{//getplayer by feed and game code
 		Statement s = c.createStatement();
