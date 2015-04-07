@@ -501,5 +501,24 @@ public class ResourceController {
     	}
     	return response.toString();
 
-    	}   
+    	}  
+    /**
+     * force zombification on a user
+     */
+    
+    @RequestMapping(value = "{game}/forcezombie/{feedcode}", method = RequestMethod.GET)
+    public String forcezombie(@PathVariable("game") String game, @PathVariable("feedcode") String feedcode){
+    	Server.changeStatus(feedcode, game, true);
+		JSONObject response = new JSONObject();
+    	try{
+        	response.put(ServerConfiguration.success, true);
+    	}
+    	catch (JSONException e){
+    		e.printStackTrace();
+    		return null;
+    	}
+    	return response.toString();
+
+    	}  
+    
 }

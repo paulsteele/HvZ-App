@@ -328,6 +328,26 @@ public class Server {
     	}
     }
     
+    public static boolean changeStatus(String feedcode, String gamecode, boolean zombify){
+    	if (zombify){
+    		try {
+				DBHandler.makeZombie(feedcode, gamecode, c);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	else {
+    		try {
+				DBHandler.makeHuman(feedcode, gamecode, c);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	return true;
+    }
+    
     /**
      * perform a tag, returns false if cannibal tags, or users don't exist
      */
@@ -344,13 +364,16 @@ public class Server {
     		failed = true;
     	}
     	if (!failed){
-    		if (((Player) tagger).isZombie)
+    		if (((Player) tagger).isZombie){
     			zombie = (Player) tagger;
+    		}
     		else{
     			human = (Player) tagger;
     		}
-    		if (((Player) tagged).isZombie)
+    		
+    		if (((Player) tagged).isZombie) {
     			zombie = (Player) tagged;
+    		}
     		else{
     			human = (Player) tagged;
     		}
@@ -358,6 +381,7 @@ public class Server {
     	if (human == null || zombie == null){
     		failed = true;
     	}
+    	
     	//human stuns zombie
     	if (!failed && human == (Player) tagger){
     		try {
