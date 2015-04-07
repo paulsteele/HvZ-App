@@ -466,7 +466,7 @@ public class ResourceController {
     /**
      * sets a game to begin
      */
-    @RequestMapping(value = "{game}", method = RequestMethod.PUT)
+    @RequestMapping(value = "{game}/status", method = RequestMethod.PUT)
     public String beginGame (@PathVariable("game") String game) {
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	//Set up response object
@@ -486,7 +486,7 @@ public class ResourceController {
     /**
      * Checks to see if a game has begun
      */
-    @RequestMapping(value = "{game}", method = RequestMethod.GET)
+    @RequestMapping(value = "{game}/status", method = RequestMethod.GET)
     	public String isStarted(@PathVariable("game") String game) {
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	//Set up response object
