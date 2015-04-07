@@ -30,7 +30,7 @@ Server will run on 128.211.191.47:8080
  	* `{"feedcode": value, "gamecode": value}`
  * GET:  retrieves a user by username
 
-`/{game}/status`
+`/{game}`
 
  * PUT: Start the game
  * GET: Check if game is started
