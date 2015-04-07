@@ -48,7 +48,8 @@ public class TagActivity extends ActionBarActivity {
     public void tag(View view){
         String taggeeFeedcode = ((EditText)findViewById(R.id.feedcode)).getText().toString();
         String playerFeedcode = intent.getStringExtra("feedcode");
-/*        int status = server.tag(playerFeedcode, taggeeFeedcode);
+        //int status = server.tag(playerFeedcode, taggeeFeedcode);
+        int status = 0;
         if (status == 0) {
             TextView msg = (TextView) findViewById(R.id.tag_msg);
             msg.setText("Success!");
@@ -62,7 +63,7 @@ public class TagActivity extends ActionBarActivity {
             msg.setText("Failed to tag player");
             msg.setTextColor(Color.RED);
             msg.setVisibility(View.VISIBLE);
-        }*/
+        }
     }
 
 }

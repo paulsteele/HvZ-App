@@ -208,9 +208,9 @@ public class Server {
     /**
      * Creates a new game
      */
-    public static void createGame(String gamecode){
+    public static void createGame(String gamecode, String creator, String gamename){
     	try {
-			DBHandler.newGame(gamecode, c);
+			DBHandler.newGame(gamecode,gamename, creator, c);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -248,17 +248,31 @@ public class Server {
     /**
      * generate a revive code
      */
-    public static String generateRevivecode(){
+    public static String generateRevivecode(String gamecode){
+        boolean done = false;
         String revivecode = null;
-        revivecode = RandomStringUtils.randomAlphanumeric(ServerConfiguration.feedcodeLength -1);
-        revivecode = ServerConfiguration.revivePrefix + revivecode.toUpperCase();
+        while(!done) {
+            revivecode = RandomStringUtils.randomAlphanumeric(ServerConfiguration.feedcodeLength - 1);
+            revivecode = ServerConfiguration.revivePrefix + revivecode.toUpperCase();
+
+            done = !checkReviveCode(revivecode,gamecode);
+        }
         return revivecode;
+    }
+
+    public static boolean checkReviveCode(String revivecode, String gamecode){
+        try{
+            return DBHandler.validateReviveCode(revivecode,gamecode,c);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
     }
     /**
      * retrieve list of all games
      */
-    public static String[] getAllGames(){
-    	String[] games = null;
+    public static Game[] getAllGames(){
+    	Game[] games = null;
     	try {
 			games = DBHandler.getAllGames(c);
 		} catch (SQLException e) {
@@ -293,8 +307,54 @@ public class Server {
     /**
      * perform a tag, returns false if cannibal tags, or users don't exist
      */
-    public static boolean tag(String tagger, String tagged, String gamecode){
-    	return false;
+    public static boolean tag(String taggerString, String taggedString, String gamecode){
+    	boolean failed = !Server.checkGameExisits(gamecode);
+    	User tagger = Server.getUser(taggerString, gamecode);
+    	User tagged = Server.getUser(taggedString, gamecode);
+    	Player human = null;
+    	Player zombie= null;
+    	if (tagger == null || tagged == null){
+    		failed = true;
+    	}
+    	if (tagger.isAdmin || tagged.isAdmin){
+    		failed = true;
+    	}
+    	if (!failed){
+    		if (((Player) tagger).isZombie)
+    			zombie = (Player) tagger;
+    		else{
+    			human = (Player) tagger;
+    		}
+    		if (((Player) tagged).isZombie)
+    			zombie = (Player) tagged;
+    		else{
+    			human = (Player) tagged;
+    		}
+    	}
+    	if (human == null || zombie == null){
+    		failed = true;
+    	}
+    	//human stuns zombie
+    	if (!failed && human == (Player) tagger){
+    		try {
+				DBHandler.tag(taggerString, taggedString, gamecode, c);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	//zombie tags player
+    	else if (!failed){
+    		try {
+    			DBHandler.makeZombie(human.feedcode, gamecode, c);
+				DBHandler.tag(taggerString, taggedString, gamecode, c);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	
+    	return !failed;
     }
 }
 
