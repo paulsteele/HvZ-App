@@ -124,8 +124,8 @@ public class Server {
     public static User getUser(String username){
     	User user = null;
     	try {
-        	if (DBHandler.getPlayer(username,  c) != null){
-        		user = DBHandler.getPlayer(username, c);
+        	if (DBHandler.getPlayerU(username,  c) != null){
+        		user = DBHandler.getPlayerU(username, c);
         	}
     		else if (DBHandler.getAdmin(username, c) != null){
     			user = DBHandler.getAdmin(username, c);
@@ -138,20 +138,21 @@ public class Server {
     }
     
     /**
-     * returns a user, via a username 
+     * returns a user, via a gamecode and feedcode
      */
     public static User getUser(String feedcode, String gamecode){
     	User user = null;
-    	/*try {
-        	if (DBHandler.getPlayer(username,  c) != null){
-        		user = DBHandler.getPlayer(username, c);
+    	try {
+        	if (DBHandler.getPlayerFG(feedcode, gamecode, c) != null){
+        		user = DBHandler.getPlayerFG(feedcode, gamecode, c);
         	}
     		else if (DBHandler.getAdmin(username, c) != null){
     			user = DBHandler.getAdmin(username, c);
     		}
     	}
     	catch (SQLException e) {
-    		e.printSt*/
+    		e.printStackTrace();
+    	}
     	return user;
     }
     
@@ -225,7 +226,7 @@ public class Server {
     	String gamecode = null;
     	while (!done){
 	    	gamecode = RandomStringUtils.randomAlphanumeric(ServerConfiguration.feedcodeLength -1);
-	    	gamecode = 'G'+ gamecode.toUpperCase();
+	    	gamecode = ServerConfiguration.gamePrefix + gamecode.toUpperCase();
 	    	//check if exists
 	    	done = !checkGameExisits(gamecode);
     	}
@@ -250,6 +251,7 @@ public class Server {
     public static String generateRevivecode(){
         String revivecode = null;
         revivecode = RandomStringUtils.randomAlphanumeric(ServerConfiguration.feedcodeLength -1);
+        revivecode = ServerConfiguration.revivePrefix + revivecode.toUpperCase();
         return revivecode;
     }
     /**
