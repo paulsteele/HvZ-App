@@ -15,7 +15,7 @@ import android.widget.TextView;
 public class CreateGameActivity extends ActionBarActivity {
     Server server = Server.getInstance();
     Globals g = Globals.getInstance();
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,5 +25,13 @@ public class CreateGameActivity extends ActionBarActivity {
     public void submit(View view) {
         String name = ((EditText)findViewById(R.id.nameinput)).getText().toString();
         int status = server.createGame(name, g.getSelf().username);
+
+        if (status == 0) {
+            finish();
+            overridePendingTransition(R.animator.slide_left, R.animator.slide_right);
+        }
+        else {
+            // error handling
+        }
     }
 }
