@@ -216,7 +216,18 @@ public class Server {
 			e.printStackTrace();
 		}
     }
-    
+
+    /**
+     * Adds new mission to table
+     *
+     */
+    public static void addMission(String gamecode, String humanObj, String zombieObj, int isCompleted, String title){
+        try{
+             DBHandler.addMission(gamecode,humanObj,zombieObj,isCompleted,title,c);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
     /**
      * generates a new gamecode that is guaranteed to be unique
      * @return
