@@ -248,11 +248,25 @@ public class Server {
     /**
      * generate a revive code
      */
-    public static String generateRevivecode(){
+    public static String generateRevivecode(String gamecode){
+        boolean done = false;
         String revivecode = null;
-        revivecode = RandomStringUtils.randomAlphanumeric(ServerConfiguration.feedcodeLength -1);
-        revivecode = ServerConfiguration.revivePrefix + revivecode.toUpperCase();
+        while(!done) {
+            revivecode = RandomStringUtils.randomAlphanumeric(ServerConfiguration.feedcodeLength - 1);
+            revivecode = ServerConfiguration.revivePrefix + revivecode.toUpperCase();
+
+            done = !checkReviveCode(revivecode,gamecode);
+        }
         return revivecode;
+    }
+
+    public static boolean checkReviveCode(String revivecode, String gamecode){
+        try{
+            return DBHandler.validateReviveCode(revivecode,gamecode,c);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
     }
     /**
      * retrieve list of all games
