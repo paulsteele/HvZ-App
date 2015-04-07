@@ -205,6 +205,28 @@ public class Server{
         return 1;
     }
 
+    //returns 0 if tagging was successful
+    public int tagUsingFeedcodes(String tagger, String taggee){
+        JSONObject gotTagged = new JSONObject();
+        JSONObject didTag = new JSONObject();
+        //put for one who got tagged
+        try{
+            gotTagged.put("feedcode",taggee);
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+        Log.d("Taggee", gotTagged.toString());
+        //put for tagger
+        try{
+            didTag.put("feedcode",taggee);
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+        Log.d("Tagger", didTag.toString());
+
+        return 1;
+    }
+
     //returns 0 if user reverted to human successfully
     public int revive(boolean zombie){
         JSONObject request = new JSONObject();
