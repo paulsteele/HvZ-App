@@ -7,6 +7,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
@@ -43,8 +44,8 @@ public class Server{
     }
     
     //returns a user using its unique ID
-    public User getPlayer(String code){
-        GetTask task = new GetTask(serviceURL + "/user/" + code, client);
+    public User getPlayer(String username){
+        GetTask task = new GetTask(serviceURL + "/user/" + username, client);
 
         JSONObject response = null;
         try {
@@ -72,7 +73,11 @@ public class Server{
     }
     
     //generates and returns a new Feed Code
-    public String getNewFeedcode(boolean admin){
+    public String getNewFeedcode(String gameid, boolean admin){
+        StringBuilder url = new StringBuilder(serviceURL);
+        url.append("/" + gameid + "/");
+        url.append("feedcode");
+
         JSONObject request = new JSONObject();
         try {
             request.put("admin", admin);
@@ -82,7 +87,7 @@ public class Server{
 
         Log.d("Feedcode", request.toString());
 
-        PostTask task = new PostTask(serviceURL + "/feedcode", client, request);
+        PostTask task = new PostTask(url.toString(), client, request);
 
         JSONObject response = null;
         try {
@@ -134,6 +139,7 @@ public class Server{
         }
         return null;
     }
+
     //returns a new list of users
     public ArrayList<User> getUserList() {
         GetTask task = new GetTask(serviceURL + "/user", client);
@@ -239,9 +245,84 @@ public class Server{
     
     }
 
+    public int createGame() {
+        return 0;
+    }
+
     // get list of games
     public ArrayList<Game> getGameList() {
+        GetTask task = new GetTask(serviceURL, client);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            Log.e("Get user list", "Server reponse error");
+            return null;
+        }
+
+        // Parse JSON Object and place users into list
+        ArrayList<Game> list = new ArrayList<>();
+        try {
+            JSONArray games = response.getJSONArray("games");
+
+            for (int i = 0; i < games.length(); i++) {
+                String gameid = games.getString(i);
+                list.add(new Game(gameid));
+            }
+
+            return list;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         return null;
+    }
+
+    public int addPlayerToGame(String gameid, String username) {
+        String feedcode = getNewFeedcode(gameid, false);
+
+        /* put request url */
+        StringBuilder url = new StringBuilder(serviceURL);
+        url.append("/user/");
+        url.append(username);
+
+        JSONObject request = new JSONObject();
+        try {
+            request.put("feedcode", feedcode);
+            request.put("gamecode", gameid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        PutTask task = new PutTask(url.toString(), client, request);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            Log.e("Get user list", "Server reponse error");
+            return -1;
+        }
+
+        try {
+            if (response.getBoolean("success")) {
+                Log.e("Login", "Success");
+                return 0;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 
     // returns 0 if login was successful
@@ -369,6 +450,77 @@ class PostTask extends AsyncTask<Void, Void, JSONObject> {
 
             // Send request and get response
             response = client.execute(post);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (response == null) {
+            Log.e("HTTP Post", "No server response");
+            return null;
+        }
+
+        // convert response to string
+        String responseString = null;
+        try {
+            responseString = convertToString(response.getEntity().getContent()).toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // convert response string to JSON object
+        JSONObject responseObj;
+        try {
+            responseObj = new JSONObject(responseString);
+            return responseObj;
+        } catch (JSONException e) {
+            Log.e("HTTP Post", "Error getting JSON Object");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private StringBuilder convertToString(InputStream is) {
+        String line;
+
+        BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+        StringBuilder string = new StringBuilder();
+        try {
+            while ((line = rd.readLine()) != null) {
+                string.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return string;
+    }
+}
+
+class PutTask extends AsyncTask<Void, Void, JSONObject> {
+    HttpClient client;
+    String url;
+    JSONObject request;
+
+    PutTask(String url, HttpClient client, JSONObject request) {
+        this.client = client;
+        this.url = url;
+        this.request = request;
+    }
+
+    @Override
+    protected JSONObject doInBackground(Void... v) {
+        // Create post method
+        HttpPut put = new HttpPut(url);
+
+        HttpResponse response = null;
+        try {
+            // Add JSON object to post
+            StringEntity se = new StringEntity(request.toString());
+            put.setEntity(se);
+            put.setHeader("Accept", "application/json");
+            put.setHeader("Content-type", "application/json");
+
+            // Send request and get response
+            response = client.execute(put);
         } catch (IOException e) {
             e.printStackTrace();
         }
