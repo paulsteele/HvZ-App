@@ -127,8 +127,8 @@ public class Server {
         	if (DBHandler.getPlayerU(username,  c) != null){
         		user = DBHandler.getPlayerU(username, c);
         	}
-    		else if (DBHandler.getAdmin(username, c) != null){
-    			user = DBHandler.getAdmin(username, c);
+    		else if (DBHandler.getAdminU(username, c) != null){
+    			user = DBHandler.getAdminU(username, c);
     		}
     	}
     	catch (SQLException e) {
@@ -146,8 +146,8 @@ public class Server {
         	if (DBHandler.getPlayerFG(feedcode, gamecode, c) != null){
         		user = DBHandler.getPlayerFG(feedcode, gamecode, c);
         	}
-    		else if (DBHandler.getAdmin(username, c) != null){
-    			user = DBHandler.getAdmin(username, c);
+    		else if (DBHandler.getAdminFG(feedcode, gamecode, c) != null){
+    			user = DBHandler.getAdminFG(feedcode, gamecode, c);
     		}
     	}
     	catch (SQLException e) {

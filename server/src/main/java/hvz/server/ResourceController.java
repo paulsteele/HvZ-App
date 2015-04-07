@@ -184,13 +184,13 @@ public class ResourceController {
     /**
      * Retrieves a user from the database and sends it to the client
      */
-    @RequestMapping(value = "/{game}/user/{username}", method = RequestMethod.GET)
-    public String getPlayer (@PathVariable("username") String username, @PathVariable("game") String game){
+    @RequestMapping(value = "/{game}/user/{feedcode}", method = RequestMethod.GET)
+    public String getPlayer (@PathVariable("feedcode") String feedcode, @PathVariable("game") String game){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	//Set up response object
 		JSONObject output = new JSONObject();
 		//grab the user
-		User user = Server.getUser(username);
+		User user = Server.getUser(feedcode, game);
 		failed = (user == null);
     	try {
 			if (!failed) { //means user is found
@@ -216,6 +216,9 @@ public class ResourceController {
     	return output.toString();
     }
     
+    /**
+     * Gets a user 
+     */
     @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
     public String getPlayer (@PathVariable("username") String username){
     	//Set up response object
