@@ -262,17 +262,20 @@ public class DBHandler{
 		Admin [] array = admins.toArray(new Admin[admins.size()]);
 		return array;
 	}
-	public static String [] getAllGames(Connection c) throws SQLException{
-		LinkedList<String> games = new LinkedList<String>();
+	public static Game [] getAllGames(Connection c) throws SQLException{
+		LinkedList<Game> games = new LinkedList<Game>();
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from  games");
 		while(rs.next()){
+			String creator = rs.getString("creator");
+			String name = rs.getString("name");
 			String gc = rs.getString("gameCode");
-			games.add(gc);
+			Game g = new Game(gc, creator, name);
+			games.add(g);
 		}
 		rs.close();
 		s.close();
-		String [] gameArray = games.toArray(new String[games.size()]);
+		Game [] gameArray = games.toArray(new Game[games.size()]);
 		return gameArray;
 	}
 	public static boolean isStarted(String gameCode, Connection c)throws SQLException{
