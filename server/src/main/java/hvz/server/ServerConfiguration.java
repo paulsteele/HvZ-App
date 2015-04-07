@@ -17,6 +17,7 @@ public class ServerConfiguration implements EmbeddedServletContainerCustomizer {
 	static public final char adminPrefix = 'A'; //prefix to add to admin feedcodes
 	public static final char playerPrefix = 'P'; //prefix to add to player feedcodes
 	public static final char gamePrefix = 'G'; //prefix for game codes
+	public static final char revivePrefix = 'R'; //prefix for revive codes
 	public static final String success = "success"; //success message
 	public static final String dummyCode = "00000000"; //value for a not assigned player.
 	/**
