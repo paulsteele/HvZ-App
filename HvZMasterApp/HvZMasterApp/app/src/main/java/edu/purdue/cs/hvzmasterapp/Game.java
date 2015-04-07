@@ -6,16 +6,18 @@ package edu.purdue.cs.hvzmasterapp;
 public class Game {
     private String name;
     private String id;
-
+    private String creator;
 
     public Game(String id) {
         this.name = null;
         this.id = id;
+        this.creator = null;
     }
 
-    public Game(String name, String id) {
+    public Game(String name, String id, String creator) {
         this.name = name;
         this.id = id;
+        this.creator = creator;
     }
 
     public String getName() {
@@ -23,6 +25,9 @@ public class Game {
     }
 
     public String getId() {
+        return id;
+    }
+    public String getCreator() {
         return id;
     }
 }

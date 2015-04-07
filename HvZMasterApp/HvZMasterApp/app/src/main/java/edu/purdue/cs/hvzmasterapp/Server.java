@@ -245,11 +245,42 @@ public class Server{
     
     }
 
-    public int createGame() {
-        return 0;
+    // returns 0 if register was successful, else non-zero
+    public int createGame(String gamename, String creator) {
+        JSONObject request = new JSONObject();
+
+        try {
+            request.put("gamename", gamename);
+            request.put("creator", creator);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        PostTask task = new PostTask(serviceURL, client, request);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            return -1;
+        }
+
+        try {
+            if (response.getBoolean("success")) {
+                return 0;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
     }
 
-    // get list of games
+    // returns list of all games
     public ArrayList<Game> getGameList() {
         GetTask task = new GetTask(serviceURL, client);
 
@@ -325,8 +356,7 @@ public class Server{
         return 0;
     }
 
-    // returns 0 if login was successful
-    // can either use username or feedcode
+    // returns 0 if login was successful, else non-zero
     public int login(String identifier, String password){
         StringBuilder url = new StringBuilder(serviceURL);
         url.append("/user/");
@@ -371,10 +401,7 @@ public class Server{
         return -1;
     }
 
-    /* Function to add user to database
-     * Verify username/feedcode are not taken
-     * return non-zero if error occurs
-     */
+    // returns 0 if register was successful, else non-zero
     public int register(String username, String password, boolean admin) {
         StringBuilder url = new StringBuilder(serviceURL);
         url.append("/user");
