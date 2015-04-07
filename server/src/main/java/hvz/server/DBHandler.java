@@ -91,7 +91,9 @@ public class DBHandler{
 		command = "CREATE TABLE games" + 
 						"(endTime 	varchar(25), " +
 						"hasBegun	int, " +
-						"gameCode	varchar(25))";
+						"gameCode	varchar(25)" +
+						"name		varchar(25)" +
+						"creator	varchar(25))";
 		try {
 			Statement s = c.createStatement();
 			s.executeUpdate(command);
@@ -212,7 +214,7 @@ public class DBHandler{
 		admin.gamecode = rs.getString("gameCode");
 		return admin;
 	}
-	public static Player getPlayerFG(String feedCode, String gameCode, Connection c)throws SQLException{//getplayer by feed and game code
+	public static Player getPlayerFG(String feedCode, String gameCode, Connection c)throws SQLException{//get player by feed and game code
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from users where feedCode = '" + feedCode + "' and gameCode = '" + gameCode + "'");
 		//no player
@@ -287,9 +289,9 @@ public class DBHandler{
 		String command = "update games set hasBegun = 1 where gameCode = '" + gameCode + "'";
 		s.executeUpdate(command);
 	}
-	public static void newGame(String gameCode, Connection c) throws SQLException{
+	public static void newGame(String gameCode, String name, String creator, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into games values('end', 0 ,'" + gameCode + "')";
+		String command = "insert into games values('end', 0 ,'" + gameCode + "', '" + name + "', '" + creator + "')";
 		s.executeUpdate(command);
 	}
 	public static boolean isGamecodeTaken(String gameCode, Connection c) throws SQLException{
