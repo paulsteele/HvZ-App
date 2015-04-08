@@ -26,9 +26,9 @@ public class CreateMissionActivity extends ActionBarActivity{
 
     public void createMission(View view){
         String name = ((EditText)findViewById(R.id.missionName)).getText().toString();
-        String objectives = ((EditText)findViewById(R.id.missionObjectives)).getText().toString();
-        String reward = ((EditText)findViewById(R.id.missionReward)).getText().toString();
-        /*int status = server.addMission(name, objectives, reward);
+        String humanObjective = ((EditText)findViewById(R.id.humanObjectives)).getText().toString();
+        String zombieObjective = ((EditText)findViewById(R.id.zombieObjectives)).getText().toString();
+        /*int status = server.addMission(name, humanObjective, zombieObjective);
         if (status == 0) {
             TextView msg = (TextView) findViewById(R.id.create_mission_msg);
             msg.setText("Success!");

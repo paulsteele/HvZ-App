@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Mission Objectives"
+        android:text="Human Objectives"
         android:id="@+id/textView5"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:ems="10"
-        android:id="@+id/missionObjectives"
+        android:id="@+id/humanObjectives"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="16dp"
@@ -64,7 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Mission Reward"
+        android:text="Zombie Objectives"
         android:id="@+id/textView6"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
@@ -74,12 +74,13 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/missionReward"
+        android:id="@+id/zombieObjectives"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.12" />
 
     <Button
         android:layout_width="wrap_content"
