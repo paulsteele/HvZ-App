@@ -53,3 +53,7 @@ Server will run on 128.211.191.47:8080
 
  * POST: executes a tag
  	* `{"tagger": feedcode, "tagged": feedcode}
+
+ `/{game}/revivecode`
+
+  * GET: generates a new revivecode
