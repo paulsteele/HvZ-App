@@ -1,6 +1,7 @@
 package edu.purdue.cs.hvzmasterapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+
 /**
  * Created by manasigoel on 4/7/15.
  */
@@ -31,7 +33,7 @@ public class MissionListActivity extends ActionBarActivity{
     private Globals global = Globals.getInstance();
     ListView list;
 
-    int numGames = 0;
+    int numMissions = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +43,9 @@ public class MissionListActivity extends ActionBarActivity{
         /*missionList = server.getMissionList();
         if (missionList == null) {
             missionList = new ArrayList<>();
-            missionList.addMission("There are currently no missions available.", null, null);
-        }*/
-
-        list = (ListView) findViewById(R.id.missionListView);
+            missionList.add(new Game("There are no missions", null, null));
+        }
+        list = (ListView) findViewById(R.id.missionListView);*/
     }
 
 }
