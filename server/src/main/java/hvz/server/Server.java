@@ -2,6 +2,7 @@ package hvz.server;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Random;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.boot.SpringApplication;
@@ -186,6 +187,7 @@ public class Server {
     public static void begin(String gamecode){
     	try {
 			DBHandler.start(gamecode, c);
+			chooseAlphaZombies(gamecode);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -403,6 +405,33 @@ public class Server {
     	}
     	
     	return !failed;
+    }
+    
+    public static void chooseAlphaZombies(String gamecode){
+    	try {
+			User[] users = DBHandler.getAllUsers(gamecode, c);
+			int playerCount = 0;
+			for (User u : users){
+				if (!u.isAdmin){
+					playerCount++;
+				}
+			}
+			Player[] players = new Player[playerCount];
+			playerCount = 0;
+			for (User u : users){
+				if (!u.isAdmin){
+					players[playerCount++] = (Player) u;
+				}
+			}
+			Random rand = new Random();
+			for (int i = 0; i < ServerConfiguration.alphaZombieCount;i++){
+				int index = rand.nextInt(playerCount);
+				changeStatus(players[index].feedcode, gamecode, true);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 }
 
