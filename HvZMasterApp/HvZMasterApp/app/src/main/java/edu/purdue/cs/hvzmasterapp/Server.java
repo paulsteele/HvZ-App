@@ -18,6 +18,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.InterruptedException;
 import java.lang.StringBuilder;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -103,7 +104,15 @@ public class Server{
 
         JSONObject missionResponse = null;
 
-        
+        try{
+            missionResponse = task.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if( missionResponse == null){
+            Log.e ("Get mission","Server Response error");
+        }
 
     }
 
