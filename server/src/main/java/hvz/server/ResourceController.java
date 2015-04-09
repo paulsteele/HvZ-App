@@ -627,7 +627,38 @@ public class ResourceController {
      */
     @RequestMapping(value = "{game}/mission", method = RequestMethod.POST)
     public String createMission(@RequestBody String value, @PathVariable("game") String game) {
-    	return null;
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+		JSONObject input = null;
+		String humanObj = null;
+		String zombieObj = null;
+		String title = null;
+		try {
+			input = new JSONObject(new JSONTokener(value));
+			String humanObj = input.getString("humanobjective");
+			String zombieObj = input.getString("zombieobjective");
+			String title = input.getString("title");
+		} 
+		catch(JSONException e){
+			failed = true;
+		}
+		catch(NullPointerException e){
+			failed = true;
+		}
+		
+		if(humanObj == null, zombieObj == null, title == null){
+			failed = true;
+		}
+		
+		if(!failed){
+			Server.addMission(game, humanObj, zombieObj, 0, title );
+		}
+		
+		JSONObject resposne = new JSONObject();
+		try{
+		}
+		catch(JSONException e){
+			e.printStackTrace();
+		}
     }
     
     /**
