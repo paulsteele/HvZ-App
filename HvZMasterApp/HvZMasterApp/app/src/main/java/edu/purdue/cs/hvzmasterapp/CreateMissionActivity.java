@@ -20,6 +20,7 @@ public class CreateMissionActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_create_mission);
     }
 
     public void createMission(View view){

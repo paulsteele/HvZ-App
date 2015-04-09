@@ -128,6 +128,11 @@ public class MainActivity extends ActionBarActivity {
         intent.putExtra("feedcode", self.uniqueID);
     }
 
+    public void createMission(View view) {
+        Intent intent = new Intent(this, CreateMissionActivity.class);
+        startActivity(intent);
+    }
+
     public void revive(View view) {
         User self = g.getSelf();
         if (self.isZombie) {
