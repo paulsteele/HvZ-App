@@ -199,6 +199,12 @@ public class DBHandler{
 		String name = rs.getString("username");
 		String feed = rs.getString("feedCode");
 		Player player = new Player(name, feed);
+		if (rs.getInt("isZombie") == 1){
+			player.isZombie = true;
+		}
+		else{
+			player.isZombie = false;
+		}
 		player.gamecode = rs.getString("gameCode");
 		return player;
 	}
@@ -223,6 +229,12 @@ public class DBHandler{
 		String name = rs.getString("username");
 		String feed = rs.getString("feedCode");
 		Player player = new Player(name, feed);
+		if (rs.getInt("isZombie") == 1){
+			player.isZombie = true;
+		}
+		else{
+			player.isZombie = false;
+		}
 		player.gamecode = rs.getString("gameCode");
 		return player;
 	}

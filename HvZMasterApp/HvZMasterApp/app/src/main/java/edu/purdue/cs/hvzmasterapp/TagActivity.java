@@ -30,8 +30,7 @@ public class TagActivity extends ActionBarActivity {
     public void tag(View view){
         String taggeeFeedcode = ((EditText)findViewById(R.id.feedcode)).getText().toString();
         String playerFeedcode = intent.getStringExtra("feedcode");
-        //int status = server.tag(playerFeedcode, taggeeFeedcode);
-        int status = 0;
+        int status = server.tagUsingFeedcodes(playerFeedcode, taggeeFeedcode);
         if (status == 0) {
             TextView msg = (TextView) findViewById(R.id.tag_msg);
             msg.setText("Success!");

@@ -23,11 +23,28 @@ import java.util.ArrayList;
 /**
  * Created by manasigoel on 4/7/15.
  */
-public class MissionListActivity {
+public class MissionListActivity extends ActionBarActivity{
+
     ArrayList<Game> missionList;
     ArrayList<String> itemList = new ArrayList<>();
     Server server = Server.getInstance();
     private Globals global = Globals.getInstance();
     ListView list;
+
+    int numGames = 0;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_game_list);
+
+        /*missionList = server.getMissionList();
+        if (missionList == null) {
+            missionList = new ArrayList<>();
+            missionList.addMission("There are currently no missions available.", null, null);
+        }*/
+
+        list = (ListView) findViewById(R.id.missionListView);
+    }
 
 }
