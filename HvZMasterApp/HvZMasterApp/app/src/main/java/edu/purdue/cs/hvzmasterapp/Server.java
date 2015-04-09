@@ -3,6 +3,8 @@ package edu.purdue.cs.hvzmasterapp;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.sun.management.MissionControl;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -185,6 +187,46 @@ public class Server{
         }
         return null;
     }
+
+    //returns list of missions
+
+    public ArrayList<Mission> getMissionList(){
+        GetTask task = new GetTask(serviceURL + "/mission", client);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            Log.e("Get mission list", "Server reponse error");
+            return null;
+        }
+
+        // Parse JSON Object and place users into list
+        ArrayList<Mission> list = new ArrayList<>();
+        try {
+            JSONArray missions = response.getJSONArray("missions");
+
+            for (int i = 0; i < users.length(); i++) {
+                JSONObject mission = missions.getJSONObject(i);
+                String title = mission.getString("value");
+                String humanobjective = mission.getString("humanobjective");
+                String zombieobjective = mission.getString("zombieobjective");
+                Mission m = new Mission(title, humanobjective, zombieobjective);
+                list.add(m);
+            }
+
+            return list;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 
 
     //returns a new list of users
