@@ -31,12 +31,12 @@ zcode=${response:13:8}
 echo `curl -Ss -X PUT -H "Content-Type: application/json" -d '{"feedcode": "'$zcode'", "gamecode":"'$code'"}' localhost:8080/user/zombiepaul`
 #another login to show difference
 echo `curl -Ss -X POST -H "Content-Type: application/json" -d '{"password": "pass"}' localhost:8080/user/paul` #good case
-#start game
-echo `curl -Ss -X PUT localhost:8080/$code`
 #set zombie
 echo `curl -Ss -X GET localhost:8080/$code/forcezombie/$zcode`
 #tag zombie first
 echo `curl -Ss -X POST -H "Content-Type: application/json" -d '{"tagger": "'$fcode'", "tagged": "'$zcode'"}' localhost:8080/$code/tag` #tag 
 echo `curl -Ss -X POST -H "Content-Type: application/json" -d '{"tagger": "'$zcode'", "tagged": "'$fcode'"}' localhost:8080/$code/tag` #tag 
 #mission
-echo `curl -Ss -X POST -H "Content-Type: application/json" -d '{"title": "testmission", "humanobjective": "beat zombies", "zombieobjective": "beathumans"}' localhost:8080/$code/mission`
+echo `curl -Ss -X POST -H "Content-Type: application/json" -d '{"title": "testmission", "humanobjective": "beat zombies", "zombieobjective": "beat humans"}' localhost:8080/$code/mission`
+#start game
+echo `curl -Ss -X PUT localhost:8080/$code`

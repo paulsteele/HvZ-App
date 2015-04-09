@@ -252,6 +252,12 @@ public class DBHandler{
 			String username = rs.getString("username");
 			String feedcode = rs.getString("feedCode");
 			Player user = new Player(username, feedcode);
+			if (rs.getInt("isZombie") == 1){
+				user.isZombie = true;
+			}
+			else{
+				user.isZombie = false;
+			}
 			users.add(user);
 		}
 		rs.close();
