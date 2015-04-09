@@ -18,6 +18,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.InterruptedException;
+import java.lang.StringBuilder;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -71,7 +73,52 @@ public class Server{
 
         return null;
     }
-    
+
+    public int addMission(String gamecode, String title, String humanobjective, String zombieobjective){
+        StringBuilder url = new StringBuilder(serviceURL);
+        url.append("/" + gamecode + "/mission");
+
+        JSONObject missionRequest = new JSONObject();
+
+        try{
+            missionRequest.put("title", title);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+
+        try{
+            missionRequest.put("humanobjective",humanobjective);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+
+        try{
+            missionRequest.put("zombieobjective",zombieobjective);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+
+        Log.d("Mission", missionRequest.toString());
+
+        PostTask task = new PostTask(url.toString(),client,missionRequest);
+
+        JSONObject missionResponse = null;
+
+        try{
+            missionResponse = task.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if( missionResponse == null){
+            Log.e ("Get mission","Server Response error");
+            return 1;
+        }
+
+        return 0;
+
+    }
+
     //generates and returns a new Feed Code
     public String getNewFeedcode(String gamecode, boolean admin){
         StringBuilder url = new StringBuilder(serviceURL);
@@ -110,7 +157,8 @@ public class Server{
         return null;
     }
 
-    public String getReviveCode(boolean admin){
+
+    public String getReviveCode(String gamecode, boolean admin){
         JSONObject request = new JSONObject();
         try {
             request.put("admin", admin);
@@ -122,6 +170,7 @@ public class Server{
         PostTask task = new PostTask(serviceURL + "/revivecode",client,request);
 
         JSONObject response = null;
+
         try {
             response = task.execute().get();
         }catch (InterruptedException | ExecutionException e){
@@ -139,6 +188,7 @@ public class Server{
         }
         return null;
     }
+
 
     //returns a new list of users
     public ArrayList<User> getUserList(String gamecode) {
@@ -229,6 +279,7 @@ public class Server{
 
     //returns 0 if user reverted to human successfully
     public int revive(boolean zombie){
+
         JSONObject request = new JSONObject();
         try{
             request.put("zombie", zombie);

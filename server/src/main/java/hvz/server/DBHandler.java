@@ -393,4 +393,35 @@ public class DBHandler{
 			s.executeUpdate(command);	
 		}
 	}
+	public static Mission getMissionByTitle(String title, String gameCode, Connection c) throws SQLException{ 
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from missions where gameCode = '" + gameCode + "' and title = '" + title + "'");
+		if (!rs.isBeforeFirst())
+			return null;
+		String ho = rs.getString("humanObjective");
+		String zo = rs.getString("zombieObective");
+		int isCompleted = rs.getInt("isCompleted");
+		Mission m = new Mission(gameCode, title, zo, ho, isCompleted);
+		return m;
+	}
+	public static Mission [] getAllMissions(String gameCode, Connection c) throws SQLException{
+		LinkedList<Mission> missions = new LinkedList<Mission>();
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from  missions where gameCode = '" + gameCode + "'");
+		while(rs.next()){
+			String title = rs.getString("title");
+			String ho = rs.getString("humanObjective");
+			String zo = rs.getString("zombieObective");
+			String gc = rs.getString("gameCode");
+			int isCompleted = rs.getInt("isCompleted");
+			Mission m = new Mission(gc, title, zo, ho, isCompleted);
+			missions.add(m);
+		}
+		rs.close();
+		s.close();
+		Mission [] missionArray = missions.toArray(new Mission[missions.size()]);
+		return missionArray;
+	}
 }
+//create table x(time int, name varchar(25))
+//insert into x(strftime('%s', 'now'), 'name')

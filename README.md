@@ -54,6 +54,17 @@ Server will run on 128.211.191.47:8080
  * POST: executes a tag
  	* `{"tagger": feedcode, "tagged": feedcode}
 
- `/{game}/revivecode`
+`/{game}/revivecode`
+ * GET: generates a new revivecode
+ * POST: use a revivecode
+  * `{"revivecode": value, "feedcode": value}`
 
-  * GET: generates a new revivecode
+`/{game}/mission`
+ * POST: creates a mission
+ 	* `{"title": value, "humanobjective": value, "zombieobjective": value}`
+ * GET: gets an array of all missions in a game
+
+`/{game}/mission/{title}`
+ * GET: gets the specific mission
+ * PUT: update the mission
+    * `{"complete": value}`

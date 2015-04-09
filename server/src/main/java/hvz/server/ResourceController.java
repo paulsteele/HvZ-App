@@ -521,4 +521,212 @@ public class ResourceController {
 
     	}  
     
+    /**
+     * returns a new revive code
+     */
+    @RequestMapping(value = "{game}/revivecode", method = RequestMethod.GET)
+    public String getRevive(@PathVariable("game") String game) {
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	JSONObject response = new JSONObject();
+    	try{
+	    	if (!failed){
+	    		response.put("revivecode", Server.generateRevivecode(game));
+	    	}
+        	response.put(ServerConfiguration.success, !failed);
+    	}
+    	catch (JSONException e){
+    		e.printStackTrace();
+    	}
+    	return response.toString();
+
+    }
+    
+    /**
+     * revives a player
+     */
+    @RequestMapping(value = "{game}/revivecode", method = RequestMethod.POST)
+    public String revive(@RequestBody String value, @PathVariable("game") String game) {
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	//take in input and create variables for each entry
+		JSONObject input = null;
+		try {
+			input = new JSONObject(new JSONTokener(value));
+		} catch (JSONException e) {
+			failed = true;
+		}
+		String revivecode = null;
+		String feedcode = null;
+		try{
+			revivecode = input.getString("revivecode");
+			feedcode = input.getString("feedcode");
+		}
+		catch (JSONException e){
+			//error 
+			failed = true;
+		}
+		catch (NullPointerException e){
+			failed = true;
+		}
+		if (revivecode == null || feedcode == null){
+			failed = true;
+		}
+		
+		if (!failed){
+			Server.changeStatus(feedcode, game, false);
+		}
+		
+    	JSONObject response = new JSONObject();
+    	try{
+        	response.put(ServerConfiguration.success, !failed);
+    	}
+    	catch (JSONException e){
+    		e.printStackTrace();
+    	}
+    	return response.toString();
+    }
+		
+    
+    
+    /**
+     * returns an array of all missions
+     */
+    @RequestMapping(value = "{game}/mission", method = RequestMethod.GET)
+    public String getAllMissions(@PathVariable("game") String game) {
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	//Set up response object
+    	JSONObject output = new JSONObject();
+    	//set JSONArray and holder array
+    	JSONArray missionList = new JSONArray();
+    	Mission[] missionMList = Server.getAllMissions(game);
+    	try {
+    		for (int i = 0; i < missionMList.length;i++){
+    			JSONObject mission = new JSONObject();
+    			mission.put("title", missionMList[i].title);
+    			mission.put("humanobjective", missionMList[i].humanObj);
+    			mission.put("zombieobjective", missionMList[i].zombieObj);
+    			boolean complete = true;
+    			if (missionMList[i].isCompleted == 0){
+    				complete = false;
+    			}
+    			mission.put("completed", complete);
+    			missionList.put(mission);
+    		}
+    	
+			output.put("missions", missionList);
+			output.put(ServerConfiguration.success, !failed);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return output.toString();	
+    }
+    
+    /**
+     * create a mission
+     */
+    @RequestMapping(value = "{game}/mission", method = RequestMethod.POST)
+    public String createMission(@RequestBody String value, @PathVariable("game") String game) {
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+		JSONObject input = null;
+		String humanObj = null;
+		String zombieObj = null;
+		String title = null;
+		try {
+			input = new JSONObject(new JSONTokener(value));
+			humanObj = input.getString("humanobjective");
+			zombieObj = input.getString("zombieobjective");
+			title = input.getString("title");
+		} 
+		catch(JSONException e){
+			failed = true;
+		}
+		catch(NullPointerException e){
+			failed = true;
+		}
+		
+		if(humanObj == null || zombieObj == null || title == null){
+			failed = true;
+		}
+		
+		if(!failed){
+			Server.addMission(game, humanObj, zombieObj, 0, title );
+		}
+		
+		JSONObject response = new JSONObject();
+		try{
+        	response.put(ServerConfiguration.success, !failed);
+		}
+		catch(JSONException e){
+			e.printStackTrace();
+		}
+		return response.toString();
+    }
+    
+    /**
+     * returns a specific misison
+     */
+    @RequestMapping(value = "{game}/mission/{title}", method = RequestMethod.GET)
+    public String getMission(@PathVariable("game") String game, @PathVariable("title") String title) {
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	Mission mission = Server.getMission(game, title);
+    	if (mission == null){
+    		failed = true;
+    	}
+    	JSONObject response = new JSONObject();
+    	try{
+        	response.put(ServerConfiguration.success, !failed);
+        	if (!failed){
+        		response.put("title", mission.title);
+        		response.put("humanobjective", mission.humanObj);
+        		response.put("zombieobjective", mission.zombieObj);
+        		boolean complete = true;
+        		if (mission.isCompleted == 0){
+        			complete = false;
+        		}
+        		response.put("completed", complete);
+        	}
+    	}
+    	catch (JSONException e){
+    		e.printStackTrace();
+    	}
+    	return response.toString();
+    }
+    
+    /**
+     * updates a specific misison
+     */
+    @RequestMapping(value = "{game}/mission/{title}", method = RequestMethod.PUT)
+    public String updateMission(@RequestBody String value, @PathVariable("game") String game, @PathVariable("title") String title) {
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	//take in input and create variables for each entry
+		JSONObject input = null;
+		try {
+			input = new JSONObject(new JSONTokener(value));
+		} catch (JSONException e) {
+			failed = true;
+		}
+		boolean complete = false;
+		try{
+			complete = input.getBoolean("complete");
+		}
+		catch (JSONException e){
+			//error 
+			failed = true;
+		}
+		catch (NullPointerException e){
+			failed = true;
+		}
+		if (!failed && complete){
+			Server.updateMission(game, title);
+		}
+		JSONObject response = new JSONObject();
+	   	try{
+        	response.put(ServerConfiguration.success, !failed);
+    	}
+    	catch (JSONException e){
+    		e.printStackTrace();
+    	}
+    	return response.toString();
+    }
 }

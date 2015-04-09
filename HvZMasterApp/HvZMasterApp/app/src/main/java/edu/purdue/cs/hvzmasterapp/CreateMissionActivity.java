@@ -20,14 +20,14 @@ public class CreateMissionActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
     }
 
     public void createMission(View view){
         String name = ((EditText)findViewById(R.id.missionName)).getText().toString();
         String humanObjective = ((EditText)findViewById(R.id.humanObjectives)).getText().toString();
         String zombieObjective = ((EditText)findViewById(R.id.zombieObjectives)).getText().toString();
-        /*int status = server.addMission(name, humanObjective, zombieObjective);
+        String gamecode = g.getSelf().gameID;
+        int status = server.addMission(gamecode, name, humanObjective, zombieObjective);
         if (status == 0) {
             TextView msg = (TextView) findViewById(R.id.create_mission_msg);
             msg.setText("Success!");
@@ -40,7 +40,7 @@ public class CreateMissionActivity extends ActionBarActivity {
             msg.setText("Mission could not be added");
             msg.setTextColor(Color.RED);
             msg.setVisibility(View.VISIBLE);
-        }*/
+        }
     }
 }
 
