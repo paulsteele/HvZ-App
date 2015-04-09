@@ -22,7 +22,7 @@ public class CreateGameActivity extends ActionBarActivity {
         setContentView(R.layout.activity_register);
     }
 
-    public void submit(View view) {
+    public void createGame(View view) {
         String name = ((EditText)findViewById(R.id.nameinput)).getText().toString();
         int status = server.createGame(name, g.getSelf().username);
 

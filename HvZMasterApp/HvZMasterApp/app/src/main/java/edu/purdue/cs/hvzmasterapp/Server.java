@@ -122,6 +122,7 @@ public class Server{
         PostTask task = new PostTask(serviceURL + "/revivecode",client,request);
 
         JSONObject response = null;
+
         try {
             response = task.execute().get();
         }catch (InterruptedException | ExecutionException e){
@@ -229,6 +230,7 @@ public class Server{
 
     //returns 0 if user reverted to human successfully
     public int revive(boolean zombie){
+
         JSONObject request = new JSONObject();
         try{
             request.put("zombie", zombie);
