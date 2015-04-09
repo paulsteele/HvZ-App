@@ -11,7 +11,7 @@ Server will run on 128.211.191.47:8080
 `/`
 
  * POST: Creates a game
- 	* {"gamename": value, "creator": value}
+ 	* `{"gamename": value, "creator": value}`
  * GET: Gets a list of all games
 
 `/user`
@@ -52,7 +52,7 @@ Server will run on 128.211.191.47:8080
 `/{game}/tag`
 
  * POST: executes a tag
- 	* `{"tagger": feedcode, "tagged": feedcode}
+ 	* `{"tagger": feedcode, "tagged": feedcode}`
 
 `/{game}/revivecode`
  * GET: generates a new revivecode
@@ -68,3 +68,16 @@ Server will run on 128.211.191.47:8080
  * GET: gets the specific mission
  * PUT: update the mission
     * `{"complete": value}`
+
+###Globals
+`Globals getInstance()`
+ * gets interface for global constants
+
+`void getSelf()`
+ * gets current user
+
+`void setSelf()`
+ * set current user
+
+`String getGameCode()`
+ * get current game code
