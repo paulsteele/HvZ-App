@@ -1,5 +1,6 @@
 package edu.purdue.cs.hvzmasterapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -37,51 +38,7 @@ public class GameListActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_list);
 
-        gameList = server.getGameList();
-        if (gameList == null) {
-            gameList = new ArrayList<>();
-            gameList.add(new Game("There are currently no games available.", "000000", null));
-        }
-
-        list = (ListView) findViewById(R.id.gamelistview);
-
-        if (global.getSelf().isAdmin) {
-            View seperator = findViewById(R.id.listseperator);
-            seperator.setVisibility(View.VISIBLE);
-            TextView footer =  (TextView) findViewById(R.id.footer);
-            footer.setVisibility(View.VISIBLE);
-
-            footer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    /* start create game view here */
-                    Log.d("Game list", "Create game pressed");
-                }
-            });
-        }
-
-        GameAdapter adapter = new GameAdapter(this, gameList);
-        list.setAdapter(adapter);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-                // select game to join and show confirmation menu
-                Log.d("GameList", "Game name: " + gameList.get(position).getCode());
-                String gamecode = gameList.get(position).getCode();
-                if (gamecode.equals("00000000")) {
-                    //do nothing
-                }
-
-                int status = server.addPlayerToGame(gamecode, self.username);
-                Log.d("Game List", "Adding player to game: " + gamecode);
-                if (status == 0) {
-                    finish();
-                }
-                else {
-                    Log.e("Game List", "Error adding");
-                }
-            }
-        });
+        refresh();
     }
 
     private class GameAdapter extends ArrayAdapter<Game> {
@@ -110,9 +67,68 @@ public class GameListActivity extends ActionBarActivity {
         }
     }
 
-    public void createGame(View view) {
+    public void refresh() {
+        gameList = server.getGameList();
+        if (gameList == null) {
+            gameList = new ArrayList<>();
+            gameList.add(new Game("There are currently no games available.", "000000", null));
+        }
+
+        list = (ListView) findViewById(R.id.gamelistview);
+
+        if (global.getSelf().isAdmin) {
+            View seperator = findViewById(R.id.listseperator);
+            seperator.setVisibility(View.VISIBLE);
+            TextView footer =  (TextView) findViewById(R.id.footer);
+            footer.setVisibility(View.VISIBLE);
+
+            footer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    /* start create game view here */
+                    Log.d("Game list", "Create game pressed");
+                    createGame();
+                }
+            });
+        }
+
+        GameAdapter adapter = new GameAdapter(this, gameList);
+        list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+                // select game to join and show confirmation menu
+                Log.d("GameList", "Game name: " + gameList.get(position).getCode());
+                String gamecode = gameList.get(position).getCode();
+                if (gamecode.equals("00000000")) {
+                    //do nothing
+                }
+
+                int status = server.addPlayerToGame(gamecode, self.username);
+                Log.d("Game List", "Adding player to game: " + gamecode);
+                if (status == 0) {
+                    finish();
+                }
+                else {
+                    Log.e("Game List", "Error adding");
+                }
+            }
+        });
+    }
+
+    public void createGame() {
         Intent intent = new Intent(this, CreateGameActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                refresh();
+                finish();
+            }
+        }
     }
 
     @Override

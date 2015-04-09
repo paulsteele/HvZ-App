@@ -19,14 +19,18 @@ public class CreateGameActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_creategame);
     }
 
     public void createGame(View view) {
+        String username = g.getSelf().username;
         String name = ((EditText)findViewById(R.id.nameinput)).getText().toString();
-        int status = server.createGame(name, g.getSelf().username);
-
-        if (status == 0) {
+        Game game = server.createGame(name, username);
+        if (game != null) {
+            server.addPlayerToGame(game.getCode(), username);
+            g.setSelf(server.getPlayer(username));
+            Intent intent = new Intent();
+            setResult(Activity.RESULT_OK, intent);
             finish();
         }
         else {

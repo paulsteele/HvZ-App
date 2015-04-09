@@ -29,36 +29,13 @@ public class PlayerListActivity extends ActionBarActivity {
         populateList();
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == R.id.action_logout) {
-            SaveSharedPreference.clearUserName(this);
-            Globals.getInstance().setSelf(null);
-            finish();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     public void init() {
         humans = new ArrayList<User>();
         zombies = new ArrayList<User>();
     }
 
     public void splitUsers() {
-        ArrayList<User> users = server.getUserList();
+        ArrayList<User> users = server.getUserList(Globals.getInstance().getSelf().gameID);
         if (users == null) {
             System.err.println("getUserList not working :(");
             return;
