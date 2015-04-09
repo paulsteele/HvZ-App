@@ -635,7 +635,29 @@ public class ResourceController {
      */
     @RequestMapping(value = "{game}/mission/{title}", method = RequestMethod.GET)
     public String getMission(@PathVariable("game") String game, @PathVariable("title") String title) {
-    	return null;
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	Mission mission = Server.getMission(game, title);
+    	if (mission == null){
+    		failed = true;
+    	}
+    	JSONObject response = new JSONObject();
+    	try{
+        	response.put(ServerConfiguration.success, !failed);
+        	if (!failed){
+        		response.put("title", mission.title);
+        		response.put("humanobjective", mission.humanObj);
+        		response.put("zombieobjective", mission.zombieObj);
+        		boolean complete = true;
+        		if (mission.isCompleted == 0){
+        			complete = false;
+        		}
+        		response.put("completed", complete);
+        	}
+    	}
+    	catch (JSONException e){
+    		e.printStackTrace();
+    	}
+    	return response.toString();
     }
     
     /**
