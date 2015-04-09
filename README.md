@@ -73,11 +73,19 @@ Server will run on 128.211.191.47:8080
 `Globals getInstance()`
  * gets interface for global constants
 
-`void getSelf()`
- * gets current user
-
 `void setSelf()`
  * set current user
 
+`void getSelf()`
+ * gets current user
+
+`Boolean isAdmin()`
+ * check if self is admin
+
+`Boolean isZombie()`
+ * check if self is zombie
+ 
+`String getFeedCode()`
+ * get self's feedcode
 `String getGameCode()`
  * get current game code
