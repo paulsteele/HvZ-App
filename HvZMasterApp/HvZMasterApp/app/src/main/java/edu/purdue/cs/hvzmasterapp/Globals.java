@@ -22,4 +22,7 @@ public class Globals {
         this.self = self;
     }
 
+    public String getGameCode() {
+        return self.gameID;
+    }
 }
