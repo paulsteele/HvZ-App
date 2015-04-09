@@ -122,10 +122,8 @@ public class MainActivity extends ActionBarActivity {
 
     /* Tag players */
     public void tag(View view) {
-        User self = g.getSelf();
         Intent intent = new Intent(this, TagActivity.class);
         startActivity(intent);
-        intent.putExtra("feedcode", self.uniqueID);
     }
 
     public void createMission(View view) {

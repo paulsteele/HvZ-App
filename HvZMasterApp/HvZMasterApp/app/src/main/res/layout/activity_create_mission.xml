@@ -91,7 +91,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="20dp"
-        android:onClick="tag" />
+        android:onClick="createMission" />
     <TextView
         android:id="@+id/create_mission_msg"
         android:layout_width="wrap_content"
