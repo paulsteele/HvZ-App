@@ -655,10 +655,12 @@ public class ResourceController {
 		
 		JSONObject resposne = new JSONObject();
 		try{
+        	response.put(ServerConfiguration.success, !failed);
 		}
 		catch(JSONException e){
 			e.printStackTrace();
 		}
+		return response.toString();
     }
     
     /**
