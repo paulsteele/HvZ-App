@@ -74,7 +74,7 @@ public class Server{
         return null;
     }
 
-    public static getMission(String gamecode, String title, String humanobjective, String zombieobjective){
+    public int addMission(String gamecode, String title, String humanobjective, String zombieobjective){
         StringBuilder url = new StringBuilder(serviceURL);
         url.append("/" + gamecode + "/mission");
 
@@ -112,7 +112,10 @@ public class Server{
 
         if( missionResponse == null){
             Log.e ("Get mission","Server Response error");
+            return 1;
         }
+
+        return 0;
 
     }
 
