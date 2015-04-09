@@ -12,8 +12,8 @@ public class User{
         this.isAdmin = isAdmin;
 
         this.isZombie = false;
-        this.uniqueID = "000000";
-        this.gameID = "000000";
+        this.uniqueID = "00000000";
+        this.gameID = "00000000";
     }
 
     public User(String username, String uniqueID, String gameID, boolean isZombie, boolean isAdmin){
@@ -22,13 +22,13 @@ public class User{
             this.uniqueID = uniqueID;
         }
         else {
-            this.uniqueID = "000000";
+            this.uniqueID = "00000000";
         }
         if (gameID != null) {
             this.gameID = gameID;
         }
         else {
-            this.gameID = "000000";
+            this.gameID = "00000000";
         }
         this.isZombie = isZombie;
         this.isAdmin = isAdmin;

@@ -27,24 +27,6 @@ public class TagActivity extends ActionBarActivity {
         intent = getIntent();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_main) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     public void tag(View view){
         String taggeeFeedcode = ((EditText)findViewById(R.id.feedcode)).getText().toString();
         String playerFeedcode = intent.getStringExtra("feedcode");

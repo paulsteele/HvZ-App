@@ -27,7 +27,8 @@ public class Game {
     public String getCode() {
         return code;
     }
+
     public String getCreator() {
-        return code;
+        return creator;
     }
 }

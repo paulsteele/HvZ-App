@@ -28,7 +28,6 @@ public class CreateGameActivity extends ActionBarActivity {
 
         if (status == 0) {
             finish();
-            overridePendingTransition(R.animator.slide_left, R.animator.slide_right);
         }
         else {
             // error handling

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.PopupWindow;
@@ -12,7 +13,7 @@ import android.widget.TextView;
 /**
  * Created by manasigoel on 4/7/15.
  */
-public class CreateMissionActivity {
+public class CreateMissionActivity extends ActionBarActivity {
     Server server = Server.getInstance();
 
     PopupWindow popup;

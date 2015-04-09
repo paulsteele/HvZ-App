@@ -33,28 +33,6 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == R.id.action_main) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onBackPressed() {
         // do nothing
     }
@@ -69,10 +47,10 @@ public class LoginActivity extends ActionBarActivity {
             msg.setText("Success!");
             msg.setTextColor(Color.GREEN);
             msg.setVisibility(View.VISIBLE);
+
             SaveSharedPreference.setUserName(LoginActivity.this, username);
-            g.setSelf(server.getPlayer(username));
+
             Intent intent = new Intent();
-            intent.putExtra("username", username);
             setResult(Activity.RESULT_OK, intent);
 
             finish();

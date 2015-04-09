@@ -32,25 +32,6 @@ public class RegisterActivity extends ActionBarActivity {
         setContentView(R.layout.activity_register);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_main) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     public void register(View view) {
         /* Get user inputs */
         String user = ((EditText) findViewById(R.id.userinput)).getText().toString();
