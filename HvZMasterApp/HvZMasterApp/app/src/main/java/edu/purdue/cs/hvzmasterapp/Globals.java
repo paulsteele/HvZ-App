@@ -22,6 +22,18 @@ public class Globals {
         this.self = self;
     }
 
+    public Boolean isAdmin() {
+        return self.isAdmin;
+    }
+
+    public Boolean isZombie() {
+        return self.isZombie;
+    }
+
+    public String getFeedCode() {
+        return self.uniqueID;
+    }
+
     public String getGameCode() {
         return self.gameID;
     }
