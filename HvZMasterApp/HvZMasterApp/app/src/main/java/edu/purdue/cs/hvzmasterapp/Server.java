@@ -74,9 +74,9 @@ public class Server{
         return null;
     }
 
-    public static getMission(String gamecode, String title, String humanObj, String zombieObj){
+    public static getMission(String gamecode, String title, String humanobjective, String zombieobjective){
         StringBuilder url = new StringBuilder(serviceURL);
-        url.append("/" + gamecode + "/feedcode");
+        url.append("/" + gamecode + "/mission");
 
         JSONObject missionRequest = new JSONObject();
 
@@ -87,13 +87,13 @@ public class Server{
         }
 
         try{
-            missionRequest.put("humanObj",humanObj);
+            missionRequest.put("humanobjective",humanobjective);
         } catch(JSONException e){
             e.printStackTrace();
         }
 
         try{
-            missionRequest.put("zombieObj",zombieObj);
+            missionRequest.put("zombieobjective",zombieobjective);
         } catch(JSONException e){
             e.printStackTrace();
         }
