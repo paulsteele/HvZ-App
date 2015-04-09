@@ -8,12 +8,5 @@ public class Player extends User {
             super(username, uniqueID, false);
     }
 
-    public void isZombie(){
-            isZombie = true;
-    }
-
-    public void isHuman(){
-            isZombie = false;
-    }
 
 }

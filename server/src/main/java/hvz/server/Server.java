@@ -452,8 +452,10 @@ public class Server {
 				}
 			}
 			Random rand = new Random();
+			System.out.println("Number of players = " + playerCount);
 			for (int i = 0; i < ServerConfiguration.alphaZombieCount;i++){
 				int index = rand.nextInt(playerCount);
+				System.out.println(players[index].feedcode + " chosen");
 				changeStatus(players[index].feedcode, gamecode, true);
 			}
 		} catch (SQLException e) {
