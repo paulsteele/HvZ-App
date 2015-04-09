@@ -252,6 +252,12 @@ public class DBHandler{
 			String username = rs.getString("username");
 			String feedcode = rs.getString("feedCode");
 			Player user = new Player(username, feedcode);
+			if (rs.getInt("isZombie") == 1){
+				user.isZombie = true;
+			}
+			else{
+				user.isZombie = false;
+			}
 			users.add(user);
 		}
 		rs.close();
@@ -356,7 +362,7 @@ public class DBHandler{
 	}
 	public static void addMission(String gameCode, String humanObjective, String zombieObjective, int isCompleted, String title, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into missions values('" +gameCode + "' " + ", '" + humanObjective + "', " + zombieObjective + ", 0, '" + title+ "')";
+		String command = "insert into missions values('" +gameCode + "' " + ", '" + humanObjective + "', '" + zombieObjective + "', 0, '" + title+ "')";
 		s.executeUpdate(command);
 	}
 	public static void completedMission(String gameCode, String title, Connection c) throws SQLException {

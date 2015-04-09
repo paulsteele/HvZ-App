@@ -76,7 +76,7 @@ public class Server{
         return null;
     }
 
-    public static getMission(String gamecode, String title, String humanobjective, String zombieobjective){
+    public int addMission(String gamecode, String title, String humanobjective, String zombieobjective){
         StringBuilder url = new StringBuilder(serviceURL);
         url.append("/" + gamecode + "/mission");
 
@@ -114,7 +114,10 @@ public class Server{
 
         if( missionResponse == null){
             Log.e ("Get mission","Server Response error");
+            return 1;
         }
+
+        return 0;
 
     }
 
@@ -230,8 +233,8 @@ public class Server{
 
 
     //returns a new list of users
-    public ArrayList<User> getUserList() {
-        GetTask task = new GetTask(serviceURL + "/user", client);
+    public ArrayList<User> getUserList(String gamecode) {
+        GetTask task = new GetTask(serviceURL + "/" + gamecode + "/user", client);
 
         JSONObject response = null;
         try {
@@ -349,16 +352,86 @@ public class Server{
     }
     
     //returns 0 if game is successfully started
-    public void startGame() {
+    public int startGame(String gamecode) {
+        PutTask task = new PutTask(serviceURL + "/" + gamecode, client, new JSONObject());
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            Log.e("Start game", "server response error");
+            return -1;
+        }
+
+        try {
+            if (response.getBoolean("success")) {
+                Log.e("Start game", "success");
+                return 0;
+            }
+            else {
+
+                Log.e("Start game", "success error");
+                return 1;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.e("Start game", "error");
+        return -1;
     }
-    
+
+    public int getGameStatus(String gamecode) {
+        if (gamecode.equals("00000000")) {
+            Log.d("game status", "no game");
+            return 0;
+        }
+
+        Log.d("game status", gamecode);
+
+        GetTask task = new GetTask(serviceURL + "/" + gamecode, client);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            Log.e("Game status", "server response error");
+            return -1;
+        }
+
+        try {
+            if (response.getBoolean("started")) {
+                Log.e("Game status", "started");
+                return 1;
+            }
+            else {
+
+                Log.e("Game status", "not started");
+                return 0;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.e("Game status", "error");
+        return -1;
+    }
+
     //returns time remaining in the game
     public void getTimeRemaining(){
     
     }
 
     // returns 0 if register was successful, else non-zero
-    public int createGame(String gamename, String creator) {
+    public Game createGame(String gamename, String creator) {
         JSONObject request = new JSONObject();
 
         try {
@@ -378,21 +451,21 @@ public class Server{
         }
 
         if (response == null) {
-            return -1;
+            return null;
         }
 
         try {
             if (response.getBoolean("success")) {
-                return 0;
+                return new Game(gamename, response.getString("gamecode"), creator);
             }
             else {
-                return 1;
+                return null;
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return -1;
+        return null;
     }
 
     // returns list of all games
@@ -525,10 +598,6 @@ public class Server{
     public int register(String username, String password, boolean admin) {
         StringBuilder url = new StringBuilder(serviceURL);
         url.append("/user");
-        /* url.append("?username="+username);
-        url.append("&feedcode="+feedcode);
-        url.append("&password="+password);
-        url.append("&admin="+admin);*/
 
         JSONObject request = new JSONObject();
         try {
@@ -552,7 +621,7 @@ public class Server{
         }
 
         if (response == null) {
-            Log.e("Register", "Server reponse error");
+            Log.e("Register", "Server response error");
             return -1;
         }
 
