@@ -601,11 +601,19 @@ public class ResourceController {
     	try {
     		for (int i = 0; i < missionMList.length;i++){
     			JSONObject mission = new JSONObject();
-    			missionList.put(game);
+    			mission.put("title", missionMList[i].title);
+    			mission.put("humanobjective", missionMList[i].humanObj);
+    			mission.put("zombieobjective", missionMList[i].zombieObj);
+    			boolean complete = true;
+    			if (missionMList[i].isCompleted == 0){
+    				complete = false;
+    			}
+    			mission.put("completed", complete);
+    			missionList.put(mission);
     		}
     	
-			output.put("games", missionList);
-			output.put(ServerConfiguration.success, true);
+			output.put("missions", missionList);
+			output.put(ServerConfiguration.success, !failed);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
