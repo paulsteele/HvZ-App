@@ -664,7 +664,36 @@ public class ResourceController {
      * updates a specific misison
      */
     @RequestMapping(value = "{game}/mission/{title}", method = RequestMethod.PUT)
-    public String updateMission(@PathVariable("game") String game, @PathVariable("title") String title) {
-    	return null;
+    public String updateMission(@RequestBody String value, @PathVariable("game") String game, @PathVariable("title") String title) {
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	//take in input and create variables for each entry
+		JSONObject input = null;
+		try {
+			input = new JSONObject(new JSONTokener(value));
+		} catch (JSONException e) {
+			failed = true;
+		}
+		boolean complete = false;
+		try{
+			complete = input.getBoolean("complete");
+		}
+		catch (JSONException e){
+			//error 
+			failed = true;
+		}
+		catch (NullPointerException e){
+			failed = true;
+		}
+		if (!failed && complete){
+			Server.updateMission(game, title);
+		}
+		JSONObject response = new JSONObject();
+	   	try{
+        	response.put(ServerConfiguration.success, !failed);
+    	}
+    	catch (JSONException e){
+    		e.printStackTrace();
+    	}
+    	return response.toString();
     }
 }
