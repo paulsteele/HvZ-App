@@ -42,9 +42,6 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if (id == R.id.action_logout) {
@@ -52,6 +49,9 @@ public class MainActivity extends ActionBarActivity {
             g.setSelf(null);
             Intent intent = new Intent(this, LoginActivity.class);
             startActivityForResult(intent, 1);
+        }
+        else if (id == R.id.action_leave_game) {
+            // leave game
         }
 
         return super.onOptionsItemSelected(item);
@@ -77,6 +77,11 @@ public class MainActivity extends ActionBarActivity {
             TextView text = (TextView) findViewById(R.id.adminlabel);
             text.setText("Admin: " + self.username);
             text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+
+            if (server.getGameStatus(self.gameID) == 0) {
+                CardView startButton = (CardView) findViewById(R.id.card0);
+                startButton.setVisibility(View.VISIBLE);
+            }
         }
         else {
             setContentView(R.layout.activity_main_player);
@@ -99,7 +104,6 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    /* Create user from login credentials */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
@@ -135,5 +139,13 @@ public class MainActivity extends ActionBarActivity {
     public void reviveCodes(View view) {
         /*Intent intent = new Intent(this, ReviveCodeActivity.class);
         startActivity(intent);*/
+    }
+
+    public void startGame(View view) {
+        int status = server.startGame(g.getSelf().gameID);
+        if (status == 0) {
+            CardView startButton = (CardView) findViewById(R.id.card0);
+            startButton.setVisibility(View.GONE);
+        }
     }
 }
