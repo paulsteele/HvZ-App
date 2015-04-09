@@ -64,7 +64,7 @@ Server will run on 128.211.191.47:8080
  	* `{"title": value, "humanobjective": value, "zombieobjective": value}`
  * GET: gets an array of all missions in a game
 
-`/{game}/mission/{title}
+`/{game}/mission/{title}`
  * GET: gets the specific mission
  * PUT: update the mission
     * `{"complete": value}`

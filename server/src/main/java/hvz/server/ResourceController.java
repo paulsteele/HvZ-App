@@ -592,11 +592,38 @@ public class ResourceController {
      */
     @RequestMapping(value = "{game}/mission", method = RequestMethod.GET)
     public String getAllMissions(@PathVariable("game") String game) {
-    	return null;
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	//Set up response object
+    	JSONObject output = new JSONObject();
+    	//set JSONArray and holder array
+    	JSONArray missionList = new JSONArray();
+    	Mission[] missionMList = Server.getAllMissions(game);
+    	try {
+    		for (int i = 0; i < missionMList.length;i++){
+    			JSONObject mission = new JSONObject();
+    			mission.put("title", missionMList[i].title);
+    			mission.put("humanobjective", missionMList[i].humanObj);
+    			mission.put("zombieobjective", missionMList[i].zombieObj);
+    			boolean complete = true;
+    			if (missionMList[i].isCompleted == 0){
+    				complete = false;
+    			}
+    			mission.put("completed", complete);
+    			missionList.put(mission);
+    		}
+    	
+			output.put("missions", missionList);
+			output.put(ServerConfiguration.success, !failed);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return output.toString();	
     }
     
     /**
-     * returns an array of all missions
+     * create a mission
      */
     @RequestMapping(value = "{game}/mission", method = RequestMethod.POST)
     public String createMission(@RequestBody String value, @PathVariable("game") String game) {
@@ -639,7 +666,29 @@ public class ResourceController {
      */
     @RequestMapping(value = "{game}/mission/{title}", method = RequestMethod.GET)
     public String getMission(@PathVariable("game") String game, @PathVariable("title") String title) {
-    	return null;
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	Mission mission = Server.getMission(game, title);
+    	if (mission == null){
+    		failed = true;
+    	}
+    	JSONObject response = new JSONObject();
+    	try{
+        	response.put(ServerConfiguration.success, !failed);
+        	if (!failed){
+        		response.put("title", mission.title);
+        		response.put("humanobjective", mission.humanObj);
+        		response.put("zombieobjective", mission.zombieObj);
+        		boolean complete = true;
+        		if (mission.isCompleted == 0){
+        			complete = false;
+        		}
+        		response.put("completed", complete);
+        	}
+    	}
+    	catch (JSONException e){
+    		e.printStackTrace();
+    	}
+    	return response.toString();
     }
     
     /**
