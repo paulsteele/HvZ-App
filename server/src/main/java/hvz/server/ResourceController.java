@@ -166,7 +166,7 @@ public class ResourceController {
     	if (user == null)
     		failed = true;
 		if (!failed){
-			return getPlayer(username, user.gamecode);
+			return getPlayer(username);
     	}
     	//Set up response object
 		JSONObject output = new JSONObject();
@@ -466,7 +466,7 @@ public class ResourceController {
     /**
      * sets a game to begin
      */
-    @RequestMapping(value = "{game}/status", method = RequestMethod.PUT)
+    @RequestMapping(value = "{game}", method = RequestMethod.PUT)
     public String beginGame (@PathVariable("game") String game) {
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	//Set up response object
@@ -486,7 +486,7 @@ public class ResourceController {
     /**
      * Checks to see if a game has begun
      */
-    @RequestMapping(value = "{game}/status", method = RequestMethod.GET)
+    @RequestMapping(value = "{game}", method = RequestMethod.GET)
     	public String isStarted(@PathVariable("game") String game) {
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	//Set up response object
@@ -501,5 +501,121 @@ public class ResourceController {
     	}
     	return response.toString();
 
-    	}   
+    	}  
+    /**
+     * force zombification on a user
+     */
+    
+    @RequestMapping(value = "{game}/forcezombie/{feedcode}", method = RequestMethod.GET)
+    public String forcezombie(@PathVariable("game") String game, @PathVariable("feedcode") String feedcode){
+    	Server.changeStatus(feedcode, game, true);
+		JSONObject response = new JSONObject();
+    	try{
+        	response.put(ServerConfiguration.success, true);
+    	}
+    	catch (JSONException e){
+    		e.printStackTrace();
+    		return null;
+    	}
+    	return response.toString();
+
+    	}  
+    
+    /**
+     * returns a new revive code
+     */
+    @RequestMapping(value = "{game}/revivecode", method = RequestMethod.GET)
+    public String getRevive(@PathVariable("game") String game) {
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	JSONObject response = new JSONObject();
+    	try{
+	    	if (!failed){
+	    		response.put("revivecode", Server.generateRevivecode(game));
+	    	}
+        	response.put(ServerConfiguration.success, !failed);
+    	}
+    	catch (JSONException e){
+    		e.printStackTrace();
+    	}
+    	return response.toString();
+
+    }
+    
+    /**
+     * revives a player
+     */
+    @RequestMapping(value = "{game}/revivecode", method = RequestMethod.POST)
+    public String revive(@RequestBody String value, @PathVariable("game") String game) {
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	//take in input and create variables for each entry
+		JSONObject input = null;
+		try {
+			input = new JSONObject(new JSONTokener(value));
+		} catch (JSONException e) {
+			failed = true;
+		}
+		String revivecode = null;
+		String feedcode = null;
+		try{
+			revivecode = input.getString("revivecode");
+			feedcode = input.getString("feedcode");
+		}
+		catch (JSONException e){
+			//error 
+			failed = true;
+		}
+		catch (NullPointerException e){
+			failed = true;
+		}
+		if (revivecode == null || feedcode == null){
+			failed = true;
+		}
+		
+		if (!failed){
+			Server.changeStatus(feedcode, game, false);
+		}
+		
+    	JSONObject response = new JSONObject();
+    	try{
+        	response.put(ServerConfiguration.success, !failed);
+    	}
+    	catch (JSONException e){
+    		e.printStackTrace();
+    	}
+    	return response.toString();
+    }
+		
+    
+    
+    /**
+     * returns an array of all missions
+     */
+    @RequestMapping(value = "{game}/mission", method = RequestMethod.GET)
+    public String getAllMissions(@PathVariable("game") String game) {
+    	return null;
+    }
+    
+    /**
+     * returns an array of all missions
+     */
+    @RequestMapping(value = "{game}/mission", method = RequestMethod.POST)
+    public String createMission(@RequestBody String value, @PathVariable("game") String game) {
+    	return null;
+    }
+    
+    /**
+     * returns a specific misison
+     */
+    @RequestMapping(value = "{game}/mission/{title}", method = RequestMethod.GET)
+    public String getMission(@PathVariable("game") String game, @PathVariable("title") String title) {
+    	return null;
+    }
+    
+    /**
+     * updates a specific misison
+     */
+    @RequestMapping(value = "{game}/mission/{title}", method = RequestMethod.PUT)
+    public String updateMission(@PathVariable("game") String game, @PathVariable("title") String title) {
+    	return null;
+    }
 }

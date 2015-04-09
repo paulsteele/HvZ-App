@@ -205,6 +205,28 @@ public class Server{
         return 1;
     }
 
+    //returns 0 if tagging was successful
+    public int tagUsingFeedcodes(String tagger, String taggee){
+        JSONObject gotTagged = new JSONObject();
+        JSONObject didTag = new JSONObject();
+        //put for one who got tagged
+        try{
+            gotTagged.put("feedcode",taggee);
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+        Log.d("Taggee", gotTagged.toString());
+        //put for tagger
+        try{
+            didTag.put("feedcode",tagger);
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+        Log.d("Tagger", didTag.toString());
+
+        return 1;
+    }
+
     //returns 0 if user reverted to human successfully
     public int revive(boolean zombie){
         JSONObject request = new JSONObject();
@@ -302,11 +324,14 @@ public class Server{
         // Parse JSON Object and place users into list
         ArrayList<Game> list = new ArrayList<>();
         try {
-            JSONArray games = response.getJSONArray("games");
+            JSONArray array = response.getJSONArray("games");
 
-            for (int i = 0; i < games.length(); i++) {
-                String gamecode = games.getString(i);
-                list.add(new Game(gamecode));
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject games = array.getJSONObject(i);
+                String gamename = games.getString("gamename");
+                String gamecode = games.getString("gamecode");
+                String creator = games.getString("creator");
+                list.add(new Game(gamename, gamecode, creator));
             }
 
             return list;
@@ -343,20 +368,21 @@ public class Server{
         }
 
         if (response == null) {
-            Log.e("Get user list", "Server reponse error");
             return -1;
         }
 
         try {
             if (response.getBoolean("success")) {
-                Log.e("Login", "Success");
                 return 0;
+            }
+            else {
+                return 1;
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return 0;
+        return -1;
     }
 
     // returns 0 if login was successful, else non-zero
@@ -364,8 +390,6 @@ public class Server{
         StringBuilder url = new StringBuilder(serviceURL);
         url.append("/user/");
         url.append(identifier);
-        /*url.append("?feedcode="+feedcode);
-        url.append("&password="+password);*/
 
         JSONObject request = new JSONObject();
         try {
@@ -395,6 +419,9 @@ public class Server{
             if (response.getBoolean("success")) {
                 Log.e("Login", "Success");
                 return 0;
+            }
+            else {
+                return 1;
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -576,7 +603,7 @@ class PutTask extends AsyncTask<Void, Void, JSONObject> {
             responseObj = new JSONObject(responseString);
             return responseObj;
         } catch (JSONException e) {
-            Log.e("HTTP Post", "Error getting JSON Object");
+            Log.e("HTTP Put", "Error getting JSON Object");
             e.printStackTrace();
         }
         return null;

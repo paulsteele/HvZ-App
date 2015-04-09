@@ -2,6 +2,7 @@ package hvz.server;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Random;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.boot.SpringApplication;
@@ -186,6 +187,7 @@ public class Server {
     public static void begin(String gamecode){
     	try {
 			DBHandler.start(gamecode, c);
+			chooseAlphaZombies(gamecode);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -228,6 +230,19 @@ public class Server {
             e.printStackTrace();
         }
     }
+
+    /*
+    *   Admin Deletes mission
+    */
+    public static void deleteMission(String gamecode, String title){
+        try{
+            DBHandler.completedMission(gamecode,title,c);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+    }
+
     /**
      * generates a new gamecode that is guaranteed to be unique
      * @return
@@ -315,6 +330,26 @@ public class Server {
     	}
     }
     
+    public static boolean changeStatus(String feedcode, String gamecode, boolean zombify){
+    	if (zombify){
+    		try {
+				DBHandler.makeZombie(feedcode, gamecode, c);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	else {
+    		try {
+				DBHandler.makeHuman(feedcode, gamecode, c);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	return true;
+    }
+    
     /**
      * perform a tag, returns false if cannibal tags, or users don't exist
      */
@@ -331,13 +366,16 @@ public class Server {
     		failed = true;
     	}
     	if (!failed){
-    		if (((Player) tagger).isZombie)
+    		if (((Player) tagger).isZombie){
     			zombie = (Player) tagger;
+    		}
     		else{
     			human = (Player) tagger;
     		}
-    		if (((Player) tagged).isZombie)
+    		
+    		if (((Player) tagged).isZombie) {
     			zombie = (Player) tagged;
+    		}
     		else{
     			human = (Player) tagged;
     		}
@@ -345,6 +383,7 @@ public class Server {
     	if (human == null || zombie == null){
     		failed = true;
     	}
+    	
     	//human stuns zombie
     	if (!failed && human == (Player) tagger){
     		try {
@@ -366,6 +405,33 @@ public class Server {
     	}
     	
     	return !failed;
+    }
+    
+    public static void chooseAlphaZombies(String gamecode){
+    	try {
+			User[] users = DBHandler.getAllUsers(gamecode, c);
+			int playerCount = 0;
+			for (User u : users){
+				if (!u.isAdmin){
+					playerCount++;
+				}
+			}
+			Player[] players = new Player[playerCount];
+			playerCount = 0;
+			for (User u : users){
+				if (!u.isAdmin){
+					players[playerCount++] = (Player) u;
+				}
+			}
+			Random rand = new Random();
+			for (int i = 0; i < ServerConfiguration.alphaZombieCount;i++){
+				int index = rand.nextInt(playerCount);
+				changeStatus(players[index].feedcode, gamecode, true);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 }
 

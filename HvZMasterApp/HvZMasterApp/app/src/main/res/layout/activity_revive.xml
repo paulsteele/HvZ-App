@@ -7,10 +7,10 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="Welcome to HvZ Master App!\nCreating New Game"
+        android:layout_height="24dp"
+        android:text="Revive"
         android:textColor="#000000"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:gravity="center_vertical|center_horizontal"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
@@ -18,7 +18,6 @@
         android:layout_marginBottom="16dp"/>
 
     <View
-        android:id="@+id/listseperator"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:background="@android:color/black"
@@ -27,20 +26,20 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Enter game name:"
+        android:text="Enter revive code to turn back to human:"
         android:textColor="#000000"
         android:textSize="20sp"
         android:gravity="center_vertical"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginRightt="16dp"/>
+        android:layout_marginRight="16dp"/>
 
     <EditText
-        android:id="@+id/nameinput"
+        android:id="@+id/reviveinput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:hint="Game name"
+        android:hint="Revive code"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"/>
 
@@ -54,9 +53,9 @@
         android:textColor="@color/bright_foreground_material_dark"
         android:layout_marginTop="16dp"
         android:clickable="true"
-        android:onClick="createGame"
+        android:onClick="revive"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"/>
 
 </LinearLayout>

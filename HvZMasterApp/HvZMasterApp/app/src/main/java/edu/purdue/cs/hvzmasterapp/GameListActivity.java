@@ -22,10 +22,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class GameListActivity extends ActionBarActivity {
+    Server server = Server.getInstance();
+    Globals global = Globals.getInstance();
+    User self = global.getSelf();
+
     ArrayList<Game> gameList;
     ArrayList<String> itemList = new ArrayList<>();
-    Server server = Server.getInstance();
-    private Globals global = Globals.getInstance();
     ListView list;
 
     int numGames = 0;
@@ -64,9 +66,19 @@ public class GameListActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
                 // select game to join and show confirmation menu
-                Log.d("GameList", "Game name: " + gameList.get(position).getName());
-                if (gameList.get(position).getCode().equals("000000")) {
+                Log.d("GameList", "Game name: " + gameList.get(position).getCode());
+                String gamecode = gameList.get(position).getCode();
+                if (gamecode.equals("00000000")) {
                     //do nothing
+                }
+
+                int status = server.addPlayerToGame(gamecode, self.username);
+                Log.d("Game List", "Adding player to game: " + gamecode);
+                if (status == 0) {
+                    finish();
+                }
+                else {
+                    Log.e("Game List", "Error adding");
                 }
             }
         });
@@ -86,11 +98,13 @@ public class GameListActivity extends ActionBarActivity {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.gameitem, parent, false);
             }
             // Lookup view for data population
-            //TextView name = (TextView) convertView.findViewById(R.id.gameName);
-            TextView id = (TextView) convertView.findViewById(R.id.gameId);
+            TextView name = (TextView) convertView.findViewById(R.id.gameName);
+            TextView code = (TextView) convertView.findViewById(R.id.gameCode);
+            TextView creator = (TextView) convertView.findViewById(R.id.gameCreator);
             // Populate the data into the template view using the data object
-            //name.setText(game.getName());
-            id.setText(game.getCode());
+            name.setText(game.getName() + "\t");
+            code.setText(game.getCode());
+            creator.setText("Created by: " + game.getCreator());
             // Return the completed view to render on screen
             return convertView;
         }
@@ -99,6 +113,10 @@ public class GameListActivity extends ActionBarActivity {
     public void createGame(View view) {
         Intent intent = new Intent(this, CreateGameActivity.class);
         startActivity(intent);
-        overridePendingTransition(R.animator.slide_left, R.animator.slide_right);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // do nothing
     }
 }

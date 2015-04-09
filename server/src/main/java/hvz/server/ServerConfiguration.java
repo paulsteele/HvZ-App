@@ -20,6 +20,7 @@ public class ServerConfiguration implements EmbeddedServletContainerCustomizer {
 	public static final char revivePrefix = 'R'; //prefix for revive codes
 	public static final String success = "success"; //success message
 	public static final String dummyCode = "00000000"; //value for a not assigned player.
+	public static final int alphaZombieCount = 4; //number of alpha zombies to spawn
 	/**
 	 * Component function to actually handle customizations.
 	 */
