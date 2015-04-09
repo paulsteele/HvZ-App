@@ -634,9 +634,9 @@ public class ResourceController {
 		String title = null;
 		try {
 			input = new JSONObject(new JSONTokener(value));
-			String humanObj = input.getString("humanobjective");
-			String zombieObj = input.getString("zombieobjective");
-			String title = input.getString("title");
+			humanObj = input.getString("humanobjective");
+			zombieObj = input.getString("zombieobjective");
+			title = input.getString("title");
 		} 
 		catch(JSONException e){
 			failed = true;
@@ -645,7 +645,7 @@ public class ResourceController {
 			failed = true;
 		}
 		
-		if(humanObj == null, zombieObj == null, title == null){
+		if(humanObj == null || zombieObj == null || title == null){
 			failed = true;
 		}
 		
@@ -653,7 +653,7 @@ public class ResourceController {
 			Server.addMission(game, humanObj, zombieObj, 0, title );
 		}
 		
-		JSONObject resposne = new JSONObject();
+		JSONObject response = new JSONObject();
 		try{
         	response.put(ServerConfiguration.success, !failed);
 		}
