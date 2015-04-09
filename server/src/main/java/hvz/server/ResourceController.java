@@ -592,11 +592,30 @@ public class ResourceController {
      */
     @RequestMapping(value = "{game}/mission", method = RequestMethod.GET)
     public String getAllMissions(@PathVariable("game") String game) {
-    	return null;
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	//Set up response object
+    	JSONObject output = new JSONObject();
+    	//set JSONArray and holder array
+    	JSONArray missionList = new JSONArray();
+    	Mission[] missionMList = Server.getAllMissions(game);
+    	try {
+    		for (int i = 0; i < missionMList.length;i++){
+    			JSONObject mission = new JSONObject();
+    			missionList.put(game);
+    		}
+    	
+			output.put("games", missionList);
+			output.put(ServerConfiguration.success, true);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return output.toString();	
     }
     
     /**
-     * returns an array of all missions
+     * create a mission
      */
     @RequestMapping(value = "{game}/mission", method = RequestMethod.POST)
     public String createMission(@RequestBody String value, @PathVariable("game") String game) {

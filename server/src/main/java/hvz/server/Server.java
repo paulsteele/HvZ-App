@@ -234,13 +234,41 @@ public class Server {
     /*
     *   Admin Deletes mission
     */
-    public static void deleteMission(String gamecode, String title){
+    public static void updateMission(String gamecode, String title){
         try{
             DBHandler.completedMission(gamecode,title,c);
         } catch (SQLException e){
             e.printStackTrace();
         }
 
+    }
+    
+    /**
+     * Gets all missions of a game
+     */
+    public static Mission[] getAllMissions(String game){
+    	Mission[] missions = null;
+		try {
+			missions = DBHandler.getAllMissions(game, c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return missions;
+    }
+    
+    /**
+     * Get a missions
+     */
+    public static Mission getMission(String game, String title){
+    	Mission mission = null;
+    	try {
+			mission = DBHandler.getMissionByTitle(title, game, c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return mission;
     }
 
     /**
