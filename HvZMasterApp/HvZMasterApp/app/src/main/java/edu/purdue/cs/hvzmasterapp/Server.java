@@ -148,16 +148,14 @@ public class Server{
     }
 
 
-    public String getReviveCode(String gamecode, boolean admin){
-        JSONObject request = new JSONObject();
-        try {
-            request.put("admin", admin);
-        }catch(JSONException e){
-            e.printStackTrace();
-        }
-        Log.d("Revivecode", request.toString());
+    public ArrayList<String> getAllReviveCodes(String gamecode) {
+        ArrayList<String> list = new ArrayList<>();
 
-        PostTask task = new PostTask(serviceURL + "/revivecode",client,request);
+        return list;
+    }
+
+    public String getReviveCode(String gamecode){
+        GetTask task = new GetTask(serviceURL + "/" + gamecode + "/revivecode", client);
 
         JSONObject response = null;
 
