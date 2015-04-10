@@ -35,16 +35,6 @@ public class Server{
         return INSTANCE;
     }
 
-    //returns 0 if successfully added player
-    public int addPlayer(User user){
-        return 0;
-    }
-    
-    //returns 0 if successfully removed a player
-    public int removePlayer(User user){
-        return 0;
-    }
-    
     //returns a user using its unique ID
     public User getPlayer(String username){
         GetTask task = new GetTask(serviceURL + "/user/" + username, client);
@@ -189,7 +179,6 @@ public class Server{
         return null;
     }
 
-
     //returns a new list of users
     public ArrayList<User> getUserList(String gamecode) {
         GetTask task = new GetTask(serviceURL + "/" + gamecode + "/user", client);
@@ -278,17 +267,18 @@ public class Server{
     }
 
     //returns 0 if user reverted to human successfully
-    public int revive(boolean zombie){
+    public int revive(String gamecode, String revivecode, String feedcode){
 
         JSONObject request = new JSONObject();
         try{
-            request.put("zombie", zombie);
+            request.put("revivecode", revivecode);
+            request.put("feedcode", feedcode);
         }catch(JSONException e){
             e.printStackTrace();
         }
-        Log.d("turnHuman", request.toString());
+        Log.d("revive", request.toString());
 
-        PostTask task = new PostTask(serviceURL + "/turnHuman",client,request);
+        PostTask task = new PostTask(serviceURL + "/" + gamecode + "/revivecode", client, request);
 
         JSONObject response = null;
         try {
@@ -296,12 +286,24 @@ public class Server{
         }catch (InterruptedException | ExecutionException e){
             e.printStackTrace();
         }
+
         if (response == null) {
             Log.e("Turn Human", "Server response error");
-            return 1;
+            return -1;
         }
 
-        return 1;
+        try {
+            if (response.getBoolean("success")) {
+                return 0;
+            }
+            else {
+                return 1;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
     }
     
     //returns an image of a map

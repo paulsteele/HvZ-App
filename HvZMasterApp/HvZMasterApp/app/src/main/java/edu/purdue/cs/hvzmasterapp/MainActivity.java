@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
+    private final static int LOGIN = 1;
+    private final static int REVIVE = 2;
     private Server server = Server.getInstance();
     private Globals g = Globals.getInstance();
 
@@ -106,10 +108,17 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
+        if (requestCode == LOGIN) {
             if (resultCode == Activity.RESULT_OK) {
                 this.recreate();
                 Log.d("Main", "Login success");
+            }
+            return;
+        }
+        if (requestCode == REVIVE) {
+            if (resultCode == Activity.RESULT_OK) {
+                this.recreate();
+                Log.d("Main", "revive success");
             }
         }
     }
@@ -129,20 +138,20 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void revive(View view) {
-        User self = g.getSelf();
-        if (self.isZombie) {
+        if (g.isZombie()) {
             Intent intent = new Intent(this, ReviveActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, REVIVE);
         }
     }
 
     public void reviveCodes(View view) {
-        /*Intent intent = new Intent(this, ReviveCodeActivity.class);
-        startActivity(intent);*/
+        Intent intent = new Intent(this, ReviveCodeActivity.class);
+        startActivity(intent);
     }
 
     public void startGame(View view) {
         int status = server.startGame(g.getSelf().gameID);
+
         if (status == 0) {
             CardView startButton = (CardView) findViewById(R.id.card0);
             startButton.setVisibility(View.GONE);
