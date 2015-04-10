@@ -377,7 +377,7 @@ public class DBHandler{
 	}
 	public static void addReviveCode(String reviveCode, String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into reviveCodes values('" +reviveCode + "' ,'" + gameCode + "'";
+		String command = "insert into reviveCodes values('" +reviveCode + "' ,'" + gameCode + "')";
 		s.executeUpdate(command);
 	}
 	public static boolean validateReviveCode(String reviveCode, String gameCode, Connection c) throws SQLException{
