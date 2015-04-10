@@ -311,6 +311,12 @@ public class Server {
 
             done = !checkReviveCode(revivecode,gamecode);
         }
+        try {
+			DBHandler.addReviveCode(revivecode, gamecode, c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return revivecode;
     }
 
@@ -321,6 +327,15 @@ public class Server {
             e.printStackTrace();
         }
         return false;
+    }
+    
+    public static void deleteReviveCode(String revivecode, String gamecode){
+    	try {
+			DBHandler.deleteReviveCode(revivecode, gamecode, c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     public static String[] getAllReviveCodes(String game){

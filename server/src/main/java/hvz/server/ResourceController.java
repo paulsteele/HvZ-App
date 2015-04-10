@@ -599,6 +599,7 @@ public class ResourceController {
 		
 		if (!failed){
 			Server.changeStatus(feedcode, game, false);
+    		Server.deleteReviveCode(revivecode, game);
 		}
 		
     	JSONObject response = new JSONObject();

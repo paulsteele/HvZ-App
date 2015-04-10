@@ -140,6 +140,11 @@ public class MainActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
+    public void listMissions(View view) {
+        Intent intent = new Intent(this, MissionListActivity.class);
+        startActivity(intent);
+    }
+
     public void revive(View view) {
         if (g.isZombie()) {
             Intent intent = new Intent(this, ReviveActivity.class);
