@@ -44,6 +44,10 @@
             android:name=".TagActivity"
             android:label="@string/app_name" >
         </activity>
+        <activty
+            android:name=".MissionListActivity"
+            android:label="@string/app_name" >
+        </activty>
         <activity
             android:name=".CreateMissionActivity"
             android:label="@string/app_name" >

@@ -98,7 +98,7 @@ public class MainActivity extends ActionBarActivity {
             }
             text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             TextView text2 = (TextView) findViewById(R.id.feedcodelabel);
-            text2.setText("Feed code:" + g.getFeedCode());
+            text2.setText("Feed code: " + g.getFeedCode());
             text2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         }
 

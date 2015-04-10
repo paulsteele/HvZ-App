@@ -147,7 +147,6 @@ public class Server{
         return null;
     }
 
-
     public ArrayList<String> getAllReviveCodes(String gamecode) {
         GetTask task = new GetTask(serviceURL + "/" + gamecode + "/revivecodes", client);
 
