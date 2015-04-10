@@ -371,8 +371,8 @@ public class Server{
         JSONObject tagRequest = new JSONObject();
 
         try{
-            tagRequest.put("tagger", tagger.uniqueID);
-            tagRequest.put("tagged", tagged.uniqueID);
+            tagRequest.put("tagger", tagger);
+            tagRequest.put("tagged", tagged);
         } catch(JSONException e){
             e.printStackTrace();
         }
