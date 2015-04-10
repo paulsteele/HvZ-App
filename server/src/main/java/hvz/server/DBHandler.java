@@ -385,7 +385,11 @@ public class DBHandler{
 		ResultSet rs = s.executeQuery("select * from reviveCodes where reviveCode  = '" + reviveCode + "' and gameCode = '" + gameCode + "'");
 		if (!rs.isBeforeFirst())
 			return false;
-		return true;
+		else{
+			String command = "delete from reviveCodes where reviveCode = '" + reviveCode + "' " +  "AND gameCode = " + "'" + gameCode + "'"; 
+			s.executeUpdate(command);
+			return true;
+		}
 	}	
 	public static void changeFeedCode(String username, String newFeedCode, boolean isAdmin, Connection c) throws SQLException{
 		if(isAdmin == false){
