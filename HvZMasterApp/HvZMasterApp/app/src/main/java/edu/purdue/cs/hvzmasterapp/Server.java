@@ -390,7 +390,7 @@ public class Server{
         }
 
         if( tagResponse == null){
-            Log.e ("Tag failed");
+            Log.e ("Tag failed", "Server response error");
             return 1;
         }
 
