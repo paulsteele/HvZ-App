@@ -3,8 +3,6 @@ package edu.purdue.cs.hvzmasterapp;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.sun.management.MissionControl;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -37,16 +35,6 @@ public class Server{
         return INSTANCE;
     }
 
-    //returns 0 if successfully added player
-    public int addPlayer(User user){
-        return 0;
-    }
-    
-    //returns 0 if successfully removed a player
-    public int removePlayer(User user){
-        return 0;
-    }
-    
     //returns a user using its unique ID
     public User getPlayer(String username){
         GetTask task = new GetTask(serviceURL + "/user/" + username, client);
@@ -160,16 +148,14 @@ public class Server{
     }
 
 
-    public String getReviveCode(String gamecode, boolean admin){
-        JSONObject request = new JSONObject();
-        try {
-            request.put("admin", admin);
-        }catch(JSONException e){
-            e.printStackTrace();
-        }
-        Log.d("Revivecode", request.toString());
+    public ArrayList<String> getAllReviveCodes(String gamecode) {
+        ArrayList<String> list = new ArrayList<>();
 
-        PostTask task = new PostTask(serviceURL + "/revivecode",client,request);
+        return list;
+    }
+
+    public String getReviveCode(String gamecode){
+        GetTask task = new GetTask(serviceURL + "/" + gamecode + "/revivecode", client);
 
         JSONObject response = null;
 
@@ -192,9 +178,8 @@ public class Server{
     }
 
     //returns list of missions
-
-    public ArrayList<Mission> getMissionList(){
-        GetTask task = new GetTask(serviceURL + "/mission", client);
+    public ArrayList<Mission> getMissionList(String gamecode){
+        GetTask task = new GetTask(serviceURL + "/" + gamecode + "/mission", client);
 
         JSONObject response = null;
         try {
@@ -213,24 +198,50 @@ public class Server{
         try {
             JSONArray missions = response.getJSONArray("missions");
 
-            for (int i = 0; i < users.length(); i++) {
+            for (int i = 0; i < missions.length(); i++) {
                 JSONObject mission = missions.getJSONObject(i);
-                String title = mission.getString("value");
+                String title = mission.getString("title");
                 String humanobjective = mission.getString("humanobjective");
                 String zombieobjective = mission.getString("zombieobjective");
                 Mission m = new Mission(title, humanobjective, zombieobjective);
                 list.add(m);
             }
-
-            return list;
         } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return list;
+    }
+
+    public Mission getMission(String gamecode, String title) {
+        GetTask task = new GetTask(serviceURL + "/" + gamecode + "/mission/" + title, client);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
-        return null;
+        if (response == null) {
+            Log.e("Get mission list", "Server reponse error");
+            return null;
+        }
+
+        // Parse JSON Object and place users into list
+        Mission mission = null;
+        try {
+            String humanobjective = response.getString("humanobjective");
+            String zombieobjective = response.getString("zombieobjective");
+            mission = new Mission(title, humanobjective, zombieobjective);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return mission;
     }
-
-
 
     //returns a new list of users
     public ArrayList<User> getUserList(String gamecode) {
@@ -320,17 +331,18 @@ public class Server{
     }
 
     //returns 0 if user reverted to human successfully
-    public int revive(boolean zombie){
+    public int revive(String gamecode, String revivecode, String feedcode){
 
         JSONObject request = new JSONObject();
         try{
-            request.put("zombie", zombie);
+            request.put("revivecode", revivecode);
+            request.put("feedcode", feedcode);
         }catch(JSONException e){
             e.printStackTrace();
         }
-        Log.d("turnHuman", request.toString());
+        Log.d("revive", request.toString());
 
-        PostTask task = new PostTask(serviceURL + "/turnHuman",client,request);
+        PostTask task = new PostTask(serviceURL + "/" + gamecode + "/revivecode", client, request);
 
         JSONObject response = null;
         try {
@@ -338,12 +350,24 @@ public class Server{
         }catch (InterruptedException | ExecutionException e){
             e.printStackTrace();
         }
+
         if (response == null) {
             Log.e("Turn Human", "Server response error");
-            return 1;
+            return -1;
         }
 
-        return 1;
+        try {
+            if (response.getBoolean("success")) {
+                return 0;
+            }
+            else {
+                return 1;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
     }
     
     //returns an image of a map
