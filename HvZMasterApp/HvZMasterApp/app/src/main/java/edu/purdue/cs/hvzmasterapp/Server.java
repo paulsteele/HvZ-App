@@ -412,7 +412,6 @@ public class Server{
         }
         Log.d("Tagger", didTag.toString());
 */
-        return 1;
     }
 
     //returns 0 if user reverted to human successfully
