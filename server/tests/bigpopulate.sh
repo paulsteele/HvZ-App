@@ -37,6 +37,7 @@ echo `curl -Ss -X POST -H "Content-Type: application/json" -d '{"username": "pla
 echo `curl -Ss -X POST -H "Content-Type: application/json" -d '{"username": "player21", "password": "22ea1c649c82946aa6e479e1ffd321e4a318b1b0", "admin": "false"}' localhost:8080/user`
 echo `curl -Ss -X POST -H "Content-Type: application/json" -d '{"username": "player22", "password": "22ea1c649c82946aa6e479e1ffd321e4a318b1b0", "admin": "false"}' localhost:8080/user`
 echo `curl -Ss -X POST -H "Content-Type: application/json" -d '{"username": "player23", "password": "22ea1c649c82946aa6e479e1ffd321e4a318b1b0", "admin": "false"}' localhost:8080/user`
+echo `curl -Ss -X POST -H "Content-Type: application/json" -d '{"username": "player24", "password": "22ea1c649c82946aa6e479e1ffd321e4a318b1b0", "admin": "false"}' localhost:8080/user`
 echo `curl -Ss -X POST -H "Content-Type: application/json" -d '{"username": "player25", "password": "22ea1c649c82946aa6e479e1ffd321e4a318b1b0", "admin": "false"}' localhost:8080/user`
 echo `curl -Ss -X POST -H "Content-Type: application/json" -d '{"username": "player26", "password": "22ea1c649c82946aa6e479e1ffd321e4a318b1b0", "admin": "false"}' localhost:8080/user`
 echo `curl -Ss -X POST -H "Content-Type: application/json" -d '{"username": "player27", "password": "22ea1c649c82946aa6e479e1ffd321e4a318b1b0", "admin": "false"}' localhost:8080/user`
