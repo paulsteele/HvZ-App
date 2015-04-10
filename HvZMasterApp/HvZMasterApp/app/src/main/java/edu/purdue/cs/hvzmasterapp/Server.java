@@ -372,7 +372,7 @@ public class Server{
 
         try{
             tagRequest.put("tagger", tagger);
-            tagRequest.put("tagged", tagged);
+            tagRequest.put("tagged", taggee);
         } catch(JSONException e){
             e.printStackTrace();
         }
