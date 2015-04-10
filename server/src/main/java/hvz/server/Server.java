@@ -324,7 +324,12 @@ public class Server {
     }
     
     public static void deleteReviveCode(String revivecode, String gamecode){
-    	
+    	try {
+			DBHandler.deleteReviveCode(revivecode, gamecode, c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     public static String[] getAllReviveCodes(String game){
