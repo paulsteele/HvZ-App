@@ -22,6 +22,10 @@ public class Globals {
         this.self = self;
     }
 
+    public String getUsername() {
+        return self.username;
+    }
+
     public Boolean isAdmin() {
         return self.isAdmin;
     }
