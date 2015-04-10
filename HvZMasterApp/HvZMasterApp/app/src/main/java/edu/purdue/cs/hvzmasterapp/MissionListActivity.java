@@ -3,20 +3,12 @@ package edu.purdue.cs.hvzmasterapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -54,7 +46,7 @@ public class MissionListActivity extends ActionBarActivity{
             Mission mission = getItem(position);
             // Check if an existing view is being reused, otherwise inflate the view
             if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.missionItem, parent, false);
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.missionitem, parent, false);
             }
             // Lookup view for data population
             TextView title = (TextView) convertView.findViewById(R.id.missionTitle);
@@ -76,6 +68,9 @@ public class MissionListActivity extends ActionBarActivity{
             missionList.add(new Mission("There are no missions", null, null));
         }
         list = (ListView) findViewById(R.id.missionListView);
+
+        MissionAdapter adapter = new MissionAdapter(this, missionList);
+        list.setAdapter(adapter);
     }
 
     @Override
