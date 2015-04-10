@@ -372,12 +372,12 @@ public class DBHandler{
 	}
 	public static void deleteReviveCode(String reviveCode, String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into users reviveCodes('" +reviveCode + "' ,'" + gameCode + "'";
+		String command = "delete from reviveCodes where reviveCode  = '" + reviveCode + "' " +  "AND gameCode = " + "'" + gameCode + "'"; 
 		s.executeUpdate(command);
 	}
 	public static void addReviveCode(String reviveCode, String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		String command = "delete from reviveCodes where reviveCode  = '" + reviveCode + "' " +  "AND gameCode = " + "'" + gameCode + "'"; 
+		String command = "insert into users reviveCodes('" +reviveCode + "' ,'" + gameCode + "'";
 		s.executeUpdate(command);
 	}
 	public static boolean validateReviveCode(String reviveCode, String gameCode, Connection c) throws SQLException{
@@ -386,8 +386,6 @@ public class DBHandler{
 		if (!rs.isBeforeFirst())
 			return false;
 		else{
-			String command = "delete from reviveCodes where reviveCode = '" + reviveCode + "' " +  "AND gameCode = " + "'" + gameCode + "'"; 
-			s.executeUpdate(command);
 			return true;
 		}
 	}	
@@ -432,7 +430,6 @@ public class DBHandler{
 		Mission [] missionArray = missions.toArray(new Mission[missions.size()]);
 		return missionArray;
 	}
-	
 	public static String [] getAllReviveCodes(String gameCode, Connection c) throws SQLException{
 		LinkedList<String> codes = new LinkedList<String>();
 		Statement s = c.createStatement();
@@ -449,6 +446,3 @@ public class DBHandler{
 }
 //create table x(time int, name varchar(25))
 //insert into x(strftime('%s', 'now'), 'name')
-
-
-//in validate, after it finds it, delete from table
