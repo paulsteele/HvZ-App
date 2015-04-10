@@ -18,7 +18,7 @@ import java.util.ArrayList;
 /**
  * Created by manasigoel on 4/7/15.
  */
-public class MissionListActivity extends ActionBarActivity{
+public class MissionListActivity extends ActionBarActivity {
 
     ArrayList<Mission> missionList;
     ArrayList<String> itemList = new ArrayList<>();
@@ -32,6 +32,8 @@ public class MissionListActivity extends ActionBarActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mission_list);
+
+        refresh();
     }
 
     private class MissionAdapter extends ArrayAdapter<Mission> {
@@ -72,19 +74,4 @@ public class MissionListActivity extends ActionBarActivity{
         MissionAdapter adapter = new MissionAdapter(this, missionList);
         list.setAdapter(adapter);
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK) {
-                refresh();
-                finish();
-            }
-        }
-    }
-
-    public void listMissions(View view){
-
-    }
-
 }
