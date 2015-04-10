@@ -58,4 +58,13 @@
         android:paddingRight="16dp"
         android:layout_marginBottom="16dp"/>
 
+    <TextView
+        android:id="@+id/revive_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:visibility="invisible" />
+
 </LinearLayout>

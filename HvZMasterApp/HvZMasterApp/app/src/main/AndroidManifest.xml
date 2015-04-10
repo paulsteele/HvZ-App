@@ -52,6 +52,10 @@
             android:name=".ReviveActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name=".ReviveCodeActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>

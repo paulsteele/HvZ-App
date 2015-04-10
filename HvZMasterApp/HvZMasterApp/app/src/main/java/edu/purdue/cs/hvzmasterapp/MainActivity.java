@@ -152,7 +152,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public void reviveCodes(View view) {
+    public void viewReviveCodes(View view) {
         Intent intent = new Intent(this, ReviveCodeActivity.class);
         startActivity(intent);
     }

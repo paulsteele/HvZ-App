@@ -149,12 +149,36 @@ public class Server{
 
 
     public ArrayList<String> getAllReviveCodes(String gamecode) {
+        GetTask task = new GetTask(serviceURL + "/" + gamecode + "/revivecodes", client);
+
+        JSONObject response = null;
+
+        try {
+            response = task.execute().get();
+        }catch (InterruptedException | ExecutionException e){
+            e.printStackTrace();
+        }
+        if (response == null){
+            Log.e("Get revive code", "Server response error");
+            return null;
+        }
+
         ArrayList<String> list = new ArrayList<>();
+        try {
+            JSONArray codes = response.getJSONArray("revivecodes");
+            for (int i = 0; i < codes.length(); i++) {
+                String code = codes.getString(i);
+                list.add(code);
+            }
+        } catch (JSONException e){
+            e.printStackTrace();
+            return null;
+        }
 
         return list;
     }
 
-    public String getReviveCode(String gamecode){
+    public String getNewReviveCode(String gamecode){
         GetTask task = new GetTask(serviceURL + "/" + gamecode + "/revivecode", client);
 
         JSONObject response = null;
