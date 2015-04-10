@@ -89,7 +89,7 @@ public class DBHandler{
 			e.printStackTrace();
 		}
 		command = "CREATE TABLE games" + 
-						"(endTime 	varchar(25), " +
+						"(endDate 	TEXT, " +
 						"hasBegun	int, " +
 						"gameCode	varchar(25)," +
 						"name		varchar(25)," +
@@ -312,7 +312,7 @@ public class DBHandler{
 	}
 	public static void newGame(String gameCode, String name, String creator, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into games values('end', 0 ,'" + gameCode + "', '" + name + "', '" + creator + "')";
+		String command = "insert into games values(date('now', '+7 day'), 0 ,'" + gameCode + "', '" + name + "', '" + creator + "')";
 		s.executeUpdate(command);
 	}
 	public static boolean isGamecodeTaken(String gameCode, Connection c) throws SQLException{
