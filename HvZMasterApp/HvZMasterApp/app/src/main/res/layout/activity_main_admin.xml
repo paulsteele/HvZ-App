@@ -92,6 +92,7 @@
                 android:gravity="center_vertical|center_horizontal"
                 android:id="@+id/menu_text3"
                 android:clickable="true"
+                android:onClick="listMissions"
                 android:background="?android:attr/selectableItemBackground" />
         </android.support.v7.widget.CardView>
 
