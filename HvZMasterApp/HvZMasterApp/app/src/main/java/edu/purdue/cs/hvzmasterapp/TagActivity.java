@@ -16,6 +16,8 @@ public class TagActivity extends ActionBarActivity {
 
     Globals g = Globals.getInstance();
     Server server = Server.getInstance();
+    Globals global = Globals.getInstance();
+    User self = global.getSelf();
 
     PopupWindow popup;
 
@@ -25,13 +27,14 @@ public class TagActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag);
+        Globals global = Globals.getInstance();
         intent = getIntent();
     }
 
     public void tag(View view){
         String taggeeFeedcode = ((EditText)findViewById(R.id.feedcode)).getText().toString();
         String playerFeedcode = g.getFeedCode();
-        int status = server.tagUsingFeedcodes(playerFeedcode, taggeeFeedcode);
+        int status = server.tagUsingFeedcodes(playerFeedcode, taggeeFeedcode, g.getGameCode());
         if (status == 0) {
             TextView msg = (TextView) findViewById(R.id.tag_msg);
             msg.setText("Success!");

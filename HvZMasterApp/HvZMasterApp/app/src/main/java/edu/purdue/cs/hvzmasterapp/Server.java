@@ -306,7 +306,39 @@ public class Server{
     }
     
     //returns 0 if tagging was successful
-    public int tag(User tagger, User taggee){
+    public int tag(User tagger, User taggee, String gamecode){
+       /* StringBuilder url = new StringBuilder(serviceURL);
+        url.append("/" + gamecode + "/tag");
+
+        JSONObject tagRequest = new JSONObject();
+
+        try{
+            tagRequest.put("tagger", tagger.uniqueID);
+            tagRequest.put("tagged", tagged.uniqueID);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+
+
+
+        Log.d("Mission", missionRequest.toString());
+
+        PostTask task = new PostTask(url.toString(),client,missionRequest);
+
+        JSONObject missionResponse = null;
+
+        try{
+            missionResponse = task.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if( missionResponse == null){
+            Log.e ("Get mission","Server Response error");
+            return 1;
+        }
+
+        return 0;
         JSONObject gotTagged = new JSONObject();
         JSONObject didTag = new JSONObject();
         //put for one who got tagged
@@ -327,13 +359,43 @@ public class Server{
             e.printStackTrace();
         }
         Log.d("Tagger", didTag.toString());
-
+        */
         return 1;
     }
 
     //returns 0 if tagging was successful
-    public int tagUsingFeedcodes(String tagger, String taggee){
-        JSONObject gotTagged = new JSONObject();
+    public int tagUsingFeedcodes(String tagger, String taggee, String gamecode){
+        StringBuilder url = new StringBuilder(serviceURL);
+        url.append("/" + gamecode + "/tag");
+
+        JSONObject tagRequest = new JSONObject();
+
+        try{
+            tagRequest.put("tagger", tagger.uniqueID);
+            tagRequest.put("tagged", tagged.uniqueID);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+
+        Log.d("Tag", tagRequest.toString());
+
+        PostTask task = new PostTask(url.toString(),client,tagRequest);
+
+        JSONObject tagResponse = null;
+
+        try{
+            tagResponse = task.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if( tagResponse == null){
+            Log.e ("Tag failed");
+            return 1;
+        }
+
+        return 0;
+        /*JSONObject gotTagged = new JSONObject();
         JSONObject didTag = new JSONObject();
         //put for one who got tagged
         try{
@@ -349,7 +411,7 @@ public class Server{
             e.printStackTrace();
         }
         Log.d("Tagger", didTag.toString());
-
+*/
         return 1;
     }
 
