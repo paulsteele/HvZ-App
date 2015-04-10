@@ -311,6 +311,12 @@ public class Server {
 
             done = !checkReviveCode(revivecode,gamecode);
         }
+        try {
+			DBHandler.addReviveCode(revivecode, gamecode, c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return revivecode;
     }
 
