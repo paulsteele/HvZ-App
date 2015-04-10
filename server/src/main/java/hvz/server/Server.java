@@ -324,6 +324,12 @@ public class Server {
     }
     
     public static String[] getAllReviveCodes(String game){
+    	try {
+			return DBHandler.getAllReviveCodes(game, c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	return null;
     }
     

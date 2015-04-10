@@ -527,17 +527,23 @@ public class ResourceController {
     @RequestMapping(value = "{game}/revivecodes", method = RequestMethod.GET)
     public String getRevivecodes(@PathVariable("game") String game){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
-    	JSONObject response = new JSONObject();
-    	try{
-	    	if (!failed){
-	    		response.put("revivecode", Server.generateRevivecode(game));
-	    	}
-        	response.put(ServerConfiguration.success, !failed);
-    	}
-    	catch (JSONException e){
-    		e.printStackTrace();
-    	}
-    	return response.toString();
+    	JSONObject output = new JSONObject();
+    	//set JSONArray and holder array
+    	JSONArray reviveList = new JSONArray();
+    	String[] reviveReviveList = Server.getAllReviveCodes(game);
+    	try {
+    		for (int i = 0; i < reviveReviveList.length;i++){
+    			reviveList.put(reviveReviveList[i]);
+    		}
+    	
+			output.put("revivecodes", reviveList);
+			output.put(ServerConfiguration.success, !failed);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return output.toString();	
     }
     
     
