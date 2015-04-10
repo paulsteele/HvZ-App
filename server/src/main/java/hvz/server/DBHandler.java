@@ -428,6 +428,23 @@ public class DBHandler{
 		Mission [] missionArray = missions.toArray(new Mission[missions.size()]);
 		return missionArray;
 	}
+	
+	public static String [] getAllReviveCodes(String gameCode, Connection c) throws SQLException{
+		LinkedList<String> codes = new LinkedList<String>();
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from  reviveCodes where gameCode = '" + gameCode + "'");
+		while(rs.next()){
+			String code = rs.getString("reviveCode");
+			codes.add(code);
+		}
+		rs.close();
+		s.close();
+		String [] codeArray = codes.toArray(new String[codes.size()]);
+		return codeArray;
+	}
 }
 //create table x(time int, name varchar(25))
 //insert into x(strftime('%s', 'now'), 'name')
+
+
+//in validate, after it finds it, delete from table
