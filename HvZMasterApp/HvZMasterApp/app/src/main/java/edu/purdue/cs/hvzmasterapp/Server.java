@@ -3,8 +3,6 @@ package edu.purdue.cs.hvzmasterapp;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.sun.management.MissionControl;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -180,8 +178,8 @@ public class Server{
     }
 
     //returns list of missions
-    public ArrayList<Mission> getMissionList(){
-        GetTask task = new GetTask(serviceURL + "/mission", client);
+    public ArrayList<Mission> getMissionList(String gamecode){
+        GetTask task = new GetTask(serviceURL + "/" + gamecode + "/mission", client);
 
         JSONObject response = null;
         try {
@@ -200,21 +198,49 @@ public class Server{
         try {
             JSONArray missions = response.getJSONArray("missions");
 
-            for (int i = 0; i < users.length(); i++) {
+            for (int i = 0; i < missions.length(); i++) {
                 JSONObject mission = missions.getJSONObject(i);
-                String title = mission.getString("value");
+                String title = mission.getString("title");
                 String humanobjective = mission.getString("humanobjective");
                 String zombieobjective = mission.getString("zombieobjective");
                 Mission m = new Mission(title, humanobjective, zombieobjective);
                 list.add(m);
             }
-
-            return list;
         } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return list;
+    }
+
+    public Mission getMission(String gamecode, String title) {
+        GetTask task = new GetTask(serviceURL + "/" + gamecode + "/mission/" + title, client);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
-        return null;
+        if (response == null) {
+            Log.e("Get mission list", "Server reponse error");
+            return null;
+        }
+
+        // Parse JSON Object and place users into list
+        Mission mission = null;
+        try {
+            String humanobjective = response.getString("humanobjective");
+            String zombieobjective = response.getString("zombieobjective");
+            mission = new Mission(title, humanobjective, zombieobjective);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return mission;
     }
 
     //returns a new list of users
