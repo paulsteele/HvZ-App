@@ -322,6 +322,11 @@ public class Server {
         }
         return false;
     }
+    
+    public static String[] getAllReviveCodes(String game){
+    	return null;
+    }
+    
     /**
      * retrieve list of all games
      */

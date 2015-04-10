@@ -522,6 +522,26 @@ public class ResourceController {
     	}  
     
     /**
+     * gets all revivecodes
+     */
+    @RequestMapping(value = "{game}/revivecodes", method = RequestMethod.GET)
+    public String getRevivecodes(@PathVariable("game") String game){
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	JSONObject response = new JSONObject();
+    	try{
+	    	if (!failed){
+	    		response.put("revivecode", Server.generateRevivecode(game));
+	    	}
+        	response.put(ServerConfiguration.success, !failed);
+    	}
+    	catch (JSONException e){
+    		e.printStackTrace();
+    	}
+    	return response.toString();
+    }
+    
+    
+    /**
      * returns a new revive code
      */
     @RequestMapping(value = "{game}/revivecode", method = RequestMethod.GET)

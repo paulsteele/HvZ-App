@@ -59,6 +59,9 @@ Server will run on 128.211.191.47:8080
  * POST: use a revivecode
   * `{"revivecode": value, "feedcode": value}`
 
+`/{game}/revivecodes`
+ * GET: returns all revive codes in a game
+
 `/{game}/mission`
  * POST: creates a mission
  	* `{"title": value, "humanobjective": value, "zombieobjective": value}`
