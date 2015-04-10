@@ -323,6 +323,10 @@ public class Server {
         return false;
     }
     
+    public static void deleteReviveCode(String revivecode, String gamecode){
+    	
+    }
+    
     public static String[] getAllReviveCodes(String game){
     	try {
 			return DBHandler.getAllReviveCodes(game, c);
