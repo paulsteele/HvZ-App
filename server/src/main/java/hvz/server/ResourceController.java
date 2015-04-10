@@ -598,6 +598,12 @@ public class ResourceController {
 		}
 		
 		if (!failed){
+			if (!Server.checkReviveCode(revivecode, game)){
+				failed = true;
+			}
+		}
+		
+		if (!failed){
 			Server.changeStatus(feedcode, game, false);
     		Server.deleteReviveCode(revivecode, game);
 		}
