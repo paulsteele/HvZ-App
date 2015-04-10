@@ -64,7 +64,7 @@ public class GameListActivity extends ActionBarActivity {
 
     public void refresh() {
         gameList = server.getGameList();
-        if (gameList == null) {
+        if (gameList == null || gameList.isEmpty()) {
             gameList = new ArrayList<>();
             gameList.add(new Game("There are currently no games available.", "000000", null));
         }
