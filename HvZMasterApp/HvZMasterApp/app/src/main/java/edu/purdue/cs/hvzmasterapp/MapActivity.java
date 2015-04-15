@@ -3,6 +3,9 @@ package edu.purdue.cs.hvzmasterapp;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.widget.ImageView;
 
 
 /**
@@ -14,6 +17,9 @@ public class MapActivity extends ActionBarActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        /*Bitmap b=BitmapFactory.decodeResource();
+        ImageView iv=(ImageView)findViewById(R.id.image);
+        iv.setImageBitmap();*/
     }
 
 }
