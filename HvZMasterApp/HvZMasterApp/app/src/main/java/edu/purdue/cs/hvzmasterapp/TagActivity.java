@@ -10,6 +10,13 @@ import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.view.View;
 import android.widget.TextView;
+import android.content.Intent;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcAdapter.CreateNdefMessageCallback;
+import android.nfc.NfcAdapter.OnNdefPushCompleteCallback;
+import android.nfc.NfcEvent;
 
 
 public class TagActivity extends ActionBarActivity {
@@ -49,6 +56,10 @@ public class TagActivity extends ActionBarActivity {
             msg.setTextColor(Color.RED);
             msg.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void NFCtag(View view){
+
     }
 
 }
