@@ -165,12 +165,23 @@ public class ResourceController {
     	user = Server.loginUser(user, password);
     	if (user == null)
     		failed = true;
-		if (!failed){
-			return getPlayer(username);
-    	}
     	//Set up response object
 		JSONObject output = new JSONObject();
     	try {
+    		if (!failed){
+    			output.put("username", user.username);
+    			output.put("feedcode", user.feedcode);
+    			output.put("isAdmin", user.isAdmin);
+    			output.put("gamecode", user.gamecode);
+    			//add information about zombie status
+    			if (!user.isAdmin){
+    				output.put("isZombie", ((Player) user).isZombie);
+    			}
+    			else {
+    				output.put("isZombie", false);
+    			}
+    			output.put("gameover", Server.checkGameEnded(user.gamecode));
+    		}
     		//info no matter what
 			output.put(ServerConfiguration.success, !failed);
 		} catch (JSONException e) {
