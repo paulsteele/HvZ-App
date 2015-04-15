@@ -17,9 +17,11 @@ import android.nfc.NfcAdapter;
 import android.nfc.NfcAdapter.CreateNdefMessageCallback;
 import android.nfc.NfcAdapter.OnNdefPushCompleteCallback;
 import android.nfc.NfcEvent;
+import android.os.Parcelable;
 
 
-public class TagActivity extends ActionBarActivity {
+
+public class TagActivity extends ActionBarActivity implements CreateNdefMessageCallback, OnNdefPushCompleteCallback{
 
     Globals g = Globals.getInstance();
     Server server = Server.getInstance();
@@ -72,5 +74,60 @@ public class TagActivity extends ActionBarActivity {
     public void NFCtag(View view){
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        if(action.equals(NfcAdapter.ACTION_NDEF_DISCOVERED)){
+            Parcelable[] parcelables =
+                    intent.getParcelableArrayExtra(
+                            NfcAdapter.EXTRA_NDEF_MESSAGES);
+            NdefMessage inNdefMessage = (NdefMessage)parcelables[0];
+            NdefRecord[] inNdefRecords = inNdefMessage.getRecords();
+            NdefRecord NdefRecord_0 = inNdefRecords[0];
+            String inMsg = new String(NdefRecord_0.getPayload());
+            String received = ((EditText)findViewById(R.id.feedcode)).getText().toString();
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+    }
+
+    @Override
+    public void onNdefPushComplete(NfcEvent event) {
+
+        final String eventString = "onNdefPushComplete\n" + event.toString();
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                String playerFeedcode = g.getFeedCode();
+                server.tagUsingFeedcodes(eventString, playerFeedcode, g.getGameCode());
+            }
+        });
+
+    }
+
+    @Override
+    public NdefMessage createNdefMessage(NfcEvent event) {
+
+        String playerFeedcode = g.getFeedCode();
+        String stringOut = playerFeedcode;
+        byte[] bytesOut = stringOut.getBytes();
+
+        NdefRecord ndefRecordOut = new NdefRecord(
+                NdefRecord.TNF_MIME_MEDIA,
+                "text/plain".getBytes(),
+                new byte[] {},
+                bytesOut);
+
+        NdefMessage ndefMessageout = new NdefMessage(ndefRecordOut);
+        return ndefMessageout;
+    }
+
 
 }
