@@ -21,7 +21,7 @@ import android.os.Parcelable;
 
 
 
-public class TagActivity extends ActionBarActivity {
+public class TagActivity extends ActionBarActivity implements CreateNdefMessageCallback, OnNdefPushCompleteCallback{
 
     Globals g = Globals.getInstance();
     Server server = Server.getInstance();
@@ -129,6 +129,5 @@ public class TagActivity extends ActionBarActivity {
         return ndefMessageout;
     }
 
-}
 
 }
