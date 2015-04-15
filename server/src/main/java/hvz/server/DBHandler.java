@@ -36,7 +36,7 @@ public class DBHandler{
 				"(username		varchar(25), " + 
 				"feedCode 		varchar(40)," + 
 				"isZombie	 	int, " +
-				"gameCode		varchar(25)" +
+				"gameCode		varchar(25)," +
 				"lastTag		datetime)";
 		try {
 			Statement s = c.createStatement();
@@ -462,6 +462,6 @@ public class DBHandler{
 		String command = "update games set isEnded = 1 where gameCode = '" + gameCode + "'";
 		s.executeUpdate(command);
 	}
+	public static int countHumans(String gameCode 
 }
-//create table x(time int, name varchar(25))
-//insert into x(strftime('%s', 'now'), 'name')
+//players, zombies, zombie tags, player tags
