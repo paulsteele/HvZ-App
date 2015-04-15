@@ -80,15 +80,17 @@ public class TagActivity extends ActionBarActivity implements CreateNdefMessageC
         super.onResume();
         Intent intent = getIntent();
         String action = intent.getAction();
-        if(action.equals(NfcAdapter.ACTION_NDEF_DISCOVERED)){
-            Parcelable[] parcelables =
-                    intent.getParcelableArrayExtra(
-                            NfcAdapter.EXTRA_NDEF_MESSAGES);
-            NdefMessage inNdefMessage = (NdefMessage)parcelables[0];
-            NdefRecord[] inNdefRecords = inNdefMessage.getRecords();
-            NdefRecord NdefRecord_0 = inNdefRecords[0];
-            String inMsg = new String(NdefRecord_0.getPayload());
-            String received = ((EditText)findViewById(R.id.feedcode)).getText().toString();
+        if(action != null){
+            if(action.equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {
+                Parcelable[] parcelables =
+                        intent.getParcelableArrayExtra(
+                                NfcAdapter.EXTRA_NDEF_MESSAGES);
+                NdefMessage inNdefMessage = (NdefMessage) parcelables[0];
+                NdefRecord[] inNdefRecords = inNdefMessage.getRecords();
+                NdefRecord NdefRecord_0 = inNdefRecords[0];
+                String inMsg = new String(NdefRecord_0.getPayload());
+                String received = ((EditText) findViewById(R.id.feedcode)).getText().toString();
+        }
         }
     }
 
