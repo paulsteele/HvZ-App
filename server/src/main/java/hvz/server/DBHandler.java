@@ -185,7 +185,7 @@ public class DBHandler{
 		Statement s = c.createStatement();
 		String command = "insert into tags values('" + tagger + "', '" + tagged + "', '" + gameCode + "', " + isZombie + ")";
 		s.executeUpdate(command);
-		command = "update users set lastTag = datetime('now') where feedCode = '" + tagger + "' and gameCode =" + gameCode + "'";
+		command = "update users set lastTag = datetime('now') where feedCode = '" + tagger + "' and gameCode = '" + gameCode + "'";
 		s.executeUpdate(command);
 	}
 	public static void setPassword(String username, String pswd, Connection c)throws SQLException{
@@ -513,11 +513,13 @@ public class DBHandler{
 		return count;
 	}
 	/*public static boolean cooldown(String feedCode, String gameCode, Connection c){
-		LinkedList<Admin> admins = new LinkedList<Admin>();
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from  users where feedCode = '" + feedCode + "' and gameCode = '" + gameCode + "'";
+		ResultSet rs = s.executeQuery("select * from  cooldowns where feedCode = '" + feedCode + "' and gameCode = '" + gameCode + "'";
 		//player gets added to table with a wait time
 		if (!rs.isBeforeFirst()){ 
+			Statement s = c.createStatement();
+			String command = "insert into users values('" +name + "' " + ", '" + feed + "', " + isZombie + ", '" + gameCode+ "', datetime('now'))";
+			s.executeUpdate(command);
 		}
 		else{
 		}

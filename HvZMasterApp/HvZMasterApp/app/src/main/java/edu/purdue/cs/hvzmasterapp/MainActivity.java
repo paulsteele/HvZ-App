@@ -160,6 +160,11 @@ public class MainActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
+    public void map(View view) {
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
+    }
+
     public void startGame(View view) {
         int status = server.startGame(g.getSelf().gameID);
 
