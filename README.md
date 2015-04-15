@@ -43,6 +43,11 @@ Server will run on 128.211.191.47:8080
 
  * GET: retrieves a single user by feedcode in a game
 
+`/{game}/end`
+
+ * GET: gets game over stats
+ * POST: ends a game
+
 `/{game}/feedcode`
 
  * POST: generates a feedcode in a game
