@@ -465,7 +465,39 @@ public class DBHandler{
 	public static int countHumans(String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select count(*) from users where gameCode = '" + gameCode + "' and isZombie = 0");
-		while(rs.next()){
+		int count;
+		rs.next();
+		count = rs.getInt(1);
+		rs.close();
+		s.close();
+		return count;
+	}
+	public static int countZombies(String gameCode, Connection c)throws SQLException{
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select count(*) from users where gameCode = '" + gameCode + "' and isZombie = 1");
+		int count;
+		rs.next();
+		count = rs.getInt(1);
+		rs.close();
+		s.close();
+		return count;
+	}
+	public static int countZombieTags(String gameCode, Connection c)throws SQLException{
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select count(*) from tags where gameCode = '" + gameCode + "' and isZombie = 0");
+		int count;
+		rs.next();
+		count = rs.getInt(1);
+		rs.close();
+		s.close();
+		return count;
+	}
+	public static int countHumanTags(String gameCode, Connection c)throws SQLException{
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select count(*) from tags where gameCode = '" + gameCode + "' and isZombie = 1");
+		int count;
+		rs.next();
+		count = rs.getInt(1);
 		rs.close();
 		s.close();
 		return count;
