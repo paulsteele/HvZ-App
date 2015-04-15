@@ -317,7 +317,7 @@ public class DBHandler{
 	}
 	public static void newGame(String gameCode, String name, String creator, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into games values(date(0, 0 ,'" + gameCode + "', '" + name + "', '" + creator + "')";
+		String command = "insert into games values(0, 0 ,'" + gameCode + "', '" + name + "', '" + creator + "')";
 		s.executeUpdate(command);
 	}
 	public static boolean isGamecodeTaken(String gameCode, Connection c) throws SQLException{
@@ -462,6 +462,13 @@ public class DBHandler{
 		String command = "update games set isEnded = 1 where gameCode = '" + gameCode + "'";
 		s.executeUpdate(command);
 	}
-	public static int countHumans(String gameCode 
+	public static int countHumans(String gameCode, Connection c)throws SQLException{
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select count(*) from users where gameCode = '" + gameCode + "' and isZombie = 0");
+		while(rs.next()){
+		rs.close();
+		s.close();
+		return count;
+	}
 }
 //players, zombies, zombie tags, player tags
