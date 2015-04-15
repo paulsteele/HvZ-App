@@ -440,7 +440,7 @@ public class Server {
     	//human stuns zombie
     	if (!failed && human == (Player) tagger){
     		try {
-				DBHandler.tag(taggerString, taggedString, gamecode, c);
+				DBHandler.tag(taggerString, taggedString, gamecode, 0, c);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -450,7 +450,7 @@ public class Server {
     	else if (!failed){
     		try {
     			DBHandler.makeZombie(human.feedcode, gamecode, c);
-				DBHandler.tag(taggerString, taggedString, gamecode, c);
+				DBHandler.tag(taggerString, taggedString, gamecode, 1,  c);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -492,7 +492,32 @@ public class Server {
     		//no game so can't be ended
     		return false;
     	}
+    	else{
+    		try{
+    			return DBHandler.checkEnded(gamecode, c);
+    		}
+    		catch (SQLException e){
+    			e.printStackTrace();
+    		}
+    	}
     	return false;
+    }
+    
+    public static void endGame(String gamecode){
+    	try {
+			DBHandler.end(gamecode, c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    public int getPlayerCount(boolean human){
+    	return 0;
+    }
+    
+    public int getTagCount(boolean human){
+    	return 0;
     }
 }
 
