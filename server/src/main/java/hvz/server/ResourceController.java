@@ -505,6 +505,7 @@ public class ResourceController {
     	try{
         	response.put(ServerConfiguration.success, !failed);
         	response.put("started", Server.checkBegun(game));
+        	response.put("gameover", Server.checkGameEnded(game));
     	}
     	catch (JSONException e){
     		e.printStackTrace();
