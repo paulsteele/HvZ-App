@@ -7,6 +7,11 @@ public class Globals {
     private static Globals instance;
     private User self;
 
+    final public static int NOT_STARTED = 0;
+    final public static int STARTED = 1;
+    final public static int ENDED = 2;
+
+
     public static synchronized Globals getInstance(){
         if(instance == null){
             instance = new Globals();

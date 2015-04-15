@@ -304,64 +304,6 @@ public class Server{
 
         return null;
     }
-    
-    //returns 0 if tagging was successful
-    public int tag(User tagger, User taggee, String gamecode){
-       /* StringBuilder url = new StringBuilder(serviceURL);
-        url.append("/" + gamecode + "/tag");
-
-        JSONObject tagRequest = new JSONObject();
-
-        try{
-            tagRequest.put("tagger", tagger.uniqueID);
-            tagRequest.put("tagged", tagged.uniqueID);
-        } catch(JSONException e){
-            e.printStackTrace();
-        }
-
-
-
-        Log.d("Mission", missionRequest.toString());
-
-        PostTask task = new PostTask(url.toString(),client,missionRequest);
-
-        JSONObject missionResponse = null;
-
-        try{
-            missionResponse = task.execute().get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        if( missionResponse == null){
-            Log.e ("Get mission","Server Response error");
-            return 1;
-        }
-
-        return 0;
-        JSONObject gotTagged = new JSONObject();
-        JSONObject didTag = new JSONObject();
-        //put for one who got tagged
-        try{
-            gotTagged.put("username",taggee.username);
-            gotTagged.put("feedcode",taggee.uniqueID);
-            gotTagged.put("isZombie",taggee.isZombie);
-        }catch(JSONException e){
-            e.printStackTrace();
-        }
-        Log.d("Taggee", gotTagged.toString());
-        //put for tagger
-        try{
-            didTag.put("username",taggee.username);
-            didTag.put("feedcode",taggee.uniqueID);
-            didTag.put("isZombie",taggee.isZombie);
-        }catch(JSONException e){
-            e.printStackTrace();
-        }
-        Log.d("Tagger", didTag.toString());
-        */
-        return 1;
-    }
 
     //returns 0 if tagging was successful
     public int tagUsingFeedcodes(String tagger, String taggee, String gamecode){
@@ -395,23 +337,6 @@ public class Server{
         }
 
         return 0;
-        /*JSONObject gotTagged = new JSONObject();
-        JSONObject didTag = new JSONObject();
-        //put for one who got tagged
-        try{
-            gotTagged.put("feedcode",taggee);
-        }catch(JSONException e){
-            e.printStackTrace();
-        }
-        Log.d("Taggee", gotTagged.toString());
-        //put for tagger
-        try{
-            didTag.put("feedcode",tagger);
-        }catch(JSONException e){
-            e.printStackTrace();
-        }
-        Log.d("Tagger", didTag.toString());
-*/
     }
 
     //returns 0 if user reverted to human successfully
@@ -493,6 +418,7 @@ public class Server{
         return -1;
     }
 
+    // check if game is started/ended
     public int getGameStatus(String gamecode) {
         if (gamecode.equals("00000000")) {
             Log.d("game status", "no game");
@@ -517,13 +443,16 @@ public class Server{
 
         try {
             if (response.getBoolean("started")) {
-                Log.e("Game status", "started");
-                return 1;
+                if (response.getBoolean("ended")) {
+                    return Globals.ENDED;
+                }
+                else {
+                    return Globals.STARTED;
+                }
             }
             else {
-
                 Log.e("Game status", "not started");
-                return 0;
+                return Globals.NOT_STARTED;
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -531,11 +460,6 @@ public class Server{
 
         Log.e("Game status", "error");
         return -1;
-    }
-
-    //returns time remaining in the game
-    public void getTimeRemaining(){
-    
     }
 
     // returns 0 if register was successful, else non-zero
