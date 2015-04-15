@@ -8,7 +8,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
-
 /**
  * Server Starter
  * Also holds functions that talk to db handler.
@@ -486,6 +485,14 @@ public class Server {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    }
+    
+    public static boolean checkGameEnded(String gamecode){
+    	if (gamecode.compareTo(ServerConfiguration.dummyCode) == 0){
+    		//no game so can't be ended
+    		return false;
+    	}
+    	return false;
     }
 }
 
