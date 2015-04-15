@@ -90,7 +90,9 @@ public class TagActivity extends ActionBarActivity implements CreateNdefMessageC
                 NdefRecord NdefRecord_0 = inNdefRecords[0];
                 String inMsg = new String(NdefRecord_0.getPayload());
                 String received = ((EditText) findViewById(R.id.feedcode)).getText().toString();
-        }
+                String playerFeedcode = g.getFeedCode();
+                server.tagUsingFeedcodes(inMsg, playerFeedcode, g.getGameCode());
+            }
         }
     }
 
