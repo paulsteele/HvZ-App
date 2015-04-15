@@ -25,6 +25,7 @@ public class TagActivity extends ActionBarActivity {
     Server server = Server.getInstance();
     Globals global = Globals.getInstance();
     User self = global.getSelf();
+    NfcAdapter nfcAdapter;
 
     PopupWindow popup;
 
@@ -36,6 +37,16 @@ public class TagActivity extends ActionBarActivity {
         setContentView(R.layout.activity_tag);
         Globals global = Globals.getInstance();
         intent = getIntent();
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if(nfcAdapter==null){
+            TextView msg = (TextView) findViewById(R.id.tag_msg);
+            msg.setText("No NFC adapter exists");
+            msg.setTextColor(Color.RED);
+            msg.setVisibility(View.VISIBLE);
+        }else{
+            nfcAdapter.setNdefPushMessageCallback(this, this);
+            nfcAdapter.setOnNdefPushCompleteCallback(this, this);
+        }
     }
 
     public void tag(View view){
