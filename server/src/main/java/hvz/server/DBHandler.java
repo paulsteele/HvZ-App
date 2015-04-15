@@ -448,7 +448,7 @@ public class DBHandler{
 		String [] codeArray = codes.toArray(new String[codes.size()]);
 		return codeArray;
 	}
-	public static void checkEnded(String gameCode, Connection c) throws SQLException{
+	public static boolean checkEnded(String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from games where gameCode = '" + gameCode + "'");
 		if (!rs.isBeforeFirst())
@@ -456,6 +456,11 @@ public class DBHandler{
 		int bool = rs.getInt("isEnded");
 		if(bool == 0) return false;
 		else return true;
+	}
+	public static void end (String gameCode, Connection c)throws SQLException{
+		Statement s = c.createStatement();
+		String command = "update games set isEnded = 1 where gameCode = '" + gameCode + "'";
+		s.executeUpdate(command);
 	}
 }
 //create table x(time int, name varchar(25))
