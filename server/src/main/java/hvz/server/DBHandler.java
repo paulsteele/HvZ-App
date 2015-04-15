@@ -155,7 +155,7 @@ public class DBHandler{
 	}
 	public static void addPlayer(String name, int isZombie, String feed, String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into users values('" +name + "' " + ", '" + feed + "', " + isZombie + ", '" + gameCode+ "', datetime('now')";
+		String command = "insert into users values('" +name + "' " + ", '" + feed + "', " + isZombie + ", '" + gameCode+ "', datetime('now'))";
 		s.executeUpdate(command);
 	}
 	public static void removePlayer(String feedCode, String gameCode, Connection c)throws SQLException{
@@ -185,7 +185,7 @@ public class DBHandler{
 		Statement s = c.createStatement();
 		String command = "insert into tags values('" + tagger + "', '" + tagged + "', '" + gameCode + "', " + isZombie + ")";
 		s.executeUpdate(command);
-		command = "update users set lastTag = datetime('now') where feedCode = '" + tagger + "' and gameCode =" + gameCode + "'";
+		command = "update users set lastTag = datetime('now') where feedCode = '" + tagger + "' and gameCode = '" + gameCode + "'";
 		s.executeUpdate(command);
 	}
 	public static void setPassword(String username, String pswd, Connection c)throws SQLException{
@@ -513,16 +513,16 @@ public class DBHandler{
 		return count;
 	}
 	/*public static boolean cooldown(String feedCode, String gameCode, Connection c){
-		LinkedList<Admin> admins = new LinkedList<Admin>();
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from  users where feedCode = '" + feedCode + "' and gameCode = '" + gameCode + "'";
-		if (!rs.isBeforeFirst())
-			return null;			String code = rs.getString("feedCode");
-			if(feedcode.equals(code))
-				return true;
-			else continue;
+		ResultSet rs = s.executeQuery("select * from  cooldowns where feedCode = '" + feedCode + "' and gameCode = '" + gameCode + "'";
+		//player gets added to table with a wait time
+		if (!rs.isBeforeFirst()){ 
+			Statement s = c.createStatement();
+			String command = "insert into users values('" +name + "' " + ", '" + feed + "', " + isZombie + ", '" + gameCode+ "', datetime('now'))";
+			s.executeUpdate(command);
 		}
-		return false;	
+		else{
+		}
 	}*/
 }
 
