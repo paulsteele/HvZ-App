@@ -36,7 +36,8 @@ public class DBHandler{
 				"(username		varchar(25), " + 
 				"feedCode 		varchar(40)," + 
 				"isZombie	 	int, " +
-				"gameCode		varchar(25))";
+				"gameCode		varchar(25)" +
+				"lastTag		datetime)";
 		try {
 			Statement s = c.createStatement();
 			s.executeUpdate(command);
@@ -69,7 +70,8 @@ public class DBHandler{
 		command = "CREATE TABLE tags" + 
 				"(tagger		varchar(40), " + 
 				"tagged 		varchar(40), " +
-				"gameCode		varchar(25))";
+				"gameCode		varchar(25)," +
+				"zombieTag		int)"; //1 for zombie tag, 0 for human tag
 		try {
 			Statement s = c.createStatement();
 			s.executeUpdate(command);
@@ -89,7 +91,7 @@ public class DBHandler{
 			e.printStackTrace();
 		}
 		command = "CREATE TABLE games" + 
-						"(endDate 	TEXT, " +
+						"(isEnded 	int, " +
 						"hasBegun	int, " +
 						"gameCode	varchar(25)," +
 						"name		varchar(25)," +
@@ -168,10 +170,13 @@ public class DBHandler{
 		"and gameCode = '" + gameCode + "'";  
 		s.executeUpdate(command);	
 	}
-	public static void tag(String tagger, String tagged, String gameCode, Connection c)throws SQLException{
+	// format for time YYYY-MM-DD HH:MM:SS.SSS
+	public static void tag(String tagger, String tagged, String gameCode, int isZombie, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into tags values('" + tagger + "', '" + tagged + "', '" + gameCode + "')";
-		s.executeUpdate(command);		
+		String command = "insert into tags values('" + tagger + "', '" + tagged + "', '" + gameCode + "', " + isZombie + ")";
+		s.executeUpdate(command);
+		command = "update users set lastTag = datetime('now') where feedCode = '" + tagger + "' and gameCode =" + gameCode + "'";
+		s.executeUpdate(command);
 	}
 	public static void setPassword(String username, String pswd, Connection c)throws SQLException{
 		Statement s = c.createStatement();
@@ -312,7 +317,7 @@ public class DBHandler{
 	}
 	public static void newGame(String gameCode, String name, String creator, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into games values(date('now', '+7 day'), 0 ,'" + gameCode + "', '" + name + "', '" + creator + "')";
+		String command = "insert into games values(date(0, 0 ,'" + gameCode + "', '" + name + "', '" + creator + "')";
 		s.executeUpdate(command);
 	}
 	public static boolean isGamecodeTaken(String gameCode, Connection c) throws SQLException{
@@ -442,6 +447,15 @@ public class DBHandler{
 		s.close();
 		String [] codeArray = codes.toArray(new String[codes.size()]);
 		return codeArray;
+	}
+	public static void checkEnded(String gameCode, Connection c) throws SQLException{
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from games where gameCode = '" + gameCode + "'");
+		if (!rs.isBeforeFirst())
+			return false;
+		int bool = rs.getInt("isEnded");
+		if(bool == 0) return false;
+		else return true;
 	}
 }
 //create table x(time int, name varchar(25))
