@@ -59,7 +59,7 @@ public class TagActivity extends ActionBarActivity {
     }
 
     public void NFCtag(View view){
-
+        
     }
 
 }
