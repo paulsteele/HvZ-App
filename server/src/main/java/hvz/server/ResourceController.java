@@ -367,6 +367,9 @@ public class ResourceController {
     @RequestMapping(value = "/{game}/tag", method = RequestMethod.POST)
     public String tag(@RequestBody String value, @PathVariable("game") String game){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	if (!failed && Server.checkGameEnded(game)){//can't tag if game already ended
+    		failed = true;
+    	}
     	//take in input and create variables for each entry
 		JSONObject input = null;
 		try {
@@ -420,6 +423,9 @@ public class ResourceController {
     	Game[] gameGameList = Server.getAllGames();
     	try {
     		for (int i = 0; i < gameGameList.length;i++){
+    			if (Server.checkGameEnded(gameGameList[i].gameCode)){
+    				break;
+    			}
     			JSONObject game = new JSONObject();
     			game.put("gamecode", gameGameList[i].gameCode);
     			game.put("gamename", gameGameList[i].name);
@@ -480,11 +486,15 @@ public class ResourceController {
     @RequestMapping(value = "{game}", method = RequestMethod.PUT)
     public String beginGame (@PathVariable("game") String game) {
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	if (Server.checkBegun(game)){ //fail if started
+    		failed = true;
+    	}
     	//Set up response object
 		JSONObject response = new JSONObject();
     	try {
     		//start the game
-    		Server.begin(game);
+    		if (!failed)
+    			Server.begin(game);
     		response.put(ServerConfiguration.success, !failed);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -498,13 +508,14 @@ public class ResourceController {
      * Checks to see if a game has begun
      */
     @RequestMapping(value = "{game}", method = RequestMethod.GET)
-    	public String isStarted(@PathVariable("game") String game) {
+    	public String getGame(@PathVariable("game") String game) {
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	//Set up response object
 		JSONObject response = new JSONObject();
     	try{
         	response.put(ServerConfiguration.success, !failed);
         	response.put("started", Server.checkBegun(game));
+        	response.put("gameover", Server.checkGameEnded(game));
     	}
     	catch (JSONException e){
     		e.printStackTrace();
@@ -767,6 +778,61 @@ public class ResourceController {
 		JSONObject response = new JSONObject();
 	   	try{
         	response.put(ServerConfiguration.success, !failed);
+    	}
+    	catch (JSONException e) {
+    		e.printStackTrace();
+    	}
+    	return response.toString();
+    }
+    
+    @RequestMapping(value = "{game}/end", method = RequestMethod.POST)
+    public String endGame(@RequestBody String value, @PathVariable("game") String game){
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	if (!Server.checkBegun(game)){ //fail if not started
+    		failed = true;
+    	}
+    	if (!failed){
+    		Server.endGame(game);
+    	}
+		JSONObject response = new JSONObject();
+	   	try{
+        	response.put(ServerConfiguration.success, !failed);
+    	}
+    	catch (JSONException e){
+    		e.printStackTrace();
+    	}
+    	return response.toString();
+    	
+    }
+    
+    @RequestMapping(value = "{game}/end", method = RequestMethod.GET)
+    public String getEndStats(@PathVariable("game") String game){
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	int numHumans = -1;
+    	int numZombies = -1;
+    	int numHumanTags = -1;
+    	int numZombieTags = -1;
+    	String winner = "Humans";
+    	boolean ended = false;
+    	if (!failed){
+    		numHumans = Server.getPlayerCount(game, true);
+    		numZombies = Server.getPlayerCount(game, false);
+    		numHumanTags = Server.getTagCount(game, true);
+    		numZombieTags = Server.getTagCount(game, false);
+    		if (numHumans == 0){
+    			winner = "Zombies";
+    		}
+    		ended = Server.checkGameEnded(game);
+    	}
+		JSONObject response = new JSONObject();
+	   	try{
+        	response.put(ServerConfiguration.success, !failed);
+        	response.put("humans", numHumans);
+        	response.put("zombies", numZombies);
+        	response.put("humantags", numHumanTags);
+        	response.put("zombietags", numZombieTags);
+        	response.put("winner", winner);
+        	response.put("gameover", ended);
     	}
     	catch (JSONException e){
     		e.printStackTrace();
