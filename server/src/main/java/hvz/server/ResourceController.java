@@ -380,8 +380,8 @@ public class ResourceController {
 		String taggerString = null;
 		String taggedString = null;
 		try{
-			taggerString = input.getString("tagger");
-			taggedString = input.getString("tagged");
+			taggerString = input.getString("tagger").toUpperCase();
+			taggedString = input.getString("tagged").toUpperCase();
 		}
 		catch (JSONException e){
 			//error 
@@ -605,8 +605,8 @@ public class ResourceController {
 		String revivecode = null;
 		String feedcode = null;
 		try{
-			revivecode = input.getString("revivecode");
-			feedcode = input.getString("feedcode");
+			revivecode = input.getString("revivecode").toUpperCase();
+			feedcode = input.getString("feedcode").toUpperCase();
 		}
 		catch (JSONException e){
 			//error 
