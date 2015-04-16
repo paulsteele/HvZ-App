@@ -423,6 +423,9 @@ public class ResourceController {
     	Game[] gameGameList = Server.getAllGames();
     	try {
     		for (int i = 0; i < gameGameList.length;i++){
+    			if (Server.checkGameEnded(gameGameList[i].gameCode)){
+    				break;
+    			}
     			JSONObject game = new JSONObject();
     			game.put("gamecode", gameGameList[i].gameCode);
     			game.put("gamename", gameGameList[i].name);
