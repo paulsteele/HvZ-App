@@ -62,7 +62,7 @@ public class MainActivity extends ActionBarActivity {
             startActivityForResult(intent, 1);
         }
         else if (id == R.id.action_leave_game) {
-            server.addPlayerToGame("00000000", "00000000");
+            server.leaveGame(g.getUsername());
             setUser(username);
             setupLayout();
         }
@@ -200,9 +200,11 @@ public class MainActivity extends ActionBarActivity {
         int status = server.getGameStatus(g.getGameCode());
         if (status == Globals.NOT_STARTED) {
             server.startGame(g.getGameCode());
+            setupLayout();
         }
         else if (status == Globals.STARTED) {
             server.endGame(g.getGameCode());
+            setupLayout();
         }
     }
 }
