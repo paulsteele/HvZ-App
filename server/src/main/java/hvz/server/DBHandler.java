@@ -117,7 +117,8 @@ public class DBHandler{
 			e.printStackTrace();
 		}
 				command = "CREATE TABLE cooldowns " + 
-						"(locked 		datetime )" ;
+						"(locked 		datetime )" +
+						"feedCode		varchar(25))";
 						
 		try {
 			Statement s = c.createStatement();
@@ -512,18 +513,34 @@ public class DBHandler{
 		s.close();
 		return count;
 	}
-	/*public static boolean cooldown(String feedCode, String gameCode, Connection c){
+	public static int cooldown(String feedCode, String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from  cooldowns where feedCode = '" + feedCode + "' and gameCode = '" + gameCode + "'";
+		ResultSet rs = s.executeQuery("select * from  cooldowns where feedCode = '" + feedCode + "' and gameCode = '" + gameCode + "'");
+		rs.close();
+		s.close();
 		//player gets added to table with a wait time
 		if (!rs.isBeforeFirst()){ 
-			Statement s = c.createStatement();
-			String command = "insert into users values('" +name + "' " + ", '" + feed + "', " + isZombie + ", '" + gameCode+ "', datetime('now'))";
-			s.executeUpdate(command);
+			Statement s2 = c.createStatement();//locked then feedcode
+			String command = "insert into cooldowns values(datetime('now', '+10 minutes'), " + feedCode + ")";
+			s2.executeUpdate(command);
+			s2.close();
+			return 1;
 		}
 		else{
+			Statement st = c.createStatement();
+			ResultSet res = st.executeQuery("select locked from  cooldowns where feedCode = '" + feedCode + "' and gameCode = '" + gameCode + "'");
+			String date = res.getString(1);
+			Statement st3 = c.createStatement();
+			ResultSet res3 = st3.executeQuery("SELECT strftime('%s','now') - strftime('%s','" + date + "');");
+			int dif = res3.getInt(1);
+			res.close();
+			res3.close();
+			st.close();
+			st3.close();
+			return dif;
 		}
-	}*/
+	}
 }
+
 
 

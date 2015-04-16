@@ -424,7 +424,7 @@ public class ResourceController {
     	try {
     		for (int i = 0; i < gameGameList.length;i++){
     			if (Server.checkGameEnded(gameGameList[i].gameCode)){
-    				break;
+    				continue; //only stop the current
     			}
     			JSONObject game = new JSONObject();
     			game.put("gamecode", gameGameList[i].gameCode);
