@@ -62,7 +62,9 @@ public class MainActivity extends ActionBarActivity {
             startActivityForResult(intent, 1);
         }
         else if (id == R.id.action_leave_game) {
-            // leave game
+            server.addPlayerToGame("00000000", "00000000");
+            setUser(username);
+            setupLayout();
         }
 
         return super.onOptionsItemSelected(item);
@@ -124,6 +126,12 @@ public class MainActivity extends ActionBarActivity {
             Log.d("Main", "Starting game list activity");
             Intent intent = new Intent(this, GameListActivity.class);
             startActivityForResult(intent, 1);
+        }
+        else {
+            if (server.isGameOver(g.getGameCode())) {
+                Intent intent = new Intent(this, ScoreScreenActivity.class);
+                startActivity(intent);
+            }
         }
     }
 
@@ -188,12 +196,13 @@ public class MainActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
-    public void startGame(View view) {
-        int status = server.startGame(g.getSelf().gameID);
-
-        if (status == 0) {
-            CardView startButton = (CardView) findViewById(R.id.card0);
-            startButton.setVisibility(View.GONE);
+    public void toggleGame(View view) {
+        int status = server.getGameStatus(g.getGameCode());
+        if (status == Globals.NOT_STARTED) {
+            server.startGame(g.getGameCode());
+        }
+        else if (status == Globals.STARTED) {
+            server.endGame(g.getGameCode());
         }
     }
 }
