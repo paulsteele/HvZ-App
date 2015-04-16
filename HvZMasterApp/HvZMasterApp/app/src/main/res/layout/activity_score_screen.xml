@@ -14,10 +14,11 @@
             android:layout_width="0dp"
             android:layout_weight="2.5"
             android:layout_height="wrap_content"
-            android:text="Time lasted: "
+            android:text="Winner: "
             android:textColor="@android:color/black"
             android:textSize="20sp" />
         <TextView
+            android:id="@+id/score_winner"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -37,6 +38,7 @@
             android:textColor="@android:color/black"
             android:textSize="20sp" />
         <TextView
+            android:id="@+id/score_humans"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -56,6 +58,7 @@
             android:textColor="@android:color/black"
             android:textSize="20sp" />
         <TextView
+            android:id="@+id/score_zombies"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -75,6 +78,7 @@
             android:textColor="@android:color/black"
             android:textSize="20sp" />
         <TextView
+            android:id="@+id/score_htags"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -94,6 +98,7 @@
             android:textColor="@android:color/black"
             android:textSize="20sp" />
         <TextView
+            android:id="@+id/score_ztags"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
