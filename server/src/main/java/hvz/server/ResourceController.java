@@ -367,6 +367,9 @@ public class ResourceController {
     @RequestMapping(value = "/{game}/tag", method = RequestMethod.POST)
     public String tag(@RequestBody String value, @PathVariable("game") String game){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	if (!failed && Server.checkGameEnded(game)){//can't tag if game already ended
+    		failed = true;
+    	}
     	//take in input and create variables for each entry
 		JSONObject input = null;
 		try {
@@ -480,11 +483,15 @@ public class ResourceController {
     @RequestMapping(value = "{game}", method = RequestMethod.PUT)
     public String beginGame (@PathVariable("game") String game) {
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	if (Server.checkBegun(game)){ //fail if started
+    		failed = true;
+    	}
     	//Set up response object
 		JSONObject response = new JSONObject();
     	try {
     		//start the game
-    		Server.begin(game);
+    		if (!failed)
+    			Server.begin(game);
     		response.put(ServerConfiguration.success, !failed);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -769,7 +776,7 @@ public class ResourceController {
 	   	try{
         	response.put(ServerConfiguration.success, !failed);
     	}
-    	catch (JSONException e){
+    	catch (JSONException e) {
     		e.printStackTrace();
     	}
     	return response.toString();
@@ -778,7 +785,7 @@ public class ResourceController {
     @RequestMapping(value = "{game}/end", method = RequestMethod.POST)
     public String endGame(@RequestBody String value, @PathVariable("game") String game){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
-    	if (!Server.checkBegun(game)){
+    	if (!Server.checkBegun(game)){ //fail if not started
     		failed = true;
     	}
     	if (!failed){
