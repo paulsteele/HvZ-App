@@ -36,7 +36,7 @@ public class DBHandler{
 				"(username		varchar(25), " + 
 				"feedCode 		varchar(40)," + 
 				"isZombie	 	int, " +
-				"gameCode		varchar(25)" +
+				"gameCode		varchar(25)," +
 				"lastTag		datetime)";
 		try {
 			Statement s = c.createStatement();
@@ -116,6 +116,16 @@ public class DBHandler{
 		catch (SQLException e){
 			e.printStackTrace();
 		}
+				command = "CREATE TABLE cooldowns " + 
+						"(locked 		datetime )" ;
+						
+		try {
+			Statement s = c.createStatement();
+			s.executeUpdate(command);
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
 	}	
 	public static Connection connect(){
 		try{
@@ -145,7 +155,7 @@ public class DBHandler{
 	}
 	public static void addPlayer(String name, int isZombie, String feed, String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into users values('" +name + "' " + ", '" + feed + "', " + isZombie + ", '" + gameCode+ "')";
+		String command = "insert into users values('" +name + "' " + ", '" + feed + "', " + isZombie + ", '" + gameCode+ "', datetime('now'))";
 		s.executeUpdate(command);
 	}
 	public static void removePlayer(String feedCode, String gameCode, Connection c)throws SQLException{
@@ -175,7 +185,7 @@ public class DBHandler{
 		Statement s = c.createStatement();
 		String command = "insert into tags values('" + tagger + "', '" + tagged + "', '" + gameCode + "', " + isZombie + ")";
 		s.executeUpdate(command);
-		command = "update users set lastTag = datetime('now') where feedCode = '" + tagger + "' and gameCode =" + gameCode + "'";
+		command = "update users set lastTag = datetime('now') where feedCode = '" + tagger + "' and gameCode = '" + gameCode + "'";
 		s.executeUpdate(command);
 	}
 	public static void setPassword(String username, String pswd, Connection c)throws SQLException{
@@ -317,7 +327,7 @@ public class DBHandler{
 	}
 	public static void newGame(String gameCode, String name, String creator, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into games values(date(0, 0 ,'" + gameCode + "', '" + name + "', '" + creator + "')";
+		String command = "insert into games values(0, 0 ,'" + gameCode + "', '" + name + "', '" + creator + "')";
 		s.executeUpdate(command);
 	}
 	public static boolean isGamecodeTaken(String gameCode, Connection c) throws SQLException{
@@ -462,6 +472,58 @@ public class DBHandler{
 		String command = "update games set isEnded = 1 where gameCode = '" + gameCode + "'";
 		s.executeUpdate(command);
 	}
+	public static int countHumans(String gameCode, Connection c)throws SQLException{
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select count(*) from users where gameCode = '" + gameCode + "' and isZombie = 0");
+		int count;
+		rs.next();
+		count = rs.getInt(1);
+		rs.close();
+		s.close();
+		return count;
+	}
+	public static int countZombies(String gameCode, Connection c)throws SQLException{
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select count(*) from users where gameCode = '" + gameCode + "' and isZombie = 1");
+		int count;
+		rs.next();
+		count = rs.getInt(1);
+		rs.close();
+		s.close();
+		return count;
+	}
+	public static int countZombieTags(String gameCode, Connection c)throws SQLException{
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select count(*) from tags where gameCode = '" + gameCode + "' and isZombie = 0");
+		int count;
+		rs.next();
+		count = rs.getInt(1);
+		rs.close();
+		s.close();
+		return count;
+	}
+	public static int countHumanTags(String gameCode, Connection c)throws SQLException{
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select count(*) from tags where gameCode = '" + gameCode + "' and isZombie = 1");
+		int count;
+		rs.next();
+		count = rs.getInt(1);
+		rs.close();
+		s.close();
+		return count;
+	}
+	/*public static boolean cooldown(String feedCode, String gameCode, Connection c){
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from  cooldowns where feedCode = '" + feedCode + "' and gameCode = '" + gameCode + "'";
+		//player gets added to table with a wait time
+		if (!rs.isBeforeFirst()){ 
+			Statement s = c.createStatement();
+			String command = "insert into users values('" +name + "' " + ", '" + feed + "', " + isZombie + ", '" + gameCode+ "', datetime('now'))";
+			s.executeUpdate(command);
+		}
+		else{
+		}
+	}*/
 }
-//create table x(time int, name varchar(25))
-//insert into x(strftime('%s', 'now'), 'name')
+
+

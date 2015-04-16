@@ -415,7 +415,7 @@ public class Server {
     	if (tagger == null || tagged == null){
     		failed = true;
     	}
-    	if (tagger.isAdmin || tagged.isAdmin){
+    	if (!failed && (tagger.isAdmin || tagged.isAdmin)){
     		failed = true;
     	}
     	if (!failed){
@@ -475,6 +475,9 @@ public class Server {
 				if (!u.isAdmin){
 					players[playerCount++] = (Player) u;
 				}
+			}
+			if(playerCount == 0){
+				return;
 			}
 			Random rand = new Random();
 			for (int i = 0; i < ServerConfiguration.alphaZombieCount;i++){

@@ -37,13 +37,16 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp" />
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tag Using NFC"
-        android:id="@+id/button"
+        android:text="To tag using NFC, hold your phone close to the taggee&apos;s phone and tap the screen."
+        android:id="@+id/textView7"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_marginTop="30dp"
-        android:onClick="NFCtag"
-        android:nestedScrollingEnabled="true" />
+        android:textSize="20dp"
+        android:textIsSelectable="false" />
+
 </LinearLayout>
