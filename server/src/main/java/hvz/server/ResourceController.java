@@ -498,7 +498,7 @@ public class ResourceController {
      * Checks to see if a game has begun
      */
     @RequestMapping(value = "{game}", method = RequestMethod.GET)
-    	public String isStarted(@PathVariable("game") String game) {
+    	public String getGame(@PathVariable("game") String game) {
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	//Set up response object
 		JSONObject response = new JSONObject();
@@ -768,6 +768,61 @@ public class ResourceController {
 		JSONObject response = new JSONObject();
 	   	try{
         	response.put(ServerConfiguration.success, !failed);
+    	}
+    	catch (JSONException e){
+    		e.printStackTrace();
+    	}
+    	return response.toString();
+    }
+    
+    @RequestMapping(value = "{game}/end", method = RequestMethod.POST)
+    public String endGame(@RequestBody String value, @PathVariable("game") String game){
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	if (!Server.checkBegun(game)){
+    		failed = true;
+    	}
+    	if (!failed){
+    		Server.endGame(game);
+    	}
+		JSONObject response = new JSONObject();
+	   	try{
+        	response.put(ServerConfiguration.success, !failed);
+    	}
+    	catch (JSONException e){
+    		e.printStackTrace();
+    	}
+    	return response.toString();
+    	
+    }
+    
+    @RequestMapping(value = "{game}/end", method = RequestMethod.GET)
+    public String getEndStats(@PathVariable("game") String game){
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	int numHumans = -1;
+    	int numZombies = -1;
+    	int numHumanTags = -1;
+    	int numZombieTags = -1;
+    	String winner = "Humans";
+    	boolean ended = false;
+    	if (!failed){
+    		numHumans = Server.getPlayerCount(game, true);
+    		numZombies = Server.getPlayerCount(game, false);
+    		numHumanTags = Server.getTagCount(game, true);
+    		numZombieTags = Server.getTagCount(game, false);
+    		if (numHumans == 0){
+    			winner = "Zombies";
+    		}
+    		ended = Server.checkGameEnded(game);
+    	}
+		JSONObject response = new JSONObject();
+	   	try{
+        	response.put(ServerConfiguration.success, !failed);
+        	response.put("humans", numHumans);
+        	response.put("zombies", numZombies);
+        	response.put("humantags", numHumanTags);
+        	response.put("zombietags", numZombieTags);
+        	response.put("winner", winner);
+        	response.put("gameover", ended);
     	}
     	catch (JSONException e){
     		e.printStackTrace();

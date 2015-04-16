@@ -515,12 +515,37 @@ public class Server {
 		}
     }
     
-    public int getPlayerCount(boolean human){
-    	return 0;
+    public static int getPlayerCount(String game, boolean human){
+    	try{
+        	if (human){
+        		return DBHandler.countHumans(game, c);
+        	}
+        	else {
+        		return DBHandler.countZombies(game, c);
+        	}
+    	}
+    	catch(SQLException e){
+    		e.printStackTrace();
+    	}
+    	
+    	return -1;
+
     }
     
-    public int getTagCount(boolean human){
-    	return 0;
+    public static int getTagCount(String game, boolean human){
+    	try{
+        	if (human){
+        		return DBHandler.countHumanTags(game, c);
+        	}
+        	else {
+        		return DBHandler.countZombieTags(game, c);
+        	}
+    	}
+    	catch(SQLException e){
+    		e.printStackTrace();
+    	}
+    	
+    	return -1;
     }
 }
 
