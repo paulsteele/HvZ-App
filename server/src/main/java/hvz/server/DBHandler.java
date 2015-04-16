@@ -495,7 +495,7 @@ public class DBHandler{
 	}
 	public static int countZombieTags(String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select count(*) from tags where gameCode = '" + gameCode + "' and isZombie = 0");
+		ResultSet rs = s.executeQuery("select count(*) from tags where gameCode = '" + gameCode + "' and zombieTag = 0");
 		int count;
 		rs.next();
 		count = rs.getInt(1);
@@ -505,7 +505,7 @@ public class DBHandler{
 	}
 	public static int countHumanTags(String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select count(*) from tags where gameCode = '" + gameCode + "' and isZombie = 1");
+		ResultSet rs = s.executeQuery("select count(*) from tags where gameCode = '" + gameCode + "' and zombieTag = 1");
 		int count;
 		rs.next();
 		count = rs.getInt(1);

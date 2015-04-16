@@ -415,7 +415,7 @@ public class Server {
     	if (tagger == null || tagged == null){
     		failed = true;
     	}
-    	if (tagger.isAdmin || tagged.isAdmin){
+    	if (!failed && (tagger.isAdmin || tagged.isAdmin)){
     		failed = true;
     	}
     	if (!failed){
@@ -476,6 +476,9 @@ public class Server {
 					players[playerCount++] = (Player) u;
 				}
 			}
+			if(playerCount == 0){
+				return;
+			}
 			Random rand = new Random();
 			for (int i = 0; i < ServerConfiguration.alphaZombieCount;i++){
 				int index = rand.nextInt(playerCount);
@@ -512,12 +515,37 @@ public class Server {
 		}
     }
     
-    public int getPlayerCount(boolean human){
-    	return 0;
+    public static int getPlayerCount(String game, boolean human){
+    	try{
+        	if (human){
+        		return DBHandler.countHumans(game, c);
+        	}
+        	else {
+        		return DBHandler.countZombies(game, c);
+        	}
+    	}
+    	catch(SQLException e){
+    		e.printStackTrace();
+    	}
+    	
+    	return -1;
+
     }
     
-    public int getTagCount(boolean human){
-    	return 0;
+    public static int getTagCount(String game, boolean human){
+    	try{
+        	if (human){
+        		return DBHandler.countHumanTags(game, c);
+        	}
+        	else {
+        		return DBHandler.countZombieTags(game, c);
+        	}
+    	}
+    	catch(SQLException e){
+    		e.printStackTrace();
+    	}
+    	
+    	return -1;
     }
 }
 

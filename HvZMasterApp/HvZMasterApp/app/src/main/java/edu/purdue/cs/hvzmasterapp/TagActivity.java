@@ -72,7 +72,7 @@ public class TagActivity extends ActionBarActivity implements CreateNdefMessageC
     }
 
     public void NFCtag(View view){
-
+        
     }
 
     @Override

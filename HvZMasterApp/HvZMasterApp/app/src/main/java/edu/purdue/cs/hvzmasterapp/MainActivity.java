@@ -19,12 +19,14 @@ public class MainActivity extends ActionBarActivity {
     private Server server = Server.getInstance();
     private Globals g = Globals.getInstance();
 
+    String username = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_player);
         // log in player
-        String username = SaveSharedPreference.getUserName(MainActivity.this);
+        username = SaveSharedPreference.getUserName(MainActivity.this);
         if(username.length() == 0) {
             Log.d("Main", "Starting login activity");
             Intent intent = new Intent(this, LoginActivity.class);
@@ -34,6 +36,13 @@ public class MainActivity extends ActionBarActivity {
             setUser(username);
             setupLayout();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setUser(username);
+        setupLayout();
     }
 
     @Override
@@ -53,7 +62,9 @@ public class MainActivity extends ActionBarActivity {
             startActivityForResult(intent, 1);
         }
         else if (id == R.id.action_leave_game) {
-            // leave game
+            server.addPlayerToGame("00000000", "00000000");
+            setUser(username);
+            setupLayout();
         }
 
         return super.onOptionsItemSelected(item);
@@ -65,36 +76,45 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void setupLayout() {
-        User self = g.getSelf();
-
-        if (self == null) {
+        if (g.getSelf() == null) {
             return;
         }
 
+        int status = server.getGameStatus(g.getGameCode());
+
+        if (status == Globals.ENDED) {
+            /* show end screen */
+        }
+
         // get player to join game
-        Log.d("Main", "Self gameid: " + self.gameID);
+        Log.d("Main", "Self gameid: " + g.getGameCode());
         // distringuish views for admin/players
-        if (self.isAdmin) {
+        if (g.isAdmin()) {
             setContentView(R.layout.activity_main_admin);
             TextView text = (TextView) findViewById(R.id.adminlabel);
-            text.setText("Admin: " + self.username);
+            text.setText("Admin: " + g.getUsername());
             text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
 
-            if (server.getGameStatus(self.gameID) == 0) {
-                CardView startButton = (CardView) findViewById(R.id.card0);
-                startButton.setVisibility(View.VISIBLE);
+            CardView  toggleButton = (CardView) findViewById(R.id.card0);
+            toggleButton.setVisibility(View.VISIBLE);
+            TextView toggleText = (TextView) findViewById(R.id.toggle);
+            if (status == Globals.NOT_STARTED) {
+                toggleText.setText("Start Game");
+            }
+            else if (status == Globals.STARTED) {
+                toggleText.setText("End Game");
             }
         }
         else {
             setContentView(R.layout.activity_main_player);
             TextView text = (TextView) findViewById(R.id.playerlabel);
-            if (self.isZombie) {
-                text.setText("Zombie: " + self.username);
+            if (g.isZombie()) {
+                text.setText("Zombie: " + g.getUsername());
                 CardView revive = (CardView) findViewById(R.id.card4);
                 revive.setVisibility(View.VISIBLE);
             }
             else {
-                text.setText("Human: " + self.username);
+                text.setText("Human: " + g.getUsername());
             }
             text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             TextView text2 = (TextView) findViewById(R.id.feedcodelabel);
@@ -102,10 +122,16 @@ public class MainActivity extends ActionBarActivity {
             text2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         }
 
-        if (self.gameID.equals("00000000")) {
+        if (g.getGameCode().equals("00000000")) {
             Log.d("Main", "Starting game list activity");
             Intent intent = new Intent(this, GameListActivity.class);
             startActivityForResult(intent, 1);
+        }
+        else {
+            if (server.isGameOver(g.getGameCode())) {
+                Intent intent = new Intent(this, ScoreScreenActivity.class);
+                startActivity(intent);
+            }
         }
     }
 
@@ -143,6 +169,11 @@ public class MainActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
+    public void tagCooldownTimer(View view) {
+        Intent intent = new Intent(this, TagCooldownTimerActivity.class);
+        startActivity(intent);
+    }
+
     public void listMissions(View view) {
         Intent intent = new Intent(this, MissionListActivity.class);
         startActivity(intent);
@@ -160,12 +191,18 @@ public class MainActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
-    public void startGame(View view) {
-        int status = server.startGame(g.getSelf().gameID);
+    public void map(View view) {
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
+    }
 
-        if (status == 0) {
-            CardView startButton = (CardView) findViewById(R.id.card0);
-            startButton.setVisibility(View.GONE);
+    public void toggleGame(View view) {
+        int status = server.getGameStatus(g.getGameCode());
+        if (status == Globals.NOT_STARTED) {
+            server.startGame(g.getGameCode());
+        }
+        else if (status == Globals.STARTED) {
+            server.endGame(g.getGameCode());
         }
     }
 }

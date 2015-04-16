@@ -40,3 +40,5 @@ echo `curl -Ss -X POST -H "Content-Type: application/json" -d '{"tagger": "'$zco
 echo `curl -Ss -X POST -H "Content-Type: application/json" -d '{"title": "testmission", "humanobjective": "beat zombies", "zombieobjective": "beat humans"}' localhost:8080/$code/mission`
 #start game
 echo `curl -Ss -X PUT localhost:8080/$code`
+#end game
+echo `curl -Ss -X POST -H "Content-Type: application/json" -d 'hello' localhost:8080/$code/end`
