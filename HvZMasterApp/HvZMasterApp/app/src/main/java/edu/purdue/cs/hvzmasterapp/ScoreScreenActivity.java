@@ -37,7 +37,7 @@ public class ScoreScreenActivity extends ActionBarActivity {
             startActivityForResult(intent, 1);
         }
         else if (id == R.id.action_leave_game) {
-            server.addPlayerToGame("00000000", "00000000");
+            server.leaveGame(g.getUsername());
             finish();
         }
 
@@ -53,12 +53,12 @@ public class ScoreScreenActivity extends ActionBarActivity {
         TextView text = (TextView) findViewById(R.id.score_winner);
         text.setText(stats.winner);
         text = (TextView) findViewById(R.id.score_humans);
-        text.setText(stats.numHumans);
+        text.setText(Integer.toString(stats.numHumans));
         text = (TextView) findViewById(R.id.score_zombies);
-        text.setText(stats.numZombies);
+        text.setText(Integer.toString(stats.numZombies));
         text = (TextView) findViewById(R.id.score_htags);
-        text.setText(stats.hTags);
+        text.setText(Integer.toString(stats.hTags));
         text = (TextView) findViewById(R.id.score_ztags);
-        text.setText(stats.zTags);
+        text.setText(Integer.toString(stats.zTags));
     }
 }
