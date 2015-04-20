@@ -519,15 +519,19 @@ public class DBHandler{
 		s.executeUpdate(command);
 		s.close();
 	}
-	public static void getcooldown(String feedCode, String gameCode, Connection c)throws SQLException{
+	public static boolean getcooldown(String feedCode, String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from cooldowns where feedCode = '" + feedCode + "'");
-		if (!rs.isBeforeFirst())
-			return null;
-		count = rs.getInt(1);
+		String lock = rs.getString("lock");
 		rs.close();
 		s.close();
-		return count;
+		Statement s2 = c.createStatement();
+		ResultSet rs2 = s2.executeQuery("select * from cooldowns where feedCode = '" + feedCode + "'");
+		String now = rs2.getString("lock");
+		rs.close();
+		s.close();
+		return now.equals(lock);
+	}
 }
 
 
