@@ -117,8 +117,9 @@ public class DBHandler{
 			e.printStackTrace();
 		}
 				command = "CREATE TABLE cooldowns " + 
-						"(locked 		datetime )" +
-						"feedCode		varchar(25))";
+						"(locked 		datetime," +
+						"feedCode		varchar(25)," +
+						"gameCode       varchar(25))";
 						
 		try {
 			Statement s = c.createStatement();
@@ -515,22 +516,30 @@ public class DBHandler{
 	}
 	public static void setcooldown(String feedCode, String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into cooldowns values(datetime('now', '+10 minutes'), " + feedCode + ")";
+		String command = "insert into cooldowns values(datetime('now', '+10 minutes'), '" + feedCode + "','" + gameCode + "')";
 		s.executeUpdate(command);
 		s.close();
 	}
-	public static boolean getcooldown(String feedCode, String gameCode, Connection c)throws SQLException{
-		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from cooldowns where feedCode = '" + feedCode + "'");
-		String lock = rs.getString("lock");
-		rs.close();
-		s.close();
-		Statement s2 = c.createStatement();
-		ResultSet rs2 = s2.executeQuery("select * from cooldowns where feedCode = '" + feedCode + "'");
-		String now = rs2.getString("lock");
-		rs.close();
-		s.close();
-		return now.equals(lock);
+	public static int getcooldown(String feedCode, String gameCode, Connection c)throws SQLException{
+		Statement st = c.createStatement();
+		ResultSet res = st.executeQuery("select locked from  cooldowns where feedCode = '" + feedCode + "' and gameCode = '" + gameCode + "'");
+		if (!res.isBeforeFirst()){
+			st = c.createStatement();
+			res = st.executeQuery("SELECT datetime('now')");
+		}
+		String date = res.getString(1);
+		Statement st3 = c.createStatement();
+		ResultSet res3 = st3.executeQuery("SELECT strftime('%s','now') - strftime('%s','" + date + "');");
+		int dif = res3.getInt(1);
+		res.close();
+		res3.close();
+		st.close();
+		st3.close();
+		if (dif >= 0){
+			st = c.createStatement();
+			st.executeUpdate("DELETE FROM cooldowns WHERE feedCode='" + feedCode + "' AND gameCode = '" + gameCode + "';");
+		}
+		return dif;
 	}
 }
 

@@ -210,7 +210,7 @@ public class ResourceController {
     			output.put("isAdmin", user.isAdmin);
     			output.put("gamecode", user.gamecode);
     			//temp cooldown
-    			output.put("cooldown", 100);
+    			output.put("cooldown", -Server.getCooldown(feedcode, game));
     			//add information about zombie status
     			if (!user.isAdmin){
     				output.put("isZombie", ((Player) user).isZombie);
@@ -245,8 +245,6 @@ public class ResourceController {
     			output.put("feedcode", user.feedcode);
     			output.put("isAdmin", user.isAdmin);
     			output.put("gamecode", user.gamecode);
-    			//temp cooldown
-    			output.put("cooldown", 100);
     			//add information about zombie status
     			if (!user.isAdmin){
     				output.put("isZombie", ((Player) user).isZombie);

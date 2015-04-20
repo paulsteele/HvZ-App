@@ -437,10 +437,24 @@ public class Server {
     		failed = true;
     	}
     	
+    	if (!failed){
+    		try {
+				if (DBHandler.getcooldown(taggerString, gamecode, c) < 0){
+					failed = true;
+				}
+				if (DBHandler.getcooldown(taggedString, gamecode, c) < 0){
+					failed = true;
+				}
+			} catch (SQLException e) {
+				failed = true;
+			}
+    	}
+    	
     	//human stuns zombie
     	if (!failed && human == (Player) tagger){
     		try {
 				DBHandler.tag(taggerString, taggedString, gamecode, 0, c);
+				DBHandler.setcooldown(taggedString, gamecode, c);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -451,6 +465,7 @@ public class Server {
     		try {
     			DBHandler.makeZombie(human.feedcode, gamecode, c);
 				DBHandler.tag(taggerString, taggedString, gamecode, 1,  c);
+				DBHandler.setcooldown(taggedString, gamecode, c);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -546,6 +561,22 @@ public class Server {
     	}
     	
     	return -1;
+    }
+    
+    public static int getCooldown(String feedcode, String game){
+    	int num;
+    	try {
+			num = DBHandler.getcooldown(feedcode, game, c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			num = 0;
+		}
+    	catch (NullPointerException e){
+    		num = 0;
+    	}
+    	return num;
+    	
     }
 }
 
