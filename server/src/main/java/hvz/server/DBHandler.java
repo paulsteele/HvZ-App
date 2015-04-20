@@ -371,6 +371,14 @@ public class DBHandler{
 				return true;
 			else continue;
 		}
+		s = c.createStatement();
+		rs = s.executeQuery("select * from admins where gameCode = '" + gamecode + "'");
+		while(rs.next()){
+			String code = rs.getString("gameCode");
+			if(feedcode.equals(code))
+				return true;
+			else continue;
+		}
 		return false;	
 	}
 	public static void changeGamecode(String username, String newGame, boolean isAdmin, Connection c) throws SQLException{
