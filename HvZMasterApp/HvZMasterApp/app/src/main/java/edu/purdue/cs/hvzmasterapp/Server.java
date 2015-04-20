@@ -665,6 +665,45 @@ public class Server{
         return -1;
     }
 
+    public int leaveGame(String username) {
+
+        /* put request url */
+
+        JSONObject request = new JSONObject();
+        try {
+            request.put("feedcode", "00000000");
+            request.put("gamecode", "00000000");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        PutTask task = new PutTask(serviceURL + "/user/" + username, client, request);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            return -1;
+        }
+
+        try {
+            if (response.getBoolean("success")) {
+                return 0;
+            }
+            else {
+                return 1;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+
     // returns 0 if login was successful, else non-zero
     public int login(String identifier, String password){
         StringBuilder url = new StringBuilder(serviceURL);

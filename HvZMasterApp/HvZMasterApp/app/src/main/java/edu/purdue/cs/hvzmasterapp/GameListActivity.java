@@ -8,6 +8,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -34,6 +36,26 @@ public class GameListActivity extends ActionBarActivity {
         setContentView(R.layout.activity_game_list);
 
         refresh();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main2, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_logout) {
+            SaveSharedPreference.clearUserName(this);
+            Globals.getInstance().setSelf(null);
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivityForResult(intent, 1);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private class GameAdapter extends ArrayAdapter<Game> {
@@ -64,12 +86,38 @@ public class GameListActivity extends ActionBarActivity {
 
     public void refresh() {
         gameList = server.getGameList();
-        if (gameList == null || gameList.isEmpty()) {
-            gameList = new ArrayList<>();
-            gameList.add(new Game("There are currently no games available.", "000000", null));
-        }
 
         list = (ListView) findViewById(R.id.gamelistview);
+
+        if (gameList == null || gameList.isEmpty()) {
+            list.setVisibility(View.GONE);
+            TextView text = new TextView(this);
+            text.setText("There are currently no games");
+        }
+        else {
+            GameAdapter adapter = new GameAdapter(this, gameList);
+            list.setAdapter(adapter);
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+                    // select game to join and show confirmation menu
+                    Log.d("GameList", "Game name: " + gameList.get(position).getCode());
+                    String gamecode = gameList.get(position).getCode();
+                    if (gamecode.equals("00000000")) {
+                        //do nothing
+                    }
+
+                    int status = server.addPlayerToGame(gamecode, self.username);
+                    Log.d("Game List", "Adding player to game: " + gamecode);
+                    if (status == 0) {
+                        finish();
+                    }
+                    else {
+                        Log.e("Game List", "Error adding");
+                    }
+                }
+            });
+        }
 
         if (global.getSelf().isAdmin) {
             View seperator = findViewById(R.id.listseperator);
@@ -86,42 +134,23 @@ public class GameListActivity extends ActionBarActivity {
                 }
             });
         }
-
-        GameAdapter adapter = new GameAdapter(this, gameList);
-        list.setAdapter(adapter);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-                // select game to join and show confirmation menu
-                Log.d("GameList", "Game name: " + gameList.get(position).getCode());
-                String gamecode = gameList.get(position).getCode();
-                if (gamecode.equals("00000000")) {
-                    //do nothing
-                }
-
-                int status = server.addPlayerToGame(gamecode, self.username);
-                Log.d("Game List", "Adding player to game: " + gamecode);
-                if (status == 0) {
-                    finish();
-                }
-                else {
-                    Log.e("Game List", "Error adding");
-                }
-            }
-        });
     }
 
     public void createGame() {
         Intent intent = new Intent(this, CreateGameActivity.class);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, 2);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                refresh();
                 finish();
+            }
+        }
+        if (requestCode == 2) {
+            if (resultCode == Activity.RESULT_OK) {
+                refresh();
             }
         }
     }

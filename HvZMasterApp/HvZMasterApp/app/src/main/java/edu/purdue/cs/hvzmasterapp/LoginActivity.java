@@ -50,6 +50,8 @@ public class LoginActivity extends ActionBarActivity {
 
             SaveSharedPreference.setUserName(LoginActivity.this, username);
 
+            g.setSelf(server.getPlayer(username));
+
             Intent intent = new Intent();
             setResult(Activity.RESULT_OK, intent);
 
