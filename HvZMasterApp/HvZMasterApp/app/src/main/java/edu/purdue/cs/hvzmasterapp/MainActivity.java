@@ -11,6 +11,7 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
@@ -41,6 +42,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void onResume() {
         super.onResume();
+        username = SaveSharedPreference.getUserName(MainActivity.this);
         setUser(username);
         setupLayout();
     }
@@ -107,13 +109,16 @@ public class MainActivity extends ActionBarActivity {
         }
         else {
             setContentView(R.layout.activity_main_player);
+            LinearLayout layout = (LinearLayout) findViewById(R.id.main_player);
             TextView text = (TextView) findViewById(R.id.playerlabel);
             if (g.isZombie()) {
+                layout.setBackground(getResources().getDrawable(R.drawable.zombie_back));
                 text.setText("Zombie: " + g.getUsername());
                 CardView revive = (CardView) findViewById(R.id.card4);
                 revive.setVisibility(View.VISIBLE);
             }
             else {
+                layout.setBackground(getResources().getDrawable(R.drawable.human_back));
                 text.setText("Human: " + g.getUsername());
             }
             text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
@@ -129,6 +134,7 @@ public class MainActivity extends ActionBarActivity {
         }
         else {
             if (server.isGameOver(g.getGameCode())) {
+                Log.d("Main", "Starting score screen activity");
                 Intent intent = new Intent(this, ScoreScreenActivity.class);
                 startActivity(intent);
             }

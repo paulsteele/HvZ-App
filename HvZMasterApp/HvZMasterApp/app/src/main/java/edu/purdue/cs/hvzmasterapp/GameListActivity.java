@@ -138,15 +138,19 @@ public class GameListActivity extends ActionBarActivity {
 
     public void createGame() {
         Intent intent = new Intent(this, CreateGameActivity.class);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, 2);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                refresh();
                 finish();
+            }
+        }
+        if (requestCode == 2) {
+            if (resultCode == Activity.RESULT_OK) {
+                refresh();
             }
         }
     }
