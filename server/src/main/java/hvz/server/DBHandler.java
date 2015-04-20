@@ -352,6 +352,14 @@ public class DBHandler{
 				return true;
 			else continue;
 		}
+		s = c.createStatement();
+		rs = s.executeQuery("select * from admins");
+		while(rs.next()){
+			String name = rs.getString("username");
+			if(username.equals(name))
+				return true;
+			else continue;
+		}
 		return false;	
 	}
 	public static boolean isFeedcodeTaken(String feedcode, String gamecode, Connection c) throws SQLException{
