@@ -117,8 +117,9 @@ public class DBHandler{
 			e.printStackTrace();
 		}
 				command = "CREATE TABLE cooldowns " + 
-						"(locked 		datetime )" +
-						"feedCode		varchar(25))";
+						"(locked 		datetime," +
+						"feedCode		varchar(25)," +
+						"gameCode       varchar(25))";
 						
 		try {
 			Statement s = c.createStatement();
@@ -351,11 +352,27 @@ public class DBHandler{
 				return true;
 			else continue;
 		}
+		s = c.createStatement();
+		rs = s.executeQuery("select * from admins");
+		while(rs.next()){
+			String name = rs.getString("username");
+			if(username.equals(name))
+				return true;
+			else continue;
+		}
 		return false;	
 	}
 	public static boolean isFeedcodeTaken(String feedcode, String gamecode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from users where gameCode = '" + gamecode + "'");
+		while(rs.next()){
+			String code = rs.getString("gameCode");
+			if(feedcode.equals(code))
+				return true;
+			else continue;
+		}
+		s = c.createStatement();
+		rs = s.executeQuery("select * from admins where gameCode = '" + gamecode + "'");
 		while(rs.next()){
 			String code = rs.getString("gameCode");
 			if(feedcode.equals(code))
@@ -513,32 +530,32 @@ public class DBHandler{
 		s.close();
 		return count;
 	}
-	public static int cooldown(String feedCode, String gameCode, Connection c)throws SQLException{
+	public static void setcooldown(String feedCode, String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
-		ResultSet rs = s.executeQuery("select * from  cooldowns where feedCode = '" + feedCode + "' and gameCode = '" + gameCode + "'");
-		rs.close();
+		String command = "insert into cooldowns values(datetime('now', '+10 minutes'), '" + feedCode + "','" + gameCode + "')";
+		s.executeUpdate(command);
 		s.close();
-		//player gets added to table with a wait time
-		if (!rs.isBeforeFirst()){ 
-			Statement s2 = c.createStatement();//locked then feedcode
-			String command = "insert into cooldowns values(datetime('now', '+10 minutes'), " + feedCode + ")";
-			s2.executeUpdate(command);
-			s2.close();
-			return 1;
+	}
+	public static int getcooldown(String feedCode, String gameCode, Connection c)throws SQLException{
+		Statement st = c.createStatement();
+		ResultSet res = st.executeQuery("select locked from  cooldowns where feedCode = '" + feedCode + "' and gameCode = '" + gameCode + "'");
+		if (!res.isBeforeFirst()){
+			st = c.createStatement();
+			res = st.executeQuery("SELECT datetime('now')");
 		}
-		else{
-			Statement st = c.createStatement();
-			ResultSet res = st.executeQuery("select locked from  cooldowns where feedCode = '" + feedCode + "' and gameCode = '" + gameCode + "'");
-			String date = res.getString(1);
-			Statement st3 = c.createStatement();
-			ResultSet res3 = st3.executeQuery("SELECT strftime('%s','now') - strftime('%s','" + date + "');");
-			int dif = res3.getInt(1);
-			res.close();
-			res3.close();
-			st.close();
-			st3.close();
-			return dif;
+		String date = res.getString(1);
+		Statement st3 = c.createStatement();
+		ResultSet res3 = st3.executeQuery("SELECT strftime('%s','now') - strftime('%s','" + date + "');");
+		int dif = res3.getInt(1);
+		res.close();
+		res3.close();
+		st.close();
+		st3.close();
+		if (dif >= 0){
+			st = c.createStatement();
+			st.executeUpdate("DELETE FROM cooldowns WHERE feedCode='" + feedCode + "' AND gameCode = '" + gameCode + "';");
 		}
+		return dif;
 	}
 }
 
