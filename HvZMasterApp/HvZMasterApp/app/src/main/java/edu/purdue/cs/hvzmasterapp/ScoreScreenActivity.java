@@ -34,7 +34,8 @@ public class ScoreScreenActivity extends ActionBarActivity {
             SaveSharedPreference.clearUserName(this);
             g.setSelf(null);
             Intent intent = new Intent(this, LoginActivity.class);
-            startActivityForResult(intent, 1);
+            startActivity(intent);
+            finish();
         }
         else if (id == R.id.action_leave_game) {
             server.leaveGame(g.getUsername());
