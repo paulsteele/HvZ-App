@@ -42,6 +42,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("main", "resume");
         username = SaveSharedPreference.getUserName(MainActivity.this);
         setUser(username);
         setupLayout();

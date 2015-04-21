@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Enter feedcode of player you are tagging:"
-        android:gravity="center_vertical|center_horizontal"
+        android:gravity="center_vertical"
         android:layout_marginTop="32dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"

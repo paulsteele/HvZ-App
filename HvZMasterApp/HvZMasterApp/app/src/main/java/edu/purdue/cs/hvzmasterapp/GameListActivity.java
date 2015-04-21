@@ -49,10 +49,11 @@ public class GameListActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_logout) {
-            SaveSharedPreference.clearUserName(this);
+            SaveSharedPreference.clearUserName(GameListActivity.this);
             Globals.getInstance().setSelf(null);
             Intent intent = new Intent(this, LoginActivity.class);
-            startActivityForResult(intent, 1);
+            startActivity(intent);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
@@ -143,11 +144,6 @@ public class GameListActivity extends ActionBarActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK) {
-                finish();
-            }
-        }
         if (requestCode == 2) {
             if (resultCode == Activity.RESULT_OK) {
                 refresh();

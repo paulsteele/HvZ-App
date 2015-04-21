@@ -23,14 +23,14 @@ public class SaveSharedPreference {
     }
 
     public static void setUserName(Context ctx, String userName) {
-        Log.d("SaveSharedPreference", "Setting username");
+        Log.d("SaveSharedPreference", "Setting username" + userName);
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
         editor.putString(PREF_USER_NAME, userName);
         editor.commit();
     }
 
     public static String getUserName(Context ctx) {
-        Log.d("SaveSharedPreference", "Getting username");
+        Log.d("SaveSharedPreference", "Getting username" + PREF_USER_NAME);
         return getSharedPreferences(ctx).getString(PREF_USER_NAME, "");
     }
 }
