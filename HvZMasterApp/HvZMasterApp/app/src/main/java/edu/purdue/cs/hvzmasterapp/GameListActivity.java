@@ -55,6 +55,9 @@ public class GameListActivity extends ActionBarActivity {
             startActivity(intent);
             finish();
         }
+        if (id == R.id.action_refresh) {
+            refresh();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -109,8 +112,12 @@ public class GameListActivity extends ActionBarActivity {
                     }
 
                     int status = server.addPlayerToGame(gamecode, self.username);
-                    Log.d("Game List", "Adding player to game: " + gamecode);
                     if (status == 0) {
+                        Log.d("Game List", "Adding player to game: " + gamecode);
+
+                        Intent intent = new Intent();
+                        setResult(Activity.RESULT_OK, intent);
+
                         finish();
                     }
                     else {
