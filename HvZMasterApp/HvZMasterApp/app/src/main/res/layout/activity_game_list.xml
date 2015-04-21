@@ -38,8 +38,6 @@
         android:id="@+id/listseperator"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:background="@android:color/black"
         android:visibility="gone"/>
 

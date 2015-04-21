@@ -53,7 +53,7 @@ public class Server{
 
         try {
             if (response.getBoolean("success")) {
-                Log.e("getUser", "Success");
+                Log.e("getUser " + username, "Success");
                 return new User(response.getString("username"), response.getString("feedcode"), response.getString("gamecode"),
                         response.getBoolean("isZombie"), response.getBoolean("isAdmin"));
             }

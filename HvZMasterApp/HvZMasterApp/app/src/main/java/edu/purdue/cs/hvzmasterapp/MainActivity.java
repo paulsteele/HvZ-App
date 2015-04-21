@@ -11,11 +11,13 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
     private final static int LOGIN = 1;
     private final static int REVIVE = 2;
+    private final static int JOIN_GAME = 3;
     private Server server = Server.getInstance();
     private Globals g = Globals.getInstance();
 
@@ -41,6 +43,8 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("main", "resume");
+        username = SaveSharedPreference.getUserName(MainActivity.this);
         setUser(username);
         setupLayout();
     }
@@ -63,6 +67,10 @@ public class MainActivity extends ActionBarActivity {
         }
         else if (id == R.id.action_leave_game) {
             server.leaveGame(g.getUsername());
+            setUser(username);
+            setupLayout();
+        }
+        else if (id == R.id.action_refresh) {
             setUser(username);
             setupLayout();
         }
@@ -107,14 +115,23 @@ public class MainActivity extends ActionBarActivity {
         }
         else {
             setContentView(R.layout.activity_main_player);
+            LinearLayout layout = (LinearLayout) findViewById(R.id.main_player);
             TextView text = (TextView) findViewById(R.id.playerlabel);
             if (g.isZombie()) {
+                layout.setBackground(getResources().getDrawable(R.drawable.zombie_back));
                 text.setText("Zombie: " + g.getUsername());
                 CardView revive = (CardView) findViewById(R.id.card4);
                 revive.setVisibility(View.VISIBLE);
+                CardView cdtimer = (CardView) findViewById(R.id.card6);
+                cdtimer.setVisibility(View.VISIBLE);
             }
             else {
+                layout.setBackground(getResources().getDrawable(R.drawable.human_back));
                 text.setText("Human: " + g.getUsername());
+                CardView revive = (CardView) findViewById(R.id.card4);
+                revive.setVisibility(View.GONE);
+                CardView cdtimer = (CardView) findViewById(R.id.card6);
+                cdtimer.setVisibility(View.GONE);
             }
             text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             TextView text2 = (TextView) findViewById(R.id.feedcodelabel);
@@ -125,10 +142,11 @@ public class MainActivity extends ActionBarActivity {
         if (g.getGameCode().equals("00000000")) {
             Log.d("Main", "Starting game list activity");
             Intent intent = new Intent(this, GameListActivity.class);
-            startActivityForResult(intent, 1);
+            startActivityForResult(intent, JOIN_GAME);
         }
         else {
             if (server.isGameOver(g.getGameCode())) {
+                Log.d("Main", "Starting score screen activity");
                 Intent intent = new Intent(this, ScoreScreenActivity.class);
                 startActivity(intent);
             }
@@ -138,6 +156,13 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == LOGIN) {
+            if (resultCode == Activity.RESULT_OK) {
+                this.recreate();
+                Log.d("Main", "Login success");
+            }
+            return;
+        }
+        if (requestCode == JOIN_GAME) {
             if (resultCode == Activity.RESULT_OK) {
                 this.recreate();
                 Log.d("Main", "Login success");

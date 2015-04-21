@@ -49,10 +49,14 @@ public class GameListActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_logout) {
-            SaveSharedPreference.clearUserName(this);
+            SaveSharedPreference.clearUserName(GameListActivity.this);
             Globals.getInstance().setSelf(null);
             Intent intent = new Intent(this, LoginActivity.class);
-            startActivityForResult(intent, 1);
+            startActivity(intent);
+            finish();
+        }
+        if (id == R.id.action_refresh) {
+            refresh();
         }
 
         return super.onOptionsItemSelected(item);
@@ -108,8 +112,12 @@ public class GameListActivity extends ActionBarActivity {
                     }
 
                     int status = server.addPlayerToGame(gamecode, self.username);
-                    Log.d("Game List", "Adding player to game: " + gamecode);
                     if (status == 0) {
+                        Log.d("Game List", "Adding player to game: " + gamecode);
+
+                        Intent intent = new Intent();
+                        setResult(Activity.RESULT_OK, intent);
+
                         finish();
                     }
                     else {
@@ -138,15 +146,14 @@ public class GameListActivity extends ActionBarActivity {
 
     public void createGame() {
         Intent intent = new Intent(this, CreateGameActivity.class);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, 2);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
+        if (requestCode == 2) {
             if (resultCode == Activity.RESULT_OK) {
                 refresh();
-                finish();
             }
         }
     }
