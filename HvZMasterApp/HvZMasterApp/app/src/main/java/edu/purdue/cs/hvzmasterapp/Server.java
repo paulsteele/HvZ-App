@@ -259,6 +259,11 @@ public class Server{
         return mission;
     }
 
+    public int getTagCooldownTime(String gamecode, String player_feedcode){
+
+        return -1;
+    }
+
     //returns a new list of users
     public ArrayList<User> getUserList(String gamecode) {
         GetTask task = new GetTask(serviceURL + "/" + gamecode + "/user", client);
