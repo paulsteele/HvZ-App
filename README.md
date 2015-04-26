@@ -79,7 +79,7 @@ Server will run on 128.211.191.47:8080
 
 `/{game}/complaint`
 * POST: create a complaint
-	* {"sender": value, "message": value}
+	* `{"sender": value, "message": value}`
 * GET: gets a list of all complaints
 
 `/{game}/complaint/{complaintcode}`
