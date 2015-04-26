@@ -578,5 +578,30 @@ public class Server {
     	return num;
     	
     }
+    
+    public static Complaint createComplaint(String sender, String message, String gamecode){
+    	boolean done = false;
+    	String ccode = null;
+    	while (!done){
+	    	ccode = RandomStringUtils.randomAlphanumeric(ServerConfiguration.feedcodeLength -1);
+	    	ccode = ServerConfiguration.complaintPrefix + gamecode.toUpperCase();
+	    	//check if exists
+	    	done = true;//!checkGameExisits(gamecode);
+    	}
+    	Complaint c = new Complaint(ccode, sender, message, gamecode);
+    	return c;
+    }
+    
+    public static boolean deleteComplaint(String ccode, String gamecode){
+    	return false;
+    }
+    
+    public static Complaint getComplaint(String ccode, String gamecode){
+    	return null;
+    }
+    
+    public static Complaint[] getAllComplaints(String gamecode){
+    	return null;
+    }
 }
 

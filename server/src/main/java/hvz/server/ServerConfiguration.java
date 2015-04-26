@@ -18,6 +18,7 @@ public class ServerConfiguration implements EmbeddedServletContainerCustomizer {
 	public static final char playerPrefix = 'P'; //prefix to add to player feedcodes
 	public static final char gamePrefix = 'G'; //prefix for game codes
 	public static final char revivePrefix = 'R'; //prefix for revive codes
+	public static final char complaintPrefix = 'C'; //prefix for complaint
 	public static final String success = "success"; //success message
 	public static final String dummyCode = "00000000"; //value for a not assigned player.
 	public static final int alphaZombieCount = 4; //number of alpha zombies to spawn
