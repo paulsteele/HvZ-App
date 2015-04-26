@@ -82,7 +82,7 @@ Server will run on 128.211.191.47:8080
 	* {"sender": value, "message": value}
 * GET: gets a list of all complaints
 
-`/{game}/complaint/{complaintcode}
+`/{game}/complaint/{complaintcode}`
 * GET: gets a specific complaint
 * DELETE: removes a specific complaint
 
