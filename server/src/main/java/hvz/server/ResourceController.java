@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping; 
@@ -837,6 +838,154 @@ public class ResourceController {
         	response.put("gameover", ended);
     	}
     	catch (JSONException e){
+    		e.printStackTrace();
+    	}
+    	return response.toString();
+    }
+    
+    @RequestMapping(value = "{game}/complaint", method = RequestMethod.POST)
+    public String createComplaint(@RequestBody String value, @PathVariable("game") String game){
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	//take in input and create variables for each entry
+		JSONObject input = null;
+		try {
+			input = new JSONObject(new JSONTokener(value));
+		} catch (JSONException e) {
+			failed = true;
+		}
+		String sender = null;
+		String message = null;
+		try{
+			sender = input.getString("sender");
+			message = input.getString("message");
+		}
+		catch (JSONException e){
+			//error 
+			failed = true;
+		}
+		catch (NullPointerException e){
+			failed = true;
+		}
+		
+		if(sender == null || message == null){
+			failed = true;
+		}
+		
+		Complaint c = null;
+		if (!failed){
+    		c = Server.createComplaint(sender, message, game);
+		}
+		if (c == null){
+			failed = true;
+		}
+		
+		JSONObject response = new JSONObject();
+	   	try{
+        	response.put(ServerConfiguration.success, !failed);
+        	if (!failed){
+        		response.put("sender", c.sender);
+        		response.put("message", c.message);
+        		response.put("complaintcode", c.ccode);
+        	}
+    	}
+    	catch (JSONException e) {
+    		e.printStackTrace();
+    	}
+    	return response.toString();
+    }
+    
+    @RequestMapping(value = "{game}/complaint/{ccode}", method = RequestMethod.GET)
+    public String getComplaint(@PathVariable("game") String game, @PathVariable("ccode") String ccode){
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	Complaint c = null;
+    	if (!failed){
+    		c = Server.getComplaint(ccode, game);
+    	}
+    	if (c == null){
+    		failed = true;
+    	}
+    	
+		JSONObject response = new JSONObject();
+	   	try{
+        	response.put(ServerConfiguration.success, !failed);
+        	if (!failed){
+        		response.put("sender", c.sender);
+        		response.put("message", c.message);
+        		response.put("complaintcode", c.ccode);
+        	}
+    	}
+    	catch (JSONException e) {
+    		e.printStackTrace();
+    	}
+    	return response.toString();
+    }
+
+    @RequestMapping(value = "{game}/complaint", method = RequestMethod.GET)
+    public String getAllComplaints(@PathVariable("game") String game){
+		//Set up response object
+		JSONObject output = new JSONObject();
+		//set JSONArray and holder array
+		JSONArray complaints = new JSONArray();
+		Complaint[] complaintObjects = Server.getAllComplaints(game);
+    	try {
+			for (int i = 0; i < complaintObjects.length; i++){
+				JSONObject complaint = new JSONObject();
+				complaint = new JSONObject();
+    			complaint.put("sender", complaintObjects[i].sender);
+    			complaint.put("message", complaintObjects[i].message);
+    			complaint.put("complaintcode", complaintObjects[i].ccode);
+    			complaints.put(i, complaint);
+			}
+			output.put(ServerConfiguration.success, true);
+			output.put("complaints", complaints);
+		} catch (JSONException e) {
+			//big error
+			e.printStackTrace();
+		}
+    	return output.toString();
+    }
+    
+    @RequestMapping(value = "{game}/complaint/{ccode}", method = RequestMethod.DELETE)
+    public String deleteComplaint(@PathVariable("game") String game, @PathVariable("ccode") String ccode){
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	if (!failed){
+    		failed = Server.deleteComplaint(ccode, game);
+    	}
+    	
+		JSONObject response = new JSONObject();
+	   	try{
+        	response.put(ServerConfiguration.success, !failed);
+    	}
+    	catch (JSONException e) {
+    		e.printStackTrace();
+    	}
+    	return response.toString();
+    }
+    
+    @RequestMapping(value = "{game}/map", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
+    public byte[] getMap(@PathVariable("game") String game){
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	byte[] image = null;
+    	if (!failed){
+    		image = Server.getPicture(game);
+    	}
+    	if (image == null){
+    		failed = true;
+    	}
+    	return image;
+    }
+    
+    @RequestMapping(value = "{game}/map", method = RequestMethod.POST)
+    public String setMap(@PathVariable("game") String game, @RequestBody byte[] value){
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	if (!failed){
+    		failed = !Server.setPicture(value, game);
+    	}
+		JSONObject response = new JSONObject();
+	   	try{
+        	response.put(ServerConfiguration.success, !failed);
+    	}
+    	catch (JSONException e) {
     		e.printStackTrace();
     	}
     	return response.toString();

@@ -77,6 +77,21 @@ Server will run on 128.211.191.47:8080
  * PUT: update the mission
     * `{"complete": value}`
 
+`/{game}/complaint`
+* POST: create a complaint
+	* `{"sender": value, "message": value}`
+* GET: gets a list of all complaints
+
+`/{game}/complaint/{complaintcode}`
+* GET: gets a specific complaint
+* DELETE: removes a specific complaint
+
+`/{game}/map`
+* POST: set the map
+	* `IMAGE DATA`
+* GET: get the map
+
+
 ###Globals
 `Globals getInstance()`
  * gets interface for global constants
