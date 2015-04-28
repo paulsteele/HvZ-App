@@ -513,7 +513,7 @@ public class Server{
         }
 
         if (response == null) {
-            Log.e("getEndGameStats", "Server reponse error");
+            Log.e("getStats", "Server reponse error");
             return false;
         }
 
@@ -526,7 +526,7 @@ public class Server{
         return false;
     }
 
-    public Stats getEndGameStats(String gamecode) {
+    public Stats getStats(String gamecode) {
         GetTask task = new GetTask(serviceURL + "/" + gamecode + "/end", client);
 
         JSONObject response = null;
@@ -537,7 +537,7 @@ public class Server{
         }
 
         if (response == null) {
-            Log.e("getEndGameStats", "Server reponse error");
+            Log.e("getStats", "Server reponse error");
             return null;
         }
 
@@ -802,6 +802,14 @@ public class Server{
         return -1;
     }
 
+    /* get list of complaints */
+    public String[] getComplaints(String gamecode) {
+        return null;
+    }
+
+    public void sendComplaint(String complaint, String gamecode) {
+        
+    }
 }
 
 class PostTask extends AsyncTask<Void, Void, JSONObject> {

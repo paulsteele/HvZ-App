@@ -6,11 +6,11 @@
     <string name="menu_text1">Player List</string>
     <string name="menu_text2">Tagging</string>
     <string name="menu_text3">Missions</string>
-    <string name="menu_text4">Bounty</string>
-    <string name="menu_text5">Polls</string>
-    <string name="menu_text6">Rewards</string>
-    <string name="menu_text7">Reports</string>
-    <string name="menu_text8">Revive</string>
+    <string name="menu_text4">Map</string>
+    <string name="menu_text5">Cooldown Timer</string>
+    <string name="menu_text6">Revive</string>
+    <string name="menu_text7">Stats</string>
+    <string name="menu_text8">Complaints</string>
     <string name="menu_text9">Start Game</string>
     <string name="title_activity_register">Register</string>
     <string name="register">Register</string>
@@ -32,4 +32,5 @@
     <string name="leave_game">Leave Game</string>
     <string name="title_activity_score_screen">ScoreScreenActivity</string>
     <string name="refresh">Refresh</string>
+    <string name="title_activity_complaint">ComplaintActivity</string>
 </resources>

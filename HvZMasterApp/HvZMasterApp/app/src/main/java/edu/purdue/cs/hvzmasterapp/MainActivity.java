@@ -177,50 +177,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    /* View list of players */
-    public void viewPlayerList(View view) {
-        Intent intent = new Intent(this, PlayerListActivity.class);
-        startActivity(intent);
-    }
-
-    /* Tag players */
-    public void tag(View view) {
-        Intent intent = new Intent(this, TagActivity.class);
-        startActivity(intent);
-    }
-
-    public void createMission(View view) {
-        Intent intent = new Intent(this, CreateMissionActivity.class);
-        startActivity(intent);
-    }
-
-    public void tagCooldownTimer(View view) {
-        Intent intent = new Intent(this, TagCooldownTimerActivity.class);
-        startActivity(intent);
-    }
-
-    public void listMissions(View view) {
-        Intent intent = new Intent(this, MissionListActivity.class);
-        startActivity(intent);
-    }
-
-    public void revive(View view) {
-        if (g.isZombie()) {
-            Intent intent = new Intent(this, ReviveActivity.class);
-            startActivityForResult(intent, REVIVE);
-        }
-    }
-
-    public void viewReviveCodes(View view) {
-        Intent intent = new Intent(this, ReviveCodeActivity.class);
-        startActivity(intent);
-    }
-
-    public void map(View view) {
-        Intent intent = new Intent(this, MapActivity.class);
-        startActivity(intent);
-    }
-
+    /* admin only: start/end game */
     public void toggleGame(View view) {
         int status = server.getGameStatus(g.getGameCode());
         if (status == Globals.NOT_STARTED) {
@@ -231,5 +188,65 @@ public class MainActivity extends ActionBarActivity {
             server.endGame(g.getGameCode());
             setupLayout();
         }
+    }
+
+    /* view player list */
+    public void viewPlayerList(View view) {
+        Intent intent = new Intent(this, PlayerListActivity.class);
+        startActivity(intent);
+    }
+
+    /* players only: tag players */
+    public void tag(View view) {
+        Intent intent = new Intent(this, TagActivity.class);
+        startActivity(intent);
+    }
+
+    /* admins only: create mission activity */
+    public void createMission(View view) {
+        Intent intent = new Intent(this, CreateMissionActivity.class);
+        startActivity(intent);
+    }
+
+    /* view mission list */
+    public void listMissions(View view) {
+        Intent intent = new Intent(this, MissionListActivity.class);
+        startActivity(intent);
+    }
+
+    /* zombies only: cooldown timer */
+    public void tagCooldownTimer(View view) {
+        Intent intent = new Intent(this, TagCooldownTimerActivity.class);
+        startActivity(intent);
+    }
+
+    /* zombies only: revive */
+    public void revive(View view) {
+        if (g.isZombie()) {
+            Intent intent = new Intent(this, ReviveActivity.class);
+            startActivityForResult(intent, REVIVE);
+        }
+    }
+
+    /* admins only: view/generate revive codes */
+    public void viewReviveCodes(View view) {
+        Intent intent = new Intent(this, ReviveCodeActivity.class);
+        startActivity(intent);
+    }
+
+    /* view map */
+    public void map(View view) {
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
+    }
+
+    /* view current stats */
+    public void viewStats(View view) {
+
+    }
+
+    /* players only: screen to submit complaint */
+    public void viewComplaintScreen(View view) {
+
     }
 }

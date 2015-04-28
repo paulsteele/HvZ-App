@@ -16,7 +16,7 @@ public class ScoreScreenActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_screen);
-        Stats stats = server.getEndGameStats(g.getGameCode());
+        Stats stats = server.getStats(g.getGameCode());
         setStats(stats);
     }
 
