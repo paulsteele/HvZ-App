@@ -86,6 +86,11 @@ Server will run on 128.211.191.47:8080
 * GET: gets a specific complaint
 * DELETE: removes a specific complaint
 
+`/{game}/map`
+* POST: set the map
+	* `IMAGE DATA`
+* GET: get the map
+
 
 ###Globals
 `Globals getInstance()`

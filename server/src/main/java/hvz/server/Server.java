@@ -1,5 +1,10 @@
 package hvz.server;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Random;
@@ -602,6 +607,22 @@ public class Server {
     
     public static Complaint[] getAllComplaints(String gamecode){
     	return null;
+    }
+    
+    public static byte[] getPicture(String gamecode){
+    	Path path = Paths.get("campus_map.gif");
+    	byte[] image = null;
+		try {
+			image = Files.readAllBytes(path);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return image;
+    }
+    
+    public static boolean setPicture(String gamecode){
+    	return false;
     }
 }
 

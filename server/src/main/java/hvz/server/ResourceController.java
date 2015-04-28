@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping; 
@@ -944,7 +945,7 @@ public class ResourceController {
     	return output.toString();
     }
     
-    @RequestMapping(value = "{game}/complaint/{ccode}", method = RequestMethod.POST)
+    @RequestMapping(value = "{game}/complaint/{ccode}", method = RequestMethod.DELETE)
     public String deleteComplaint(@PathVariable("game") String game, @PathVariable("ccode") String ccode){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	if (!failed){
@@ -959,5 +960,23 @@ public class ResourceController {
     		e.printStackTrace();
     	}
     	return response.toString();
+    }
+    
+    @RequestMapping(value = "{game}/map", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
+    public byte[] getMap(@PathVariable("game") String game){
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	byte[] image = null;
+    	if (!failed){
+    		image = Server.getPicture(game);
+    	}
+    	if (image == null){
+    		failed = true;
+    	}
+    	return image;
+    }
+    
+    @RequestMapping(value = "{game}/map", method = RequestMethod.POST)
+    public String setMap(@PathVariable("game") String game, @RequestBody byte[] value){
+    	return "no";
     }
 }
