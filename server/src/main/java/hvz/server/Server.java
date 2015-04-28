@@ -621,7 +621,7 @@ public class Server {
     	return image;
     }
     
-    public static boolean setPicture(String gamecode){
+    public static boolean setPicture(byte[] value, String gamecode){
     	return false;
     }
 }

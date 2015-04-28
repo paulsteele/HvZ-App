@@ -977,6 +977,17 @@ public class ResourceController {
     
     @RequestMapping(value = "{game}/map", method = RequestMethod.POST)
     public String setMap(@PathVariable("game") String game, @RequestBody byte[] value){
-    	return "no";
+    	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
+    	if (!failed){
+    		failed = !Server.setPicture(value, game);
+    	}
+		JSONObject response = new JSONObject();
+	   	try{
+        	response.put(ServerConfiguration.success, !failed);
+    	}
+    	catch (JSONException e) {
+    		e.printStackTrace();
+    	}
+    	return response.toString();
     }
 }
