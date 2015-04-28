@@ -804,11 +804,71 @@ public class Server{
 
     /* get list of complaints */
     public String[] getComplaints(String gamecode) {
+        GetTask task = new GetTask(serviceURL + "/" + gamecode + "/complaint", client);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            return null;
+        }
+        /*
+        try {
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        */
         return null;
     }
 
-    public void sendComplaint(String complaint, String gamecode) {
-        
+    /*
+     * sends complaint to server
+     * 0 for success, non-zero for error
+     */
+    public int sendComplaint(String message, String sender, String gamecode) {
+        JSONObject request = new JSONObject();
+        try {
+            request.put("sender", sender);
+            request.put("message", message);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        PostTask task = new PostTask(serviceURL + "/" + gamecode + "/complaint", client, request);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            Log.e("sendComplaint", "Server response error");
+            return -1;
+        }
+
+        try {
+            if (response.getBoolean("success")) {
+                Log.e("sendComplaint", "success");
+                return 0;
+            }
+            else {
+                return 1;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.e("sendComplaint", "error");
+        return -1;
+
+
     }
 }
 

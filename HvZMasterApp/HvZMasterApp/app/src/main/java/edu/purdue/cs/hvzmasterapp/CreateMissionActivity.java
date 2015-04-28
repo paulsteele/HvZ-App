@@ -34,7 +34,7 @@ public class CreateMissionActivity extends ActionBarActivity {
             msg.setText("Success!");
             msg.setTextColor(Color.GREEN);
             msg.setVisibility(View.VISIBLE);
-            Intent intent = new Intent();
+            //Intent intent = new Intent();
         }
         else {
             TextView msg = (TextView) findViewById(R.id.create_mission_msg);

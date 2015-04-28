@@ -247,6 +247,7 @@ public class MainActivity extends ActionBarActivity {
 
     /* players only: screen to submit complaint */
     public void viewComplaintScreen(View view) {
-
+        Intent intent = new Intent(this, ComplaintActivity.class);
+        startActivity(intent);
     }
 }
