@@ -638,6 +638,15 @@ public class DBHandler{
 		rs.close();
 		return map;
 	}
+	public static boolean validateCCode(String ccode, String gameCode, Connection c) throws SQLException{
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from reviveCodes where ccode  = '" + ccode + "' and gameCode = '" + gameCode + "'");
+		if (!rs.isBeforeFirst())
+			return false;
+		else{
+			return true;
+		}
+	}
 }
 
 

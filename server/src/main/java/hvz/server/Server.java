@@ -598,11 +598,18 @@ public class Server {
     }
     
     public static boolean deleteComplaint(String ccode, String gamecode){
-    	return false;
+        try {
+            DBHandler.deleteComplaint(ccode,gamecode,c);
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
     }
     
     public static Complaint getComplaint(String ccode, String gamecode){
-    	return null;
+
+        return null;
     }
     
     public static Complaint[] getAllComplaints(String gamecode){
