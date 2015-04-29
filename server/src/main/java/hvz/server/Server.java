@@ -598,8 +598,15 @@ public class Server {
 				e.printStackTrace();
 			}
     	}
-    	Complaint c = new Complaint(ccode, sender, message, gamecode);
-    	return c;
+    	Complaint cc = new Complaint(ccode, sender, message, gamecode);
+    	try {
+			DBHandler.createComplaint(ccode, sender, message, gamecode, c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+    	return cc;
     }
 
     public static boolean deleteComplaint(String ccode, String gamecode){
