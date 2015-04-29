@@ -592,10 +592,11 @@ public class Server {
 	    	ccode = ServerConfiguration.complaintPrefix + gamecode.toUpperCase();
 	    	//check if exists
 	    	try {
-				done = DBHandler.validateCCode(ccode, gamecode, c);
+				done = !DBHandler.validateCCode(ccode, gamecode, c);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				break;
 			}
     	}
     	Complaint cc = new Complaint(ccode, sender, message, gamecode);

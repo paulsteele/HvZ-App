@@ -641,13 +641,17 @@ public class DBHandler{
 	public static boolean validateCCode(String ccode, String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from complaints where ccode  = '" + ccode + "' and gameCode = '" + gameCode + "'");
-		if (!rs.isBeforeFirst())
+		if (!rs.isBeforeFirst()){
+			s.close();
+			rs.close();
 			return false;
+		}
 		else{
+			s.close();
+			rs.close();
 			return true;
 		}
-		s.close();
-		rs.close();
+
 	}
 }
 
