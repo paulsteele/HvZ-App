@@ -601,24 +601,39 @@ public class Server {
     	Complaint c = new Complaint(ccode, sender, message, gamecode);
     	return c;
     }
-    
-    public static boolean deleteComplaint(String ccode, String gamecode){
+
+    public static void deleteComplaint(String ccode, String gamecode){
         try {
             DBHandler.deleteComplaint(ccode,gamecode,c);
         }
         catch (SQLException e){
             e.printStackTrace();
         }
-        return false;
     }
     
     public static Complaint getComplaint(String ccode, String gamecode){
+        Complaint whine;
+        try{
+           whine = DBHandler.getComplaint(ccode,gamecode,c);
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            whine = null;
+        }
 
-        return null;
+        return whine;
     }
     
     public static Complaint[] getAllComplaints(String gamecode){
-    	return null;
+        Complaint [] whines;
+        try{
+            whines = DBHandler.getAllComplaints(gamecode,c);
+        } catch (SQLException e){
+            e.printStackTrace();
+            whines = null;
+        }
+
+    	return whines;
     }
     
     public static byte[] getPicture(String gamecode){
