@@ -582,7 +582,7 @@ public class DBHandler{
 	
 	public static void createComplaint(String ccode, String sender, String message, String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into complaints complaints('" + ccode + "', '" + sender + "', '" + message + "', '" + gameCode + "')";
+		String command = "insert into complaints values('" + ccode + "', '" + sender + "', '" + message + "', '" + gameCode + "')";
 		s.executeUpdate(command);
 	}
 	
