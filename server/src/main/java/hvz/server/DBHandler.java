@@ -90,6 +90,18 @@ public class DBHandler{
 		catch (SQLException e){
 			e.printStackTrace();
 		}
+		command = "CREATE TABLE complaints " + 
+			"(ccode			varchar(25), " + 
+			"sender	 		varchar(40), " +
+			"message	 	varchar(40), " +
+			"gameCode		varchar(25))";
+		try {
+			Statement s = c.createStatement();
+			s.executeUpdate(command);
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
 		command = "CREATE TABLE games" + 
 						"(isEnded 	int, " +
 						"hasBegun	int, " +
@@ -109,6 +121,16 @@ public class DBHandler{
 						"zombieObective	varchar(500), " +
 						"isCompleted	int, " +
 						"title			varchar(25))";
+		try {
+			Statement s = c.createStatement();
+			s.executeUpdate(command);
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
+				command = "CREATE TABLE maps " + 
+						"(gameCode	varchar(25), " +
+						"map		BLOB)";
 		try {
 			Statement s = c.createStatement();
 			s.executeUpdate(command);
@@ -556,6 +578,46 @@ public class DBHandler{
 			st.executeUpdate("DELETE FROM cooldowns WHERE feedCode='" + feedCode + "' AND gameCode = '" + gameCode + "';");
 		}
 		return dif;
+	}
+	
+	public static void createComplaint(String ccode, String sender, String message, String gameCode, Connection c) throws SQLException{
+		Statement s = c.createStatement();
+		String command = "insert into games complaints('" + ccode + "', '" + sender + "', '" + message + "', '" + gameCode + "')";
+		s.executeUpdate(command);
+	}
+	
+	public static void deleteComplaint(String ccode, String gameCode, Connection c) throws SQLException{
+		Statement s = c.createStatement();
+		String command = "delete from complaints where ccode = '" + ccode + "' " +  "AND gameCode = " + "'" + gameCode + "'"; 
+		s.executeUpdate(command);
+	}
+	
+	public static Complaint getComplaint(String ccode, String gameCode, Connection c) throws SQLException{
+    	Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from complaints where ccode = '" + ccode + "' AND gameCode = '" + gameCode +"'");
+		if (!rs.isBeforeFirst())
+			return null;
+		String message = rs.getString("message");
+		String sender = rs.getString("sender");
+		Complaint comp = new Complaint(ccode,  sender,  message,  gameCode);
+		return comp;
+    }
+	
+	public static  Complaint [] getAllComplaints(String gameCode, Connection c)throws SQLException{
+		LinkedList<Complaint> complaints = new LinkedList<Complaint>();
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select * from  complaints where gameCode = '" + gameCode + "'");
+		while(rs.next()){
+			String ccode = rs.getString("ccode");
+			String sender = rs.getString("sender");
+			String message = rs.getString("message");
+			Complaint complaint = new Complaint(ccode, sender, message, gameCode);
+			complaints.add(complaint);
+		}
+		rs.close();
+		s.close();
+		Complaint [] array = complaints.toArray(new Complaint[complaints.size()]);
+		return array;
 	}
 }
 
