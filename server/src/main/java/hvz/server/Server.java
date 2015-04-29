@@ -591,19 +591,26 @@ public class Server {
 	    	ccode = RandomStringUtils.randomAlphanumeric(ServerConfiguration.feedcodeLength -1);
 	    	ccode = ServerConfiguration.complaintPrefix + gamecode.toUpperCase();
 	    	//check if exists
-	    	done = true;//!checkGameExisits(gamecode);
+	    	try {
+				done = DBHandler.validateCCode(ccode, gamecode, c);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     	}
     	Complaint c = new Complaint(ccode, sender, message, gamecode);
     	return c;
     }
 
-    public static void deleteComplaint(String ccode, String gamecode){
+    public static boolean deleteComplaint(String ccode, String gamecode){
         try {
             DBHandler.deleteComplaint(ccode,gamecode,c);
         }
         catch (SQLException e){
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
     
     public static Complaint getComplaint(String ccode, String gamecode){
@@ -632,11 +639,10 @@ public class Server {
     }
     
     public static byte[] getPicture(String gamecode){
-    	Path path = Paths.get("campus_map.gif");
     	byte[] image = null;
 		try {
-			image = Files.readAllBytes(path);
-		} catch (IOException e) {
+			image = DBHandler.getPicture(gamecode, c);
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
