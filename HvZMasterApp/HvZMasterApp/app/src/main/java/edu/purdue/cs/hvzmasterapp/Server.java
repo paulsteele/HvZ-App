@@ -5,6 +5,7 @@ import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -803,7 +804,7 @@ public class Server{
     }
 
     /* get list of complaints */
-    public String[] getComplaints(String gamecode) {
+    public Complaint[] getComplaints(String gamecode) {
         GetTask task = new GetTask(serviceURL + "/" + gamecode + "/complaint", client);
 
         JSONObject response = null;
@@ -867,8 +868,42 @@ public class Server{
 
         Log.e("sendComplaint", "error");
         return -1;
+    }
 
+    /*
+     * delete selected complaint
+     * 0 for success, non-zero for error
+     */
+    public int deleteComplaint(String id, String gamecode) {
 
+        DeleteTask task = new DeleteTask(serviceURL + "/" + gamecode + "/complaint/" + id, client);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            Log.e("deleteComplaint", "Server response error");
+            return -1;
+        }
+
+        try {
+            if (response.getBoolean("success")) {
+                Log.e("deleteCompaint", "success");
+                return 0;
+            }
+            else {
+                return 1;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.e("deleteCompaint", "error");
+        return -1;
     }
 }
 
@@ -1052,6 +1087,66 @@ class GetTask extends AsyncTask<Void, Void, JSONObject> {
             return responseObj;
         } catch (JSONException e) {
             Log.e("HTTP Get", "Error getting JSON Object");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private StringBuilder convertToString(InputStream is) {
+        String line;
+
+        BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+        StringBuilder string = new StringBuilder();
+        try {
+            while ((line = rd.readLine()) != null) {
+                string.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return string;
+    }
+}
+
+class DeleteTask extends AsyncTask<Void, Void, JSONObject> {
+    HttpClient client;
+    String url;
+
+    DeleteTask(String url, HttpClient client) {
+        this.client = client;
+        this.url = url;
+    }
+
+    @Override
+    protected JSONObject doInBackground(Void... v) {
+        // Create GET method
+        HttpDelete get = new HttpDelete(url);
+
+        HttpResponse response = null;
+        try {
+            response = client.execute(get);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (response == null) {
+            Log.e("HTTP Delete", "No server response");
+            return null;
+        }
+
+        String responseString = null;
+        try {
+            responseString = convertToString(response.getEntity().getContent()).toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject responseObj;
+        try {
+            responseObj = new JSONObject(responseString);
+            return responseObj;
+        } catch (JSONException e) {
+            Log.e("HTTP Delete", "Error getting JSON Object");
             e.printStackTrace();
         }
         return null;

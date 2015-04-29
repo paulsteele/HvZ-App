@@ -15,10 +15,10 @@
         android:layout_marginBottom="16dp"
         android:id="@+id/textView2"
         android:layout_gravity="center_horizontal"
-        android:text="Missions" />
+        android:text="Complaints" />
 
     <ListView
-        android:id="@+id/missionListView"
+        android:id="@+id/complaintList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

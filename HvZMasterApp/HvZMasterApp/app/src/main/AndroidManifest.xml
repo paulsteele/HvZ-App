@@ -86,6 +86,14 @@
             android:name=".ComplaintActivity"
             android:label="@string/title_activity_complaint" >
         </activity>
+        <activity
+            android:name=".MainActivity2Activity"
+            android:label="@string/title_activity_main_activity2" >
+        </activity>
+        <activity
+            android:name=".ComplaintListActivity"
+            android:label="@string/title_activity_complaint_list" >
+        </activity>
     </application>
 
 </manifest>

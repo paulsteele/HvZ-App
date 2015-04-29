@@ -250,4 +250,10 @@ public class MainActivity extends ActionBarActivity {
         Intent intent = new Intent(this, ComplaintActivity.class);
         startActivity(intent);
     }
+
+    /* admins only: view list of complaints */
+    public void viewComplaintList(View view) {
+        Intent intent = new Intent(this, ComplaintListActivity.class);
+        startActivity(intent);
+    }
 }

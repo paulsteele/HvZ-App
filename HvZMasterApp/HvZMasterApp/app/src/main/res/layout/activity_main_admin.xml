@@ -152,4 +152,58 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_weight="1"
+            card_view:cardCornerRadius="0dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:clickable="false">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Stats"
+                android:textColor="#000000"
+                android:textSize="22sp"
+                android:gravity="center_vertical|center_horizontal"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:onClick="viewStats"/>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_weight="1"
+            card_view:cardCornerRadius="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="8dp"
+            android:clickable="false">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Complaints"
+                android:textColor="#000000"
+                android:textSize="22sp"
+                android:gravity="center_vertical|center_horizontal"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:onClick="viewComplaintList"/>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
 </LinearLayout>
