@@ -602,13 +602,15 @@ public class Server {
     	return c;
     }
 
-    public static void deleteComplaint(String ccode, String gamecode){
+    public static boolean deleteComplaint(String ccode, String gamecode){
         try {
             DBHandler.deleteComplaint(ccode,gamecode,c);
         }
         catch (SQLException e){
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
     
     public static Complaint getComplaint(String ccode, String gamecode){
