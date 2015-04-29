@@ -646,6 +646,8 @@ public class DBHandler{
 		else{
 			return true;
 		}
+		s.close();
+		rs.close();
 	}
 }
 
