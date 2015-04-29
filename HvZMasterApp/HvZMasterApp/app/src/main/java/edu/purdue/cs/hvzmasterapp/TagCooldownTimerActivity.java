@@ -17,13 +17,10 @@ public class TagCooldownTimerActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag_cooldown);
         TextView time = (TextView) findViewById(R.id.tag_cooldown_timer);
-        time.setText("time goes here");
-        /*while(true) {
-            get time
-                if(can tag)
-                    time.setText("You can tag");
-                else
-                    time.setText(time that was gotten);
-        }*/
+        int t = server.getTagCooldownTime(g.getGameCode(), g.getFeedCode());
+        if(t == 0)
+            time.setText("You may now tag");
+        else
+            time.setText(Integer.toString(t));
     }
 }

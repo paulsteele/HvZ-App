@@ -591,30 +591,58 @@ public class Server {
 	    	ccode = RandomStringUtils.randomAlphanumeric(ServerConfiguration.feedcodeLength -1);
 	    	ccode = ServerConfiguration.complaintPrefix + gamecode.toUpperCase();
 	    	//check if exists
-	    	done = true;//!checkGameExisits(gamecode);
+	    	try {
+				done = DBHandler.validateCCode(ccode, gamecode, c);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     	}
     	Complaint c = new Complaint(ccode, sender, message, gamecode);
     	return c;
     }
-    
+
     public static boolean deleteComplaint(String ccode, String gamecode){
-    	return false;
+        try {
+            DBHandler.deleteComplaint(ccode,gamecode,c);
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
     
     public static Complaint getComplaint(String ccode, String gamecode){
-    	return null;
+        Complaint whine;
+        try{
+           whine = DBHandler.getComplaint(ccode,gamecode,c);
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            whine = null;
+        }
+
+        return whine;
     }
     
     public static Complaint[] getAllComplaints(String gamecode){
-    	return null;
+        Complaint [] whines;
+        try{
+            whines = DBHandler.getAllComplaints(gamecode,c);
+        } catch (SQLException e){
+            e.printStackTrace();
+            whines = null;
+        }
+
+    	return whines;
     }
     
     public static byte[] getPicture(String gamecode){
-    	Path path = Paths.get("campus_map.gif");
     	byte[] image = null;
 		try {
-			image = Files.readAllBytes(path);
-		} catch (IOException e) {
+			image = DBHandler.getPicture(gamecode, c);
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -622,7 +650,17 @@ public class Server {
     }
     
     public static boolean setPicture(byte[] value, String gamecode){
-    	return false;
+    	if (value == null){
+    		return false;
+    	}
+    	try {
+			DBHandler.setPicture(value, gamecode, c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+    	return true;
     }
 }
 

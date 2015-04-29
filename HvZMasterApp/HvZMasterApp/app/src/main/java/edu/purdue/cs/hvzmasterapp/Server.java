@@ -262,6 +262,26 @@ public class Server{
 
     public int getTagCooldownTime(String gamecode, String player_feedcode){
 
+        GetTask task = new GetTask(serviceURL + "/" + gamecode + "/user", client);
+
+        JSONObject response = null;
+
+        try {
+            response = task.execute().get();
+        }catch (InterruptedException | ExecutionException e){
+            e.printStackTrace();
+        }
+        if (response == null){
+            Log.e("Get cooldown time", "Server response error");
+            return -1;
+        }
+
+        try {
+            return response.getInt("cooldown");
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
         return -1;
     }
 

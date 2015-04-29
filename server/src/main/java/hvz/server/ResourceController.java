@@ -832,8 +832,8 @@ public class ResourceController {
         	response.put(ServerConfiguration.success, !failed);
         	response.put("humans", numHumans);
         	response.put("zombies", numZombies);
-        	response.put("humantags", numHumanTags);
-        	response.put("zombietags", numZombieTags);
+        	response.put("zombietags", numHumanTags);
+        	response.put("humantags", numZombieTags);
         	response.put("winner", winner);
         	response.put("gameover", ended);
     	}
