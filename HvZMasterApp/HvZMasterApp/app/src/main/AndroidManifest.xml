@@ -94,6 +94,10 @@
             android:name=".ComplaintListActivity"
             android:label="@string/title_activity_complaint_list" >
         </activity>
+        <activity
+            android:name=".StatsActivity"
+            android:label="@string/title_activity_stats" >
+        </activity>
     </application>
 
 </manifest>

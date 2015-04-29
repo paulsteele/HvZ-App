@@ -242,7 +242,8 @@ public class MainActivity extends ActionBarActivity {
 
     /* view current stats */
     public void viewStats(View view) {
-
+        Intent intent = new Intent(this, StatsActivity.class);
+        startActivity(intent);
     }
 
     /* players only: screen to submit complaint */

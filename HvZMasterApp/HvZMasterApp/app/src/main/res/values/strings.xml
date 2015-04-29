@@ -35,4 +35,5 @@
     <string name="title_activity_complaint">ComplaintActivity</string>
     <string name="title_activity_main_activity2">MainActivity2Activity</string>
     <string name="title_activity_complaint_list">ComplaintListActivity</string>
+    <string name="title_activity_stats">StatsActivity</string>
 </resources>

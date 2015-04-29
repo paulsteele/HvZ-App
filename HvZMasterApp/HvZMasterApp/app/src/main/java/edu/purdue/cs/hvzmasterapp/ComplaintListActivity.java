@@ -89,6 +89,7 @@ public class ComplaintListActivity extends ActionBarActivity {
         if (selected != null) {
             String gamecode = g.getGameCode();
             server.deleteComplaint(selected.getID(), gamecode);
+            selected = null;
         }
     }
 }
