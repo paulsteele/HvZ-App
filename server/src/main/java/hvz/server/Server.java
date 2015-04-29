@@ -629,7 +629,17 @@ public class Server {
     }
     
     public static boolean setPicture(byte[] value, String gamecode){
-    	return false;
+    	if (value == null){
+    		return false;
+    	}
+    	try {
+			DBHandler.setPicture(value, gamecode, c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+    	return true;
     }
 }
 
