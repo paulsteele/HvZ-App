@@ -824,7 +824,7 @@ public class Server{
     }
 
     /* get list of complaints */
-    public Complaint[] getComplaints(String gamecode) {
+    public ArrayList<Complaint> getComplaints(String gamecode) {
         GetTask task = new GetTask(serviceURL + "/" + gamecode + "/complaint", client);
 
         JSONObject response = null;
@@ -837,13 +837,24 @@ public class Server{
         if (response == null) {
             return null;
         }
-        /*
-        try {
 
+        ArrayList<Complaint> complaints = new ArrayList<>();
+        try {
+            JSONArray array = response.getJSONArray("complaints");
+
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject complaint = array.getJSONObject(i);
+                String sender = complaint.getString("sender");
+                String message = complaint.getString("message");
+                String complaintcode = complaint.getString("complaintcode");
+                complaints.add(new Complaint(complaintcode, message, sender));
+            }
+
+            return complaints;
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        */
+
         return null;
     }
 

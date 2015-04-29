@@ -17,6 +17,11 @@
         android:layout_gravity="center_horizontal"
         android:text="Complaints" />
 
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"/>
+
     <ListView
         android:id="@+id/complaintList"
         android:layout_width="match_parent"
@@ -24,5 +29,22 @@
         android:layout_weight="1"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:choiceMode="singleChoice"
+        android:listSelector="@drawable/item_selector" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Delete Complaint"
+        android:textSize="24sp"
+        android:textColor="#000000"
+        android:clickable="true"
+        android:onClick="deleteComplaint"
+        android:gravity="center_vertical|center_horizontal" />
 </LinearLayout>

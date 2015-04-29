@@ -21,7 +21,6 @@ import java.util.ArrayList;
 public class MissionListActivity extends ActionBarActivity {
 
     ArrayList<Mission> missionList;
-    ArrayList<String> itemList = new ArrayList<>();
     Server server = Server.getInstance();
     private Globals global = Globals.getInstance();
     ListView list;
