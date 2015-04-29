@@ -619,6 +619,25 @@ public class DBHandler{
 		Complaint [] array = complaints.toArray(new Complaint[complaints.size()]);
 		return array;
 	}
+	public static void setPicture(byte [] blob, String gameCode, Connection c)throws SQLException{
+		PreparedStatement s = null;
+		String command = "insert into maps(gameCode, map) VALUES(?,?)";
+		s = c.prepareStatement(command);
+		s.setString(1, gameCode);
+		s.setBytes(2, blob);
+		s.executeUpdate();
+		s.close();
+	}
+	public static byte []  getPicture(String gameCode, Connection c)throws SQLException{
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("select map from maps where gameCode = '" + gameCode + "'");
+		if (!rs.isBeforeFirst())
+			return null;
+		byte [] map = rs.getBytes("map");
+		s.close();
+		rs.close();
+		return map;
+	}
 }
 
 
