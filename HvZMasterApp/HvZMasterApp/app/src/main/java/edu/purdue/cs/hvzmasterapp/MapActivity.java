@@ -18,7 +18,7 @@ public class MapActivity extends ActionBarActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        Bitmap map = server.getMap();
+        Bitmap map = server.getMap(Globals.getInstance().getGameCode());
 
         ImageView view = (ImageView) findViewById(R.id.map);
         view.setImageBitmap(map);
