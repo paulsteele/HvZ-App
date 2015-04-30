@@ -934,7 +934,7 @@ public class ResourceController {
     			complaint.put("sender", complaintObjects[i].sender);
     			complaint.put("message", complaintObjects[i].message);
     			complaint.put("complaintcode", complaintObjects[i].ccode);
-    			complaints.put(i, complaint);
+    			complaints.put(complaint);
 			}
 			output.put(ServerConfiguration.success, true);
 			output.put("complaints", complaints);

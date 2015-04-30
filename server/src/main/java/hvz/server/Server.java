@@ -589,17 +589,25 @@ public class Server {
     	String ccode = null;
     	while (!done){
 	    	ccode = RandomStringUtils.randomAlphanumeric(ServerConfiguration.feedcodeLength -1);
-	    	ccode = ServerConfiguration.complaintPrefix + gamecode.toUpperCase();
+	    	ccode = ServerConfiguration.complaintPrefix + ccode.toUpperCase();
 	    	//check if exists
 	    	try {
-				done = DBHandler.validateCCode(ccode, gamecode, c);
+				done = !DBHandler.validateCCode(ccode, gamecode, c);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				break;
 			}
     	}
-    	Complaint c = new Complaint(ccode, sender, message, gamecode);
-    	return c;
+    	Complaint cc = new Complaint(ccode, sender, message, gamecode);
+    	try {
+			DBHandler.createComplaint(ccode, sender, message, gamecode, c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+    	return cc;
     }
 
     public static boolean deleteComplaint(String ccode, String gamecode){

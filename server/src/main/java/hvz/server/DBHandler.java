@@ -582,7 +582,7 @@ public class DBHandler{
 	
 	public static void createComplaint(String ccode, String sender, String message, String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
-		String command = "insert into games complaints('" + ccode + "', '" + sender + "', '" + message + "', '" + gameCode + "')";
+		String command = "insert into complaints values('" + ccode + "', '" + sender + "', '" + message + "', '" + gameCode + "')";
 		s.executeUpdate(command);
 	}
 	
@@ -641,11 +641,17 @@ public class DBHandler{
 	public static boolean validateCCode(String ccode, String gameCode, Connection c) throws SQLException{
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("select * from complaints where ccode  = '" + ccode + "' and gameCode = '" + gameCode + "'");
-		if (!rs.isBeforeFirst())
+		if (!rs.isBeforeFirst()){
+			s.close();
+			rs.close();
 			return false;
+		}
 		else{
+			s.close();
+			rs.close();
 			return true;
 		}
+
 	}
 }
 
