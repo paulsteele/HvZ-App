@@ -15,6 +15,9 @@ public class StatsActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats);
+
+        stats = server.getStats(Globals.getInstance().getGameCode());
+        
         TextView text = (TextView) findViewById(R.id.score_humans);
         text.setText(Integer.toString(stats.numHumans));
         text = (TextView) findViewById(R.id.score_zombies);
