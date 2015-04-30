@@ -620,13 +620,35 @@ public class DBHandler{
 		return array;
 	}
 	public static void setPicture(byte [] blob, String gameCode, Connection c)throws SQLException{
-		PreparedStatement s = null;
-		String command = "insert into maps(gameCode, map) VALUES(?,?)";
-		s = c.prepareStatement(command);
-		s.setString(1, gameCode);
-		s.setBytes(2, blob);
-		s.executeUpdate();
-		s.close();
+		Statement ss = c.createStatement();
+		ResultSet rs = ss.executeQuery("select map from maps where gameCode = '" + gameCode + "'");
+		if (!rs.isBeforeFirst()){
+			PreparedStatement s = null;
+			String command = "insert into maps(gameCode, map) VALUES(?,?)";
+			s = c.prepareStatement(command);
+			s.setString(1, gameCode);
+			s.setBytes(2, blob);
+			s.executeUpdate();
+			s.close();
+			ss.close();
+			rs.close();
+			return;
+		}
+		else{
+			PreparedStatement s = null;
+			//update users set isZombie = 0 where feedCode
+			String command = "update maps(gameCode, map) set map = (?) where gameCode = (?)";
+			s = c.prepareStatement(command);
+			s.setBytes(1, blob);
+			s.setString(2, gameCode);
+			s.executeUpdate();
+			s.close();
+			ss.close();
+			rs.close();
+			return;
+		}
+		
+
 	}
 	public static byte []  getPicture(String gameCode, Connection c)throws SQLException{
 		Statement s = c.createStatement();
