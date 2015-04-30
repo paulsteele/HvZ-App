@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -44,6 +45,7 @@ public class MapActivity extends ActionBarActivity{
         }
     }
 
+    /* code from http://stackoverflow.com/questions/10296734/image-uri-to-bytesarray */
     public void postMap(View view) {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
@@ -51,7 +53,7 @@ public class MapActivity extends ActionBarActivity{
     }
 
     public void sendMap(InputStream imageStream) {
-
+        Log.d("sendMap", "sending map");
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
         int bufferSize = 1024;
         byte[] buffer = new byte[bufferSize];
@@ -75,7 +77,7 @@ public class MapActivity extends ActionBarActivity{
         switch(requestCode) {
             case SELECT_PHOTO:
                 if(resultCode == RESULT_OK){
-                    /* code from http://stackoverflow.com/questions/10296734/image-uri-to-bytesarray */
+                    Log.d("sendMap", "selected pic");
                     Uri selectedImage = imageReturnedIntent.getData();
                     InputStream imageStream = null;
                     try {
@@ -85,6 +87,7 @@ public class MapActivity extends ActionBarActivity{
                     }
                     sendMap(imageStream);
                 }
+                break;
         }
     }
 }

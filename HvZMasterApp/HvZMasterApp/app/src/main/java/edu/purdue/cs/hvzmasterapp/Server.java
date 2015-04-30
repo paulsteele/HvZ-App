@@ -431,7 +431,7 @@ public class Server{
     }
 
     public int postMap(byte[] map, String gamecode) {
-        PostByteTask task = new PostByteTask(gamecode, client, map);
+        PostByteTask task = new PostByteTask(serviceURL + "/" + gamecode + "/map", client, map);
 
         JSONObject response = null;
         try {
@@ -1081,8 +1081,8 @@ class PostTask extends AsyncTask<Void, Void, JSONObject> {
             // Add JSON object to post
             ByteArrayEntity bae = new ByteArrayEntity(request);
             post.setEntity(bae);
-            /*post.setHeader("Accept", "application/json");
-            post.setHeader("Content-type", "application/json");*/
+            post.setHeader("Accept", "application/json");
+            post.setHeader("Content-type", "image/png");
 
             // Send request and get response
             response = client.execute(post);
