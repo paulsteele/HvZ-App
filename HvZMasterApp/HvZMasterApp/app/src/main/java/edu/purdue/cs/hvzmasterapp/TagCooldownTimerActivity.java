@@ -20,7 +20,7 @@ public class TagCooldownTimerActivity extends ActionBarActivity {
         int t = server.getTagCooldownTime(g.getGameCode(), g.getFeedCode());
         if(t == -1)
             time.setText("something went wrong");
-        if(t == 0)
+        else if(t == 0)
             time.setText("You may now tag");
         else {
             int sec;
