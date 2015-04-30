@@ -589,7 +589,7 @@ public class Server {
     	String ccode = null;
     	while (!done){
 	    	ccode = RandomStringUtils.randomAlphanumeric(ServerConfiguration.feedcodeLength -1);
-	    	ccode = ServerConfiguration.complaintPrefix + gamecode.toUpperCase();
+	    	ccode = ServerConfiguration.complaintPrefix + ccode.toUpperCase();
 	    	//check if exists
 	    	try {
 				done = !DBHandler.validateCCode(ccode, gamecode, c);
