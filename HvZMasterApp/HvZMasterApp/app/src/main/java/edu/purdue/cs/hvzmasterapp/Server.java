@@ -1,5 +1,7 @@
 package edu.purdue.cs.hvzmasterapp;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -9,6 +11,7 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
@@ -16,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -407,8 +411,23 @@ public class Server{
     }
     
     //returns an image of a map
-    public void getMap(){
-    
+    public Bitmap getMap(String gamecode){
+        GetByteTask task = new GetByteTask(serviceURL + "/" + gamecode + "/map", client);
+
+        byte[] response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            Log.d("getMap", "server error");
+            return null;
+        }
+
+        Bitmap bitmap = BitmapFactory.decodeByteArray(response, 0, response.length);
+        return bitmap;
     }
 
     //returns 0 if game is successfully started
@@ -835,6 +854,7 @@ public class Server{
         }
 
         if (response == null) {
+            Log.d("getComplaints", "No server respose");
             return null;
         }
 
@@ -850,11 +870,13 @@ public class Server{
                 complaints.add(new Complaint(complaintcode, message, sender));
             }
 
+            Log.d("getComplaints", "success");
             return complaints;
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
+        Log.d("getComplaints", "error");
         return null;
     }
 
@@ -961,6 +983,75 @@ class PostTask extends AsyncTask<Void, Void, JSONObject> {
             post.setEntity(se);
             post.setHeader("Accept", "application/json");
             post.setHeader("Content-type", "application/json");
+
+            // Send request and get response
+            response = client.execute(post);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (response == null) {
+            Log.e("HTTP Post", "No server response");
+            return null;
+        }
+
+        // convert response to string
+        String responseString = null;
+        try {
+            responseString = convertToString(response.getEntity().getContent()).toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // convert response string to JSON object
+        JSONObject responseObj;
+        try {
+            responseObj = new JSONObject(responseString);
+            return responseObj;
+        } catch (JSONException e) {
+            Log.e("HTTP Post", "Error getting JSON Object");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private StringBuilder convertToString(InputStream is) {
+        String line;
+
+        BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+        StringBuilder string = new StringBuilder();
+        try {
+            while ((line = rd.readLine()) != null) {
+                string.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return string;
+    }
+}class PostByteTask extends AsyncTask<Void, Void, JSONObject> {
+    HttpClient client;
+    String url;
+    byte[] request;
+
+    PostByteTask(String url, HttpClient client, byte[] request) {
+        this.client = client;
+        this.url = url;
+        this.request = request;
+    }
+
+    @Override
+    protected JSONObject doInBackground(Void... v) {
+        // Create post method
+        HttpPost post = new HttpPost(url);
+
+        HttpResponse response = null;
+        try {
+            // Add JSON object to post
+            ByteArrayEntity bae = new ByteArrayEntity(request);
+            post.setEntity(bae);
+            /*post.setHeader("Accept", "application/json");
+            post.setHeader("Content-type", "application/json");*/
 
             // Send request and get response
             response = client.execute(post);
@@ -1137,6 +1228,45 @@ class GetTask extends AsyncTask<Void, Void, JSONObject> {
         }
 
         return string;
+    }
+}
+
+class GetByteTask extends AsyncTask<Void, Void, byte[]> {
+    HttpClient client;
+    String url;
+
+    GetByteTask(String url, HttpClient client) {
+        this.client = client;
+        this.url = url;
+    }
+
+    @Override
+    protected byte[] doInBackground(Void... v) {
+        // Create GET method
+        HttpGet get = new HttpGet(url);
+
+        HttpResponse response = null;
+        try {
+            response = client.execute(get);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (response == null) {
+            Log.e("HTTP Get", "No server response");
+            return null;
+        }
+
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+        try {
+            response.getEntity().writeTo(output);
+            byte[] bytes = output.toByteArray();
+            return bytes;
+        } catch (IOException e) {
+            e.printStackTrace();;
+        }
+
+        return null;
     }
 }
 

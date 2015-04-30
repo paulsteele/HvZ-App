@@ -120,7 +120,7 @@ public class MainActivity extends ActionBarActivity {
             if (g.isZombie()) {
                 layout.setBackground(getResources().getDrawable(R.drawable.zombie_back));
                 text.setText("Zombie: " + g.getUsername());
-                CardView revive = (CardView) findViewById(R.id.card4);
+                CardView revive = (CardView) findViewById(R.id.card5);
                 revive.setVisibility(View.VISIBLE);
                 CardView cdtimer = (CardView) findViewById(R.id.card6);
                 cdtimer.setVisibility(View.VISIBLE);
@@ -128,7 +128,7 @@ public class MainActivity extends ActionBarActivity {
             else {
                 layout.setBackground(getResources().getDrawable(R.drawable.human_back));
                 text.setText("Human: " + g.getUsername());
-                CardView revive = (CardView) findViewById(R.id.card4);
+                CardView revive = (CardView) findViewById(R.id.card5);
                 revive.setVisibility(View.GONE);
                 CardView cdtimer = (CardView) findViewById(R.id.card6);
                 cdtimer.setVisibility(View.GONE);
