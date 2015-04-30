@@ -18,6 +18,8 @@ public class TagCooldownTimerActivity extends ActionBarActivity {
         setContentView(R.layout.activity_tag_cooldown);
         TextView time = (TextView) findViewById(R.id.tag_cooldown_timer);
         int t = server.getTagCooldownTime(g.getGameCode(), g.getFeedCode());
+        if(t == -1)
+            time.setText("something went wrong");
         if(t == 0)
             time.setText("You may now tag");
         else
