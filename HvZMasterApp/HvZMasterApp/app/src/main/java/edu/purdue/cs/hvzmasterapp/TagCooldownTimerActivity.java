@@ -22,7 +22,12 @@ public class TagCooldownTimerActivity extends ActionBarActivity {
             time.setText("something went wrong");
         if(t == 0)
             time.setText("You may now tag");
-        else
-            time.setText(Integer.toString(t));
+        else {
+            int sec;
+            int min;
+            min = t/60;
+            sec = t%60;
+            time.setText(Integer.toString(min)+":"+Integer.toString(sec));
+        }
     }
 }
