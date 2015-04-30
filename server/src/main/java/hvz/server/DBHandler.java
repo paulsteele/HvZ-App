@@ -637,7 +637,7 @@ public class DBHandler{
 		else{
 			PreparedStatement s = null;
 			//update users set isZombie = 0 where feedCode
-			String command = "update maps(gameCode, map) set map = ? where gameCode = ?";
+			String command = "update maps set map = ? where gameCode = ?";
 			s = c.prepareStatement(command);
 			s.setBytes(1, blob);
 			s.setString(2, gameCode);
