@@ -430,6 +430,37 @@ public class Server{
         return bitmap;
     }
 
+    public int postMap(byte[] map, String gamecode) {
+        PostByteTask task = new PostByteTask(gamecode, client, map);
+
+        JSONObject response = null;
+        try {
+            response = task.execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null) {
+            return -1;
+        }
+
+        try {
+            if (response.getBoolean("success")) {
+                Log.d("postMap", "success");
+                return 0;
+            }
+            else {
+                Log.d("postMap", "failed");
+                return 1;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("postMap", "error");
+        return -1;
+    }
+
     //returns 0 if game is successfully started
     public int startGame(String gamecode) {
         PutTask task = new PutTask(serviceURL + "/" + gamecode, client, new JSONObject());

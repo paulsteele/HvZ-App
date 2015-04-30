@@ -58,7 +58,7 @@ public class ComplaintListActivity extends ActionBarActivity {
             Complaint complaint = getItem(position);
             // Check if an existing view is being reused, otherwise inflate the view
             if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.missionitem, parent, false);
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.complaintitem, parent, false);
             }
             // Lookup view for data population
             TextView sender = (TextView) convertView.findViewById(R.id.sender);
@@ -77,19 +77,20 @@ public class ComplaintListActivity extends ActionBarActivity {
         complaints = server.getComplaints(g.getGameCode());
         if (complaints == null) {
             complaints = new ArrayList<>();
-            complaints.add(new Complaint("0", "", "No complaints to show"));
         }
+
         list = (ListView) findViewById(R.id.complaintList);
 
         adapter = new ComplaintAdapter(this, complaints);
         list.setAdapter(adapter);
     }
 
-    public void deleteComplaint() {
+    public void deleteComplaint(View view) {
         if (selected != null) {
             String gamecode = g.getGameCode();
             server.deleteComplaint(selected.getID(), gamecode);
             selected = null;
+            refresh();
         }
     }
 }
