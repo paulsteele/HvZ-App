@@ -266,7 +266,7 @@ public class Server{
 
     public int getTagCooldownTime(String gamecode, String player_feedcode){
 
-        GetTask task = new GetTask(serviceURL + "/" + gamecode + "/user", client);
+        GetTask task = new GetTask(serviceURL + "/" + gamecode + "/user/" + player_feedcode, client);
 
         JSONObject response = null;
 
