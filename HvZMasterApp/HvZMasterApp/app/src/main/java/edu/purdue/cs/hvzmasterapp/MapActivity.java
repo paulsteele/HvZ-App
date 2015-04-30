@@ -12,14 +12,16 @@ import android.widget.ImageView;
  * Created by manasigoel on 4/15/15.
  */
 public class MapActivity extends ActionBarActivity{
+    Server server = Server.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        /*Bitmap b=BitmapFactory.decodeResource();
-        ImageView iv=(ImageView)findViewById(R.id.image);
-        iv.setImageBitmap();*/
+        Bitmap map = server.getMap();
+
+        ImageView view = (ImageView) findViewById(R.id.map);
+        view.setImageBitmap(map);
     }
 
 }

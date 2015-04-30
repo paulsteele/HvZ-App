@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ public class ComplaintActivity extends ActionBarActivity {
     }
 
     public void sendComplaint(View view) {
+        Log.d("complaint activity", "sending complaint");
         String gamecode = g.getGameCode();
         String sender = g.getUsername();
         String message = ((EditText) findViewById(R.id.complaint_message)).getText().toString();
