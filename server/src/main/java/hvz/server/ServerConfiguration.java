@@ -22,6 +22,7 @@ public class ServerConfiguration implements EmbeddedServletContainerCustomizer {
 	public static final String success = "success"; //success message
 	public static final String dummyCode = "00000000"; //value for a not assigned player.
 	public static final int alphaZombieCount = 4; //number of alpha zombies to spawn
+	private static boolean logging = true; // whether or not to show console logs
 	/**
 	 * Component function to actually handle customizations.
 	 */
@@ -44,6 +45,21 @@ public class ServerConfiguration implements EmbeddedServletContainerCustomizer {
      */
     public static void setPortNumber(int portNumber){
     	ServerConfiguration.portNumber = portNumber;
+    }
+    /**
+     * Sets whether or not logging is enabled
+     * @param logging
+     */
+    public static void setLogging(boolean logging){
+    	ServerConfiguration.logging = logging;
+    }
+    
+    /**
+     * returns whether or not logging is enabled
+     * @return
+     */
+    public static boolean getLogging(){
+    	return logging;
     }
 
 }

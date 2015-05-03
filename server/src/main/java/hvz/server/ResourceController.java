@@ -1,11 +1,14 @@
 package hvz.server;
 
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,9 +24,8 @@ public class ResourceController {
 	 * Valid JSON {"username": "username", "password":"password", "admin": true}
 	 */
     @RequestMapping(value = "/user", method = RequestMethod.POST)
-    public String registerPlayer (@RequestBody String value) {
+    public String registerPlayer (HttpServletRequest request, @RequestBody String value) {
     	boolean failed = false;
-
     	//take in input and create variables for each entry
 		JSONObject input = null;
 		try {
@@ -87,7 +89,7 @@ public class ResourceController {
      * Valid JSON {"feedcode": "feedocde", "gamecode": "gamecode"}
      */
     @RequestMapping(value = "/user/{username}", method = RequestMethod.PUT)
-    public String update(@PathVariable("username") String username, @RequestBody String value) {
+    public String update(HttpServletRequest request, @PathVariable("username") String username, @RequestBody String value) {
     	boolean failed = false;
     	//take in input and create variables for each entry
 		JSONObject input = null;
@@ -138,7 +140,7 @@ public class ResourceController {
      * Valid JSON {"password": "password}
      */
     @RequestMapping(value = "/user/{username}", method = RequestMethod.POST)
-    public String login(@PathVariable("username") String username, @RequestBody String value) {
+    public String login(HttpServletRequest request, @PathVariable("username") String username, @RequestBody String value) {
     	boolean failed = false;
     	//take in input and create variables for each entry
 		JSONObject input = null;
@@ -197,7 +199,7 @@ public class ResourceController {
      * Retrieves a user from the database and sends it to the client
      */
     @RequestMapping(value = "/{game}/user/{feedcode}", method = RequestMethod.GET)
-    public String getPlayer (@PathVariable("feedcode") String feedcode, @PathVariable("game") String game){
+    public String getPlayer (HttpServletRequest request, @PathVariable("feedcode") String feedcode, @PathVariable("game") String game){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	//Set up response object
 		JSONObject output = new JSONObject();
@@ -234,7 +236,7 @@ public class ResourceController {
      * Gets a user 
      */
     @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
-    public String getPlayer (@PathVariable("username") String username){
+    public String getPlayer (HttpServletRequest request, @PathVariable("username") String username){
     	//Set up response object
 		JSONObject output = new JSONObject();
 		//grab the user
@@ -268,8 +270,8 @@ public class ResourceController {
      * Returns all users in a current game
      */
     @RequestMapping(value = "/{game}/user", method = RequestMethod.GET)
-    public String getAll (@PathVariable("game") String game) {
-		//Set up response object
+    public String getAll (HttpServletRequest request, @PathVariable("game") String game) {
+    	//Set up response object
 		JSONObject output = new JSONObject();
 		//set JSONArray and holder array
 		JSONArray users = new JSONArray();
@@ -305,7 +307,7 @@ public class ResourceController {
      * Valid JSON {"admin": false}
      */
     @RequestMapping (value = "{game}/feedcode", method  = RequestMethod.POST)
-    public String generateFeedcode(@RequestBody String value, @PathVariable("game") String game){
+    public String generateFeedcode(HttpServletRequest request, @RequestBody String value, @PathVariable("game") String game){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	//take in input and create variables for each entry
 		JSONObject input = null;
@@ -368,7 +370,7 @@ public class ResourceController {
      * Valid JSON {"tagger": feedcode, "tagged": feedcode}
      */
     @RequestMapping(value = "/{game}/tag", method = RequestMethod.POST)
-    public String tag(@RequestBody String value, @PathVariable("game") String game){
+    public String tag(HttpServletRequest request, @RequestBody String value, @PathVariable("game") String game){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	if (!failed && Server.checkGameEnded(game)){//can't tag if game already ended
     		failed = true;
@@ -418,7 +420,7 @@ public class ResourceController {
      * get all games
      */
     @RequestMapping(value ="/", method = RequestMethod.GET)
-    public String getGames(){
+    public String getGames(HttpServletRequest request){
     	//Set up response object
     	JSONObject output = new JSONObject();
     	//set JSONArray and holder array
@@ -451,7 +453,7 @@ public class ResourceController {
      * Valid JSON {"gamename": value, "creator": value}
      */
     @RequestMapping(value = "/", method  = RequestMethod.POST)
-    public String createGame(@RequestBody String value) {
+    public String createGame(HttpServletRequest request, @RequestBody String value) {
     	boolean failed = false; //immediately fail if game doesn't exist
     	//take in input and create variables for each entry
 		JSONObject input = null;
@@ -487,7 +489,7 @@ public class ResourceController {
      * sets a game to begin
      */
     @RequestMapping(value = "{game}", method = RequestMethod.PUT)
-    public String beginGame (@PathVariable("game") String game) {
+    public String beginGame (HttpServletRequest request, @PathVariable("game") String game) {
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	if (Server.checkBegun(game)){ //fail if started
     		failed = true;
@@ -511,7 +513,7 @@ public class ResourceController {
      * Checks to see if a game has begun
      */
     @RequestMapping(value = "{game}", method = RequestMethod.GET)
-    	public String getGame(@PathVariable("game") String game) {
+    	public String getGame(HttpServletRequest request, @PathVariable("game") String game) {
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	//Set up response object
 		JSONObject response = new JSONObject();
@@ -532,7 +534,7 @@ public class ResourceController {
      */
     
     @RequestMapping(value = "{game}/forcezombie/{feedcode}", method = RequestMethod.GET)
-    public String forcezombie(@PathVariable("game") String game, @PathVariable("feedcode") String feedcode){
+    public String forcezombie(HttpServletRequest request, @PathVariable("game") String game, @PathVariable("feedcode") String feedcode){
     	Server.changeStatus(feedcode, game, true);
 		JSONObject response = new JSONObject();
     	try{
@@ -550,7 +552,7 @@ public class ResourceController {
      * gets all revivecodes
      */
     @RequestMapping(value = "{game}/revivecodes", method = RequestMethod.GET)
-    public String getRevivecodes(@PathVariable("game") String game){
+    public String getRevivecodes(HttpServletRequest request, @PathVariable("game") String game){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	JSONObject output = new JSONObject();
     	//set JSONArray and holder array
@@ -576,7 +578,7 @@ public class ResourceController {
      * returns a new revive code
      */
     @RequestMapping(value = "{game}/revivecode", method = RequestMethod.GET)
-    public String getRevive(@PathVariable("game") String game) {
+    public String getRevive(HttpServletRequest request, @PathVariable("game") String game) {
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	JSONObject response = new JSONObject();
     	try{
@@ -596,7 +598,7 @@ public class ResourceController {
      * revives a player
      */
     @RequestMapping(value = "{game}/revivecode", method = RequestMethod.POST)
-    public String revive(@RequestBody String value, @PathVariable("game") String game) {
+    public String revive(HttpServletRequest request, @RequestBody String value, @PathVariable("game") String game) {
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	//take in input and create variables for each entry
 		JSONObject input = null;
@@ -649,7 +651,7 @@ public class ResourceController {
      * returns an array of all missions
      */
     @RequestMapping(value = "{game}/mission", method = RequestMethod.GET)
-    public String getAllMissions(@PathVariable("game") String game) {
+    public String getAllMissions(HttpServletRequest request, @PathVariable("game") String game) {
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	//Set up response object
     	JSONObject output = new JSONObject();
@@ -684,7 +686,7 @@ public class ResourceController {
      * create a mission
      */
     @RequestMapping(value = "{game}/mission", method = RequestMethod.POST)
-    public String createMission(@RequestBody String value, @PathVariable("game") String game) {
+    public String createMission(HttpServletRequest request, @RequestBody String value, @PathVariable("game") String game) {
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
 		JSONObject input = null;
 		String humanObj = null;
@@ -725,7 +727,7 @@ public class ResourceController {
      * returns a specific misison
      */
     @RequestMapping(value = "{game}/mission/{title}", method = RequestMethod.GET)
-    public String getMission(@PathVariable("game") String game, @PathVariable("title") String title) {
+    public String getMission(HttpServletRequest request, @PathVariable("game") String game, @PathVariable("title") String title) {
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	Mission mission = Server.getMission(game, title);
     	if (mission == null){
@@ -755,7 +757,7 @@ public class ResourceController {
      * updates a specific misison
      */
     @RequestMapping(value = "{game}/mission/{title}", method = RequestMethod.PUT)
-    public String updateMission(@RequestBody String value, @PathVariable("game") String game, @PathVariable("title") String title) {
+    public String updateMission(HttpServletRequest request, @RequestBody String value, @PathVariable("game") String game, @PathVariable("title") String title) {
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	//take in input and create variables for each entry
 		JSONObject input = null;
@@ -789,7 +791,7 @@ public class ResourceController {
     }
     
     @RequestMapping(value = "{game}/end", method = RequestMethod.POST)
-    public String endGame(@RequestBody String value, @PathVariable("game") String game){
+    public String endGame(HttpServletRequest request, @RequestBody String value, @PathVariable("game") String game){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	if (!Server.checkBegun(game)){ //fail if not started
     		failed = true;
@@ -809,7 +811,7 @@ public class ResourceController {
     }
     
     @RequestMapping(value = "{game}/end", method = RequestMethod.GET)
-    public String getEndStats(@PathVariable("game") String game){
+    public String getEndStats(HttpServletRequest request, @PathVariable("game") String game){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	int numHumans = -1;
     	int numZombies = -1;
@@ -844,7 +846,7 @@ public class ResourceController {
     }
     
     @RequestMapping(value = "{game}/complaint", method = RequestMethod.POST)
-    public String createComplaint(@RequestBody String value, @PathVariable("game") String game){
+    public String createComplaint(HttpServletRequest request, @RequestBody String value, @PathVariable("game") String game){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	//take in input and create variables for each entry
 		JSONObject input = null;
@@ -895,7 +897,7 @@ public class ResourceController {
     }
     
     @RequestMapping(value = "{game}/complaint/{ccode}", method = RequestMethod.GET)
-    public String getComplaint(@PathVariable("game") String game, @PathVariable("ccode") String ccode){
+    public String getComplaint(HttpServletRequest request, @PathVariable("game") String game, @PathVariable("ccode") String ccode){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	Complaint c = null;
     	if (!failed){
@@ -921,7 +923,7 @@ public class ResourceController {
     }
 
     @RequestMapping(value = "{game}/complaint", method = RequestMethod.GET)
-    public String getAllComplaints(@PathVariable("game") String game){
+    public String getAllComplaints(HttpServletRequest request, @PathVariable("game") String game){
 		//Set up response object
 		JSONObject output = new JSONObject();
 		//set JSONArray and holder array
@@ -946,7 +948,7 @@ public class ResourceController {
     }
     
     @RequestMapping(value = "{game}/complaint/{ccode}", method = RequestMethod.DELETE)
-    public String deleteComplaint(@PathVariable("game") String game, @PathVariable("ccode") String ccode){
+    public String deleteComplaint(HttpServletRequest request, @PathVariable("game") String game, @PathVariable("ccode") String ccode){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	if (!failed){
     		failed = Server.deleteComplaint(ccode, game);
@@ -963,7 +965,7 @@ public class ResourceController {
     }
     
     @RequestMapping(value = "{game}/map", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
-    public byte[] getMap(@PathVariable("game") String game){
+    public byte[] getMap(HttpServletRequest request, @PathVariable("game") String game){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	byte[] image = null;
     	if (!failed){
@@ -976,7 +978,7 @@ public class ResourceController {
     }
     
     @RequestMapping(value = "{game}/map", method = RequestMethod.POST)
-    public String setMap(@PathVariable("game") String game, @RequestBody byte[] value){
+    public String setMap(HttpServletRequest request, @PathVariable("game") String game, @RequestBody byte[] value){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
     	if (!failed){
     		failed = !Server.setPicture(value, game);

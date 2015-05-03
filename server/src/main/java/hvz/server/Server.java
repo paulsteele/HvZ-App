@@ -1,10 +1,5 @@
 package hvz.server;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Random;
@@ -30,6 +25,7 @@ public class Server {
     public static void main( String[] args ) {
     	//setup basic server configuration values
     	ServerConfiguration.setPortNumber(8080);
+    	ServerConfiguration.setLogging(true);
     	//obtain connection to database
     	c = DBHandler.init();
     	//make sure connection was created correctly
