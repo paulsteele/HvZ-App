@@ -20,8 +20,8 @@ public class AdminTest extends ActivityInstrumentationTestCase2<MainActivity> {
             e.printStackTrace();
         }
         main = getActivity();
-        main.isLoggedIn = true;
-        main.self = new User("admin", "a", false, true);
+        //main.isLoggedIn = true;
+       // main.self = new User("admin", "a", false, true);
     }
 
     public void testLogin() {

@@ -30,7 +30,7 @@ import java.util.concurrent.ExecutionException;
 
 public class Server{
     private static final Server INSTANCE = new Server();
-    private static String serviceURL = "http://128.211.191.47:8080";
+    private static String serviceURL = "http://hvzmasterapp.com:8080";
     private static final HttpClient client = new DefaultHttpClient();
 
     private Server() { }
