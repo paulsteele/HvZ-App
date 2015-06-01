@@ -2,13 +2,11 @@ package hvz.server;
 
 
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -81,12 +79,15 @@ public class ResourceController {
 		catch (JSONException e) {//extreme error
 			e.printStackTrace();
 		}
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : REGISTER : " + username + ", " + password);
+    	}
     	return output.toString();
     }
     
     /**
      * Updates a user 
-     * Valid JSON {"feedcode": "feedocde", "gamecode": "gamecode"}
+     * Valid JSON {"feedcode": "feedcode", "gamecode": "gamecode"}
      */
     @RequestMapping(value = "/user/{username}", method = RequestMethod.PUT)
     public String update(HttpServletRequest request, @PathVariable("username") String username, @RequestBody String value) {
@@ -130,6 +131,10 @@ public class ResourceController {
 		catch (JSONException e) {//extreme error
 			e.printStackTrace();
 		}
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : USER UPDATE : " + username + ", " + feedcode + ", " + gamecode);
+
+    	}
     	return output.toString();
 		
 		
@@ -192,6 +197,11 @@ public class ResourceController {
 			System.out.println("JSONException while attempting to login");
 			e.printStackTrace();
 		}
+    	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : LOGIN : " + username);
+    	}
+    	
     	return output.toString();
     }
     
@@ -229,6 +239,11 @@ public class ResourceController {
 			//big error
 			e.printStackTrace();
 		}
+    	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : GET PLAYER : " + game + ", " + feedcode);
+    	}
+    	
     	return output.toString();
     }
     
@@ -263,6 +278,11 @@ public class ResourceController {
 			//big error
 			e.printStackTrace();
 		}
+    	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : GET USER : " + username);
+    	}
+    	
     	return output.toString();
     }
     
@@ -299,6 +319,11 @@ public class ResourceController {
 			//big error
 			e.printStackTrace();
 		}
+    	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : GET USERS : " + game);
+    	}
+    	
     	return output.toString();
     }
     
@@ -362,6 +387,10 @@ public class ResourceController {
 			e.printStackTrace();
 		}
     	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : GET FEEDCODE : " + game);
+    	}
+    	
     	return output.toString();
     }
     
@@ -413,6 +442,11 @@ public class ResourceController {
 			System.out.println("JSONException while verifying parameters for tagging");
 			e.printStackTrace();
 		}
+    	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : TAG : " + taggerString + ", " + taggedString);
+    	}
+    	
     	return response.toString();
     }
     
@@ -444,6 +478,10 @@ public class ResourceController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : GET GAMES :");
+    	}
     	
     	return output.toString();		
     }
@@ -482,6 +520,11 @@ public class ResourceController {
     	catch(JSONException e){
     		e.printStackTrace();
     	}
+    	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : CREATE GAME : " + gamename);
+    	}
+    	
     	return response.toString();
     }
     
@@ -506,6 +549,11 @@ public class ResourceController {
 			System.out.println("JSONException while trying to begin game");
 			e.printStackTrace();
 		}
+    	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : START GAME: " + game);
+    	}
+    	
     	return response.toString();
     }
     
@@ -526,6 +574,11 @@ public class ResourceController {
     		e.printStackTrace();
     		return null;
     	}
+    	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : CHECK BEGUN : " + game);
+    	}
+    	
     	return response.toString();
 
     	}  
@@ -544,6 +597,11 @@ public class ResourceController {
     		e.printStackTrace();
     		return null;
     	}
+    	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : FORCE TAG : " + feedcode);
+    	}
+    	
     	return response.toString();
 
     	}  
@@ -570,6 +628,10 @@ public class ResourceController {
 			e.printStackTrace();
 		}
     	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : GET REVIVE CODES: " + game);
+    	}
+    	
     	return output.toString();	
     }
     
@@ -590,6 +652,11 @@ public class ResourceController {
     	catch (JSONException e){
     		e.printStackTrace();
     	}
+    	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : GET REVIVE CODE: " + game);
+    	}
+    	
     	return response.toString();
 
     }
@@ -642,6 +709,11 @@ public class ResourceController {
     	catch (JSONException e){
     		e.printStackTrace();
     	}
+    	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : PLAYER REVIVE: " + game);
+    	}
+    	
     	return response.toString();
     }
 		
@@ -678,6 +750,10 @@ public class ResourceController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : GET MISSIONS: " + game);
+    	}
     	
     	return output.toString();	
     }
@@ -720,6 +796,11 @@ public class ResourceController {
 		catch(JSONException e){
 			e.printStackTrace();
 		}
+		
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : MISSION CREATE : " + game);
+    	}
+	
 		return response.toString();
     }
     
@@ -750,6 +831,11 @@ public class ResourceController {
     	catch (JSONException e){
     		e.printStackTrace();
     	}
+    	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : GET MISSION : " + game);
+    	}
+    	
     	return response.toString();
     }
     
@@ -787,9 +873,17 @@ public class ResourceController {
     	catch (JSONException e) {
     		e.printStackTrace();
     	}
-    	return response.toString();
+    	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : MISSION UPDATE : " + game);
+    	}
+	   	
+	   	return response.toString();
     }
     
+    /**
+     * Ends the game
+     */
     @RequestMapping(value = "{game}/end", method = RequestMethod.POST)
     public String endGame(HttpServletRequest request, @RequestBody String value, @PathVariable("game") String game){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
@@ -806,10 +900,18 @@ public class ResourceController {
     	catch (JSONException e){
     		e.printStackTrace();
     	}
+	   	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : END GAME: " + game);
+    	}
+	   	
     	return response.toString();
     	
     }
     
+    /**
+     * get end game stats / normal stats
+     */
     @RequestMapping(value = "{game}/end", method = RequestMethod.GET)
     public String getEndStats(HttpServletRequest request, @PathVariable("game") String game){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
@@ -822,8 +924,8 @@ public class ResourceController {
     	if (!failed){
     		numHumans = Server.getPlayerCount(game, true);
     		numZombies = Server.getPlayerCount(game, false);
-    		numHumanTags = Server.getTagCount(game, true);
-    		numZombieTags = Server.getTagCount(game, false);
+    		numHumanTags = Server.getTagCount(game, false);
+    		numZombieTags = Server.getTagCount(game, true);
     		if (numHumans == 0){
     			winner = "Zombies";
     		}
@@ -842,9 +944,17 @@ public class ResourceController {
     	catch (JSONException e){
     		e.printStackTrace();
     	}
+	   	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : GET STATS: " + game);
+    	}
+	   	
     	return response.toString();
     }
     
+    /**
+     * Creates a complaint
+     */
     @RequestMapping(value = "{game}/complaint", method = RequestMethod.POST)
     public String createComplaint(HttpServletRequest request, @RequestBody String value, @PathVariable("game") String game){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
@@ -893,9 +1003,17 @@ public class ResourceController {
     	catch (JSONException e) {
     		e.printStackTrace();
     	}
+	   	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : CREATE COMPLAINT : " + game);
+    	}
+	   	
     	return response.toString();
     }
     
+    /**
+     * returns a complaint
+     */
     @RequestMapping(value = "{game}/complaint/{ccode}", method = RequestMethod.GET)
     public String getComplaint(HttpServletRequest request, @PathVariable("game") String game, @PathVariable("ccode") String ccode){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
@@ -919,9 +1037,17 @@ public class ResourceController {
     	catch (JSONException e) {
     		e.printStackTrace();
     	}
+	   	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : GET COMPLAINT : " + game);
+    	}
+	   	
     	return response.toString();
     }
 
+    /**
+     * Get all complaints
+     */
     @RequestMapping(value = "{game}/complaint", method = RequestMethod.GET)
     public String getAllComplaints(HttpServletRequest request, @PathVariable("game") String game){
 		//Set up response object
@@ -944,9 +1070,17 @@ public class ResourceController {
 			//big error
 			e.printStackTrace();
 		}
+    	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : GET COMPLAINTS : " + game);
+    	}
+    	
     	return output.toString();
     }
     
+    /**
+     * delete a complaint
+     */
     @RequestMapping(value = "{game}/complaint/{ccode}", method = RequestMethod.DELETE)
     public String deleteComplaint(HttpServletRequest request, @PathVariable("game") String game, @PathVariable("ccode") String ccode){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
@@ -961,9 +1095,17 @@ public class ResourceController {
     	catch (JSONException e) {
     		e.printStackTrace();
     	}
+	   	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : DELETE COMPLAINT : " + game);
+    	}
+	   	
     	return response.toString();
     }
     
+    /**
+     * Get a map
+     */
     @RequestMapping(value = "{game}/map", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
     public byte[] getMap(HttpServletRequest request, @PathVariable("game") String game){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
@@ -974,9 +1116,18 @@ public class ResourceController {
     	if (image == null){
     		failed = true;
     	}
+    	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : GET MAP : " + game);
+    	}
+    	
     	return image;
     }
     
+    
+    /**
+     * create a map
+     */
     @RequestMapping(value = "{game}/map", method = RequestMethod.POST)
     public String setMap(HttpServletRequest request, @PathVariable("game") String game, @RequestBody byte[] value){
     	boolean failed = !Server.checkGameExisits(game); //immediately fail if game doesn't exist
@@ -990,6 +1141,11 @@ public class ResourceController {
     	catch (JSONException e) {
     		e.printStackTrace();
     	}
+	   	
+    	if (ServerConfiguration.getLogging()){
+    		System.out.println(request.getLocalAddr() + " : CREATE MAP : " + game);
+    	}
+	   	
     	return response.toString();
     }
 }
