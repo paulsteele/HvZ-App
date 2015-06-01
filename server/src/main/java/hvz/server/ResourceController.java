@@ -80,7 +80,7 @@ public class ResourceController {
 			e.printStackTrace();
 		}
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : REGISTER : " + username + ", " + password);
+    		System.out.println(request.getRemoteAddr() + " : REGISTER : " + username + ", " + password);
     	}
     	return output.toString();
     }
@@ -132,7 +132,7 @@ public class ResourceController {
 			e.printStackTrace();
 		}
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : USER UPDATE : " + username + ", " + feedcode + ", " + gamecode);
+    		System.out.println(request.getRemoteAddr() + " : USER UPDATE : " + username + ", " + feedcode + ", " + gamecode);
 
     	}
     	return output.toString();
@@ -199,7 +199,7 @@ public class ResourceController {
 		}
     	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : LOGIN : " + username);
+    		System.out.println(request.getRemoteAddr() + " : LOGIN : " + username);
     	}
     	
     	return output.toString();
@@ -241,7 +241,7 @@ public class ResourceController {
 		}
     	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : GET PLAYER : " + game + ", " + feedcode);
+    		System.out.println(request.getRemoteAddr() + " : GET PLAYER : " + game + ", " + feedcode);
     	}
     	
     	return output.toString();
@@ -280,7 +280,7 @@ public class ResourceController {
 		}
     	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : GET USER : " + username);
+    		System.out.println(request.getRemoteAddr() + " : GET USER : " + username);
     	}
     	
     	return output.toString();
@@ -321,7 +321,7 @@ public class ResourceController {
 		}
     	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : GET USERS : " + game);
+    		System.out.println(request.getRemoteAddr() + " : GET USERS : " + game);
     	}
     	
     	return output.toString();
@@ -388,7 +388,7 @@ public class ResourceController {
 		}
     	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : GET FEEDCODE : " + game);
+    		System.out.println(request.getRemoteAddr() + " : GET FEEDCODE : " + game);
     	}
     	
     	return output.toString();
@@ -444,7 +444,7 @@ public class ResourceController {
 		}
     	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : TAG : " + taggerString + ", " + taggedString);
+    		System.out.println(request.getRemoteAddr() + " : TAG : " + taggerString + ", " + taggedString);
     	}
     	
     	return response.toString();
@@ -480,7 +480,7 @@ public class ResourceController {
 		}
     	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : GET GAMES :");
+    		System.out.println(request.getRemoteAddr() + " : GET GAMES :");
     	}
     	
     	return output.toString();		
@@ -522,7 +522,7 @@ public class ResourceController {
     	}
     	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : CREATE GAME : " + gamename);
+    		System.out.println(request.getRemoteAddr() + " : CREATE GAME : " + gamename);
     	}
     	
     	return response.toString();
@@ -551,7 +551,7 @@ public class ResourceController {
 		}
     	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : START GAME: " + game);
+    		System.out.println(request.getRemoteAddr() + " : START GAME: " + game);
     	}
     	
     	return response.toString();
@@ -576,7 +576,7 @@ public class ResourceController {
     	}
     	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : CHECK BEGUN : " + game);
+    		System.out.println(request.getRemoteAddr() + " : CHECK BEGUN : " + game);
     	}
     	
     	return response.toString();
@@ -599,7 +599,7 @@ public class ResourceController {
     	}
     	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : FORCE TAG : " + feedcode);
+    		System.out.println(request.getRemoteAddr() + " : FORCE TAG : " + feedcode);
     	}
     	
     	return response.toString();
@@ -629,7 +629,7 @@ public class ResourceController {
 		}
     	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : GET REVIVE CODES: " + game);
+    		System.out.println(request.getRemoteAddr() + " : GET REVIVE CODES: " + game);
     	}
     	
     	return output.toString();	
@@ -654,7 +654,7 @@ public class ResourceController {
     	}
     	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : GET REVIVE CODE: " + game);
+    		System.out.println(request.getRemoteAddr() + " : GET REVIVE CODE: " + game);
     	}
     	
     	return response.toString();
@@ -711,7 +711,7 @@ public class ResourceController {
     	}
     	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : PLAYER REVIVE: " + game);
+    		System.out.println(request.getRemoteAddr() + " : PLAYER REVIVE: " + game);
     	}
     	
     	return response.toString();
@@ -752,7 +752,7 @@ public class ResourceController {
 		}
     	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : GET MISSIONS: " + game);
+    		System.out.println(request.getRemoteAddr() + " : GET MISSIONS: " + game);
     	}
     	
     	return output.toString();	
@@ -798,7 +798,7 @@ public class ResourceController {
 		}
 		
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : MISSION CREATE : " + game);
+    		System.out.println(request.getRemoteAddr() + " : MISSION CREATE : " + game);
     	}
 	
 		return response.toString();
@@ -833,7 +833,7 @@ public class ResourceController {
     	}
     	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : GET MISSION : " + game);
+    		System.out.println(request.getRemoteAddr() + " : GET MISSION : " + game);
     	}
     	
     	return response.toString();
@@ -875,7 +875,7 @@ public class ResourceController {
     	}
     	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : MISSION UPDATE : " + game);
+    		System.out.println(request.getRemoteAddr() + " : MISSION UPDATE : " + game);
     	}
 	   	
 	   	return response.toString();
@@ -902,7 +902,7 @@ public class ResourceController {
     	}
 	   	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : END GAME: " + game);
+    		System.out.println(request.getRemoteAddr() + " : END GAME: " + game);
     	}
 	   	
     	return response.toString();
@@ -946,7 +946,7 @@ public class ResourceController {
     	}
 	   	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : GET STATS: " + game);
+    		System.out.println(request.getRemoteAddr() + " : GET STATS: " + game);
     	}
 	   	
     	return response.toString();
@@ -1005,7 +1005,7 @@ public class ResourceController {
     	}
 	   	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : CREATE COMPLAINT : " + game);
+    		System.out.println(request.getRemoteAddr() + " : CREATE COMPLAINT : " + game);
     	}
 	   	
     	return response.toString();
@@ -1039,7 +1039,7 @@ public class ResourceController {
     	}
 	   	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : GET COMPLAINT : " + game);
+    		System.out.println(request.getRemoteAddr() + " : GET COMPLAINT : " + game);
     	}
 	   	
     	return response.toString();
@@ -1072,7 +1072,7 @@ public class ResourceController {
 		}
     	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : GET COMPLAINTS : " + game);
+    		System.out.println(request.getRemoteAddr() + " : GET COMPLAINTS : " + game);
     	}
     	
     	return output.toString();
@@ -1097,7 +1097,7 @@ public class ResourceController {
     	}
 	   	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : DELETE COMPLAINT : " + game);
+    		System.out.println(request.getRemoteAddr() + " : DELETE COMPLAINT : " + game);
     	}
 	   	
     	return response.toString();
@@ -1118,7 +1118,7 @@ public class ResourceController {
     	}
     	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : GET MAP : " + game);
+    		System.out.println(request.getRemoteAddr() + " : GET MAP : " + game);
     	}
     	
     	return image;
@@ -1143,7 +1143,7 @@ public class ResourceController {
     	}
 	   	
     	if (ServerConfiguration.getLogging()){
-    		System.out.println(request.getLocalAddr() + " : CREATE MAP : " + game);
+    		System.out.println(request.getRemoteAddr() + " : CREATE MAP : " + game);
     	}
 	   	
     	return response.toString();
